@@ -24,7 +24,6 @@ app.get("/", (req, res) => {
   res.send("Bienvenue sur l'API du Shop Nintendo !");
 });
 
-// Lancer le serveur
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`🚀 Serveur lancé sur http://localhost:${PORT}`)
