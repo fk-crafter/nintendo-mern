@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // Accepte les requêtes de Next.js
 app.use(cookieParser());
 
-// Connexion à MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
