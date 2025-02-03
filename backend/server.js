@@ -19,7 +19,6 @@ mongoose
   .then(() => console.log("🟢 Connecté à MongoDB"))
   .catch((err) => console.log("🔴 Erreur MongoDB :", err));
 
-// Route test
 app.get("/", (req, res) => {
   res.send("Bienvenue sur l'API du Shop Nintendo !");
 });
