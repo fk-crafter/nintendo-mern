@@ -8,7 +8,7 @@ import "react-credit-cards-2/dist/es/styles-compiled.css";
 import successAnimation from "@/public/lottieanimation/validation.json";
 import { useForm } from "react-hook-form";
 import useStore from "@/store/store";
-import { ArrowLeft } from "lucide-react"; // Import de l'icône de retour
+import { ArrowLeft } from "lucide-react";
 
 export default function PaymentPage() {
   const router = useRouter();
