@@ -51,6 +51,16 @@ export default function Register() {
             onClick={() => signIn("github", { callbackUrl: "/" })}
             className="flex w-full justify-center items-center rounded-md bg-white border border-gray-300 px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              className="h-5 w-5 mr-2"
+            >
+              <path
+                d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.207 11.387.6.111.793-.26.793-.577v-2.234c-3.338.726-4.043-1.416-4.043-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.744.083-.729.083-.729 1.205.085 1.838 1.24 1.838 1.24 1.07 1.835 2.809 1.304 3.495.997.108-.775.419-1.304.762-1.604-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.469-2.38 1.236-3.221-.124-.304-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23.96-.267 1.985-.4 3.004-.404 1.02.004 2.044.137 3.004.404 2.292-1.552 3.299-1.23 3.299-1.23.653 1.653.242 2.872.118 3.176.769.841 1.235 1.911 1.235 3.221 0 4.61-2.805 5.623-5.476 5.922.431.372.823 1.104.823 2.222v3.293c0 .32.193.694.801.575C20.565 21.796 24 17.298 24 12c0-6.627-5.373-12-12-12z"
+                fill="currentColor"
+              />
+            </svg>
             Sign up with GitHub
           </button>
         </div>
