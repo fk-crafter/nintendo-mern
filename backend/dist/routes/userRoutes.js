@@ -17,19 +17,19 @@ const User_1 = require("../models/User");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const router = express_1.default.Router();
-// 📌 Inscription d'un utilisateur
+// l'inscription d'un utilisateur
 router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, password } = req.body;
-        // Vérifier si l'utilisateur existe déjà
+        // vérifie si l'utilisateur existe déjà
         const existingUser = yield User_1.User.findOne({ email });
         if (existingUser) {
             res.status(400).json({ message: "Cet utilisateur existe déjà." });
             return;
         }
-        // Hasher le mot de passe
+        // hashe le mot de passe
         const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
-        // Créer un nouvel utilisateur
+        // crée un nouvel utilisateur
         const newUser = new User_1.User({ name, email, password: hashedPassword });
         yield newUser.save();
         res.status(201).json({ message: "Utilisateur créé avec succès !" });
@@ -38,23 +38,23 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Connexion d'un utilisateur
+// connexion d'un utilisateur
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        // Vérifier si l'utilisateur existe
+        // vérifie si l'utilisateur existe
         const user = yield User_1.User.findOne({ email });
         if (!user) {
             res.status(404).json({ message: "Utilisateur non trouvé." });
             return;
         }
-        // Vérifier le mot de passe
+        // vérifie le mot de passe
         const isMatch = yield bcryptjs_1.default.compare(password, user.password);
         if (!isMatch) {
             res.status(400).json({ message: "Mot de passe incorrect." });
             return;
         }
-        // Générer un token JWT
+        // génère un token JWT
         const token = jsonwebtoken_1.default.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
             expiresIn: "1d",
         });
@@ -72,10 +72,10 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Récupérer tous les utilisateurs (ADMIN uniquement)
+// récupère tous les utilisateurs (ADMIN uniquement)
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield User_1.User.find().select("-password"); // Ne pas renvoyer les mots de passe
+        const users = yield User_1.User.find().select("-password"); // ne pas renvoyer les mots de passe
         res.json(users);
     }
     catch (error) {

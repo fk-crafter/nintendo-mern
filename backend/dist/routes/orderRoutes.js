@@ -14,9 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const Order_1 = require("../models/Order");
+const authMiddleware_1 = require("../middleware/authMiddleware");
 const router = express_1.default.Router();
 // 📌 Récupérer toutes les commandes (ADMIN uniquement)
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orders = yield Order_1.Order.find()
             .populate("user")
@@ -28,7 +29,7 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 // 📌 Récupérer une commande par ID
-router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/:id", authMiddleware_1.protect, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const order = yield Order_1.Order.findById(req.params.id)
             .populate("user")
@@ -43,17 +44,22 @@ router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Créer une nouvelle commande
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// 📌 Créer une nouvelle commande (Utilisateur connecté uniquement)
+router.post("/", authMiddleware_1.protect, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { user, products, totalPrice } = req.body;
-        if (!user || !products || products.length === 0 || !totalPrice) {
+        const { products, totalPrice } = req.body;
+        if (!products || products.length === 0 || !totalPrice) {
             res
                 .status(400)
                 .json({ message: "Toutes les informations sont requises" });
             return;
         }
-        const newOrder = new Order_1.Order({ user, products, totalPrice });
+        // ✅ Correction : TypeScript comprend maintenant `req.user`
+        if (!req.user) {
+            res.status(401).json({ message: "Utilisateur non authentifié" });
+            return;
+        }
+        const newOrder = new Order_1.Order({ user: req.user.id, products, totalPrice });
         yield newOrder.save();
         res
             .status(201)
@@ -64,7 +70,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 // 📌 Mettre à jour une commande (ex: changer le statut)
-router.put("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.put("/:id", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { status } = req.body;
         const updatedOrder = yield Order_1.Order.findByIdAndUpdate(req.params.id, { status }, { new: true });
@@ -79,7 +85,7 @@ router.put("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 }));
 // 📌 Supprimer une commande
-router.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/:id", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const deletedOrder = yield Order_1.Order.findByIdAndDelete(req.params.id);
         if (!deletedOrder) {
