@@ -35,7 +35,6 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     setIsMounted(true);
 
-    // Fonction pour détecter si on clique en dehors du panier et le fermer
     const handleClickOutside = (event: MouseEvent) => {
       if (
         cartRef.current &&
@@ -61,7 +60,6 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Bouton de menu hamburger pour les mobiles */}
         <div className="md:hidden">
           <button
             onClick={() => setIsHamburgerMenuOpen(!isHamburgerMenuOpen)}
@@ -71,7 +69,6 @@ const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* Liens de navigation en mode bureau */}
         <div className="hidden md:flex items-center space-x-8">
           <Link href="/" className="text-white flex items-center space-x-2">
             <Home className="w-6 h-6" />
@@ -85,7 +82,6 @@ const Navbar: React.FC = () => {
             <span className="text-lg font-medium">Products</span>
           </Link>
 
-          {/* Bouton Panier */}
           <div className="relative">
             <button
               id="cart-button"
@@ -96,7 +92,6 @@ const Navbar: React.FC = () => {
               <span className="text-lg font-medium">Cart ({cart.length})</span>
             </button>
 
-            {/* Contenu du Panier */}
             {isCartOpen && (
               <div
                 ref={cartRef}
@@ -162,12 +157,6 @@ const Navbar: React.FC = () => {
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Profile Settings
-                  </Link>
-                  <Link
-                    href="/admin"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Dashboard Admin
                   </Link>
                   <button
                     onClick={() => signOut({ callbackUrl: "/" })}

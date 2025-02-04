@@ -75,7 +75,7 @@ export default function Login() {
         <p className="mt-10 text-center text-sm text-white">
           Don't have an account?{" "}
           <Link
-            href="/register"
+            href="#"
             className="font-semibold leading-6 text-white hover:text-red-300"
           >
             Sign up
