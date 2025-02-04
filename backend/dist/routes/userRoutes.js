@@ -48,6 +48,13 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
             res.status(404).json({ message: "Utilisateur non trouvé." });
             return;
         }
+        // ⚠️ Vérifie si l'utilisateur a un mot de passe (cas des connexions Google)
+        if (!user.password) {
+            res
+                .status(400)
+                .json({ message: "Connexion impossible : utilisez Google." });
+            return;
+        }
         // vérifie le mot de passe
         const isMatch = yield bcryptjs_1.default.compare(password, user.password);
         if (!isMatch) {

@@ -156,12 +156,18 @@ const Navbar: React.FC = () => {
                 <ChevronDown className="w-6 h-6" />
               </button>
               {isProfileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white text-gray-900 rounded-lg shadow-lg">
+                <div className="z-50 absolute right-0 mt-2 w-48 bg-white text-gray-900 rounded-lg shadow-lg">
                   <Link
                     href="/profile"
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Profile Settings
+                  </Link>
+                  <Link
+                    href="/admin"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Dashboard Admin
                   </Link>
                   <button
                     onClick={() => signOut({ callbackUrl: "/" })}

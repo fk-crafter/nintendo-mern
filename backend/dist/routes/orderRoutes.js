@@ -16,7 +16,7 @@ const express_1 = __importDefault(require("express"));
 const Order_1 = require("../models/Order");
 const authMiddleware_1 = require("../middleware/authMiddleware");
 const router = express_1.default.Router();
-// 📌 Récupérer toutes les commandes (ADMIN uniquement)
+// recupere toutes les commandes (ADMIN uniquement)
 router.get("/", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orders = yield Order_1.Order.find()
@@ -28,7 +28,7 @@ router.get("/", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res)
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Récupérer une commande par ID
+// recupere une commande par ID
 router.get("/:id", authMiddleware_1.protect, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const order = yield Order_1.Order.findById(req.params.id)
@@ -44,7 +44,7 @@ router.get("/:id", authMiddleware_1.protect, (req, res) => __awaiter(void 0, voi
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Créer une nouvelle commande (Utilisateur connecté uniquement)
+// créer une nouvelle commande (Utilisateur connecté uniquement)
 router.post("/", authMiddleware_1.protect, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { products, totalPrice } = req.body;
@@ -54,7 +54,6 @@ router.post("/", authMiddleware_1.protect, (req, res) => __awaiter(void 0, void 
                 .json({ message: "Toutes les informations sont requises" });
             return;
         }
-        // ✅ Correction : TypeScript comprend maintenant `req.user`
         if (!req.user) {
             res.status(401).json({ message: "Utilisateur non authentifié" });
             return;
@@ -69,7 +68,7 @@ router.post("/", authMiddleware_1.protect, (req, res) => __awaiter(void 0, void 
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Mettre à jour une commande (ex: changer le statut)
+// mettre à jour une commande (ex: changer le statut)
 router.put("/:id", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { status } = req.body;
@@ -84,7 +83,7 @@ router.put("/:id", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, r
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Supprimer une commande
+// supprimer une commande
 router.delete("/:id", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const deletedOrder = yield Order_1.Order.findByIdAndDelete(req.params.id);

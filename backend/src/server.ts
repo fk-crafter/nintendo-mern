@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import productRoutes from "./routes/productRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import userRoutes from "./routes/userRoutes";
+import adminRoutes from "./routes/adminRoutes";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ const PORT = process.env.PORT || 5001;
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.listen(PORT, () =>
   console.log(`🚀 Serveur lancé sur http://localhost:${PORT}`)

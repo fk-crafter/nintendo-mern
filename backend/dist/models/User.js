@@ -39,7 +39,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const UserSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: false }, // On autorise les comptes Google sans mot de passe
     role: { type: String, enum: ["user", "admin"], default: "user" },
 }, { timestamps: true });
 // modèle

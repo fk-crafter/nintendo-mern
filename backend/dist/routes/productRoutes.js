@@ -16,7 +16,7 @@ const express_1 = __importDefault(require("express"));
 const Product_1 = require("../models/Product");
 const authMiddleware_1 = require("../middleware/authMiddleware");
 const router = express_1.default.Router();
-// 📌 Récupérer tous les produits (accessible à tous)
+// recupere tous les produits (accessible à tous)
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield Product_1.Product.find();
@@ -26,7 +26,7 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Ajouter un produit (ADMIN uniquement)
+// ajouter un produit (ADMIN uniquement)
 router.post("/", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, description, price, image, stock } = req.body;
@@ -50,7 +50,7 @@ router.post("/", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Modifier un produit (ADMIN uniquement)
+// modifier un produit (ADMIN uniquement)
 router.put("/:id", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, description, price, image, stock } = req.body;
@@ -65,7 +65,7 @@ router.put("/:id", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, r
         res.status(500).json({ message: "Erreur serveur", error });
     }
 }));
-// 📌 Supprimer un produit (ADMIN uniquement)
+// supprimer un produit (ADMIN uniquement)
 router.delete("/:id", authMiddleware_1.protect, authMiddleware_1.adminOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const deletedProduct = yield Product_1.Product.findByIdAndDelete(req.params.id);

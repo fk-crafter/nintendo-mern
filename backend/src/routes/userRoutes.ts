@@ -42,6 +42,14 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    // vérifie si l'utilisateur a un mot de passe (cas des connexions Google)
+    if (!user.password) {
+      res
+        .status(400)
+        .json({ message: "Connexion impossible : utilisez Google." });
+      return;
+    }
+
     // vérifie le mot de passe
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
