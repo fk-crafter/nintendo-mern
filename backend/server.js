@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
+const productRoutes = require("./routes/productRoutes");
+const userRoutes = require("./routes/userRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+
 dotenv.config();
 
 const app = express();
@@ -17,6 +21,10 @@ mongoose
   })
   .then(() => console.log("MongoDB est bien connecté"))
   .catch((error) => console.log("Erreur MongoDB:", error));
+
+app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
