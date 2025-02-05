@@ -15,10 +15,10 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("MongoDB connecté"))
+  .then(() => console.log("MongoDB est bien connecté"))
   .catch((error) => console.log("Erreur MongoDB:", error));
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
-  console.log(`Le serveur écoute sur le port ${PORT}`);
+  console.log(`Le serveur est bien connecté sur le port ${PORT}`);
 });
