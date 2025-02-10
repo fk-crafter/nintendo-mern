@@ -5,11 +5,12 @@ import { useSession, signOut } from "next-auth/react";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const auth = useContext(AuthContext);
-  const { cart } = useCart();
+  const { cart, removeFromCart } = useCart(); // 🔥 Ajout de removeFromCart
   const [showCart, setShowCart] = useState(false);
 
   return (
@@ -55,6 +56,10 @@ const Navbar = () => {
                             {product.price}€ x {product.quantity}
                           </p>
                         </div>
+                        {/* 🔥 Bouton supprimer produit */}
+                        <button onClick={() => removeFromCart(product._id)}>
+                          <XCircleIcon className="w-5 h-5 text-red-500 hover:text-red-700" />
+                        </button>
                       </div>
                     ))}
                     <Link
