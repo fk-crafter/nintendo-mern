@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 
 interface Product {
@@ -43,8 +44,15 @@ export default function ProductPage() {
     return <p className="text-center text-red-500">Produit introuvable.</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold">{product.name}</h1>
+    <div className="max-w-3xl mx-auto p-6 relative">
+      <Link
+        href="/"
+        className="absolute top-2 left-2 bg-gray-200 text-gray-800 px-3 py-1 rounded-md text-sm hover:bg-gray-300"
+      >
+        ← Accueil
+      </Link>
+
+      <h1 className="text-3xl font-bold mt-8">{product.name}</h1>
       {product.image && (
         <Image
           src={product.image}

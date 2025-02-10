@@ -10,7 +10,7 @@ import { XCircleIcon } from "@heroicons/react/24/solid";
 const Navbar = () => {
   const { data: session } = useSession();
   const auth = useContext(AuthContext);
-  const { cart, removeFromCart } = useCart(); // 🔥 Ajout de removeFromCart
+  const { cart, removeFromCart } = useCart();
   const [showCart, setShowCart] = useState(false);
 
   return (
