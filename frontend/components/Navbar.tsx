@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const auth = useContext(AuthContext);
+  const { cart } = useCart();
+  const [showCart, setShowCart] = useState(false);
 
   return (
     <nav className="bg-gray-900 text-white p-4 shadow-md">
@@ -16,13 +19,55 @@ const Navbar = () => {
           MonShop
         </Link>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 relative">
           <Link href="/products" className="hover:text-gray-300">
             Produits
           </Link>
-          <Link href="/cart" className="hover:text-gray-300">
-            Panier
-          </Link>
+
+          {/* 🔥 Bouton Panier avec Dropdown */}
+          <div className="relative">
+            <button
+              className="relative px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+              onClick={() => setShowCart(!showCart)}
+            >
+              Panier ({cart.length})
+            </button>
+
+            {/* 🔥 Dropdown du panier */}
+            {showCart && (
+              <div className="absolute right-0 mt-2 w-64 bg-white text-black shadow-lg rounded-lg p-4">
+                {cart.length === 0 ? (
+                  <p className="text-center text-gray-500">
+                    Votre panier est vide.
+                  </p>
+                ) : (
+                  <>
+                    {cart.map((product) => (
+                      <div
+                        key={product._id}
+                        className="flex items-center border-b py-2"
+                      >
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold">
+                            {product.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {product.price}€ x {product.quantity}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                    <Link
+                      href="/cart"
+                      className="block text-center bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 mt-2"
+                    >
+                      Voir mon panier
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
 
           {session || auth?.user ? (
             <>

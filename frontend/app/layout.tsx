@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import CustomSessionProvider from "@/components/SessionProvider";
+import { CartProvider } from "@/context/CartContext"; // 🔥 Import du CartProvider
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <CustomSessionProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <CartProvider>
+              {" "}
+              {/* 🔥 On englobe toute l'app avec le panier */}
+              {children}
+            </CartProvider>
+          </AuthProvider>
         </CustomSessionProvider>
       </body>
     </html>
