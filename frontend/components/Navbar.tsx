@@ -13,6 +13,9 @@ const Navbar = () => {
   const { cart, removeFromCart } = useCart();
   const [showCart, setShowCart] = useState(false);
 
+  console.log("Auth User:", auth?.user);
+  console.log("Session User:", session);
+
   return (
     <nav className="bg-gray-900 text-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
@@ -79,6 +82,11 @@ const Navbar = () => {
               <span className="text-gray-300">
                 Salut, {session?.user?.name || auth?.user?.name}!
               </span>
+
+              <Link href="/orders" className="hover:text-gray-300">
+                Mes commandes
+              </Link>
+
               {auth?.user?.role === "admin" && (
                 <Link href="/dashboard" className="hover:text-gray-300">
                   Admin

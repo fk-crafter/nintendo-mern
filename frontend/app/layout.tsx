@@ -28,7 +28,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      {" "}
       {/* ✅ Changer en 'fr' si besoin */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
