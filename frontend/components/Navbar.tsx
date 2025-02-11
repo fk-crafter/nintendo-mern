@@ -28,7 +28,6 @@ const Navbar = () => {
             Produits
           </Link>
 
-          {/* 🔥 Bouton Panier avec Dropdown */}
           <div className="relative">
             <button
               className="relative px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
@@ -37,7 +36,6 @@ const Navbar = () => {
               Panier ({cart.length})
             </button>
 
-            {/* 🔥 Dropdown du panier */}
             {showCart && (
               <div className="absolute right-0 mt-2 w-64 bg-white text-black shadow-lg rounded-lg p-4">
                 {cart.length === 0 ? (
@@ -59,7 +57,6 @@ const Navbar = () => {
                             {product.price}€ x {product.quantity}
                           </p>
                         </div>
-                        {/* 🔥 Bouton supprimer produit */}
                         <button onClick={() => removeFromCart(product._id)}>
                           <XCircleIcon className="w-5 h-5 text-red-500 hover:text-red-700" />
                         </button>

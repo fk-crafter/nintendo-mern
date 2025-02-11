@@ -1,6 +1,6 @@
 const admin = (req, res, next) => {
   if (req.user && req.user.role === "admin") {
-    next(); // L'utilisateur est admin, on passe à la suite
+    next();
   } else {
     res
       .status(403)

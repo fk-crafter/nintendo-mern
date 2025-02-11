@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const protect = require("../middleware/authMiddleware"); // Import du middleware
+const protect = require("../middleware/authMiddleware");
 const admin = require("../middleware/adminMiddleware");
 
 const router = express.Router();
@@ -26,13 +26,13 @@ router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Vérifier si l'utilisateur existe déjà
+    // vérifie si l'utilisateur existe déjà
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "Cet utilisateur existe déjà" });
     }
 
-    // Créer un nouvel utilisateur
+    // créer un nouvel utilisateur
     const newUser = new User({ name, email, password });
     await newUser.save();
 
@@ -49,7 +49,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Vérifier si l'utilisateur existe
+    // vérifie si l'utilisateur existe
     const user = await User.findOne({ email });
     if (!user) {
       return res
@@ -57,7 +57,7 @@ router.post("/login", async (req, res) => {
         .json({ message: "Email ou mot de passe incorrect" });
     }
 
-    // Vérifier si le mot de passe est correct
+    // vérifie si le mot de passe est correct
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res
@@ -65,7 +65,6 @@ router.post("/login", async (req, res) => {
         .json({ message: "Email ou mot de passe incorrect" });
     }
 
-    // Générer un token JWT
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,

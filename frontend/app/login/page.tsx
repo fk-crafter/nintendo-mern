@@ -13,7 +13,6 @@ const LoginPage = () => {
   const { login } = useContext(AuthContext) || {};
   const router = useRouter();
 
-  // redirection après connexion via NextAuth
   useEffect(() => {
     if (session) {
       router.push("/");
@@ -37,7 +36,7 @@ const LoginPage = () => {
 
       if (login) {
         login(data.token);
-        router.push("/"); // redirection après connexion
+        router.push("/");
       }
     } catch (err) {
       if (err instanceof Error) {

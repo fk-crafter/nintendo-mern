@@ -33,8 +33,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/login", // page de connexion
-    newUser: "/", // redirection après connexion
+    signIn: "/login",
+    newUser: "/",
   },
 };
 

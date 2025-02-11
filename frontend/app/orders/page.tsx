@@ -54,7 +54,6 @@ export default function OrdersPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      {/* 🔥 Bouton retour vers l'accueil */}
       <Link
         href="/"
         className="flex items-center text-blue-500 hover:text-blue-700 mb-4"

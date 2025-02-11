@@ -6,12 +6,12 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true, // Obligatoire
+      required: true, // nom obligatoire
     },
     email: {
       type: String,
       required: true,
-      unique: true, // Un email ne peut pas être en double
+      unique: true, // verifie si l'email est unique
     },
     password: {
       type: String,
@@ -19,16 +19,16 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"], // L'utilisateur peut être "user" ou "admin"
-      default: "user", // Par défaut, c'est un utilisateur normal
+      enum: ["user", "admin"], // verifie si l'utilisateur est admin ou user
+      default: "user", // par defaut c'est un utilisateur normal
     },
   },
   {
-    timestamps: true, // Ajoute automatiquement les champs "createdAt" et "updatedAt"
+    timestamps: true, // ajoute automatiquement les champs "createdAt" et "updatedAt"
   }
 );
 
-// Middleware avant de sauvegarder un utilisateur : hachage du mot de passe
+// middleware avant de sauvegarder un utilisateur : hachage du mot de passe
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 

@@ -42,11 +42,28 @@ router.post("/", protect, admin, async (req, res) => {
   try {
     const { name, description, price, stock, category, image } = req.body;
 
+    if (
+      !name ||
+      !description ||
+      !price ||
+      stock === undefined ||
+      !category ||
+      !image
+    ) {
+      return res.status(400).json({ message: "Tous les champs sont requis." });
+    }
+
+    if (isNaN(price) || isNaN(stock)) {
+      return res
+        .status(400)
+        .json({ message: "Le prix et le stock doivent être des nombres." });
+    }
+
     const newProduct = new Product({
       name,
       description,
-      price,
-      stock,
+      price: parseFloat(price),
+      stock: parseInt(stock),
       category,
       image,
     });
@@ -54,6 +71,7 @@ router.post("/", protect, admin, async (req, res) => {
     const savedProduct = await newProduct.save();
     res.status(201).json(savedProduct);
   } catch (error) {
+    console.error("Erreur lors de l'ajout du produit :", error);
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
@@ -97,21 +115,6 @@ router.delete("/:id", protect, admin, async (req, res) => {
 
     await product.deleteOne();
     res.json({ message: "Produit supprimé avec succès" });
-  } catch (error) {
-    res.status(500).json({ message: "Erreur serveur" });
-  }
-});
-
-// @route   GET /api/orders/my
-// @desc    Récupérer les commandes de l'utilisateur connecté
-// @access  Privé (utilisateur connecté)
-router.get("/my", protect, async (req, res) => {
-  try {
-    const orders = await Order.find({ user: req.user._id }).populate(
-      "products.product",
-      "name price"
-    );
-    res.json(orders);
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur" });
   }
