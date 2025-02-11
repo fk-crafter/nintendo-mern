@@ -3,7 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import CustomSessionProvider from "@/components/SessionProvider";
-import { CartProvider } from "@/context/CartContext"; // 🔥 Import du CartProvider
+import { CartProvider } from "@/context/CartContext";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,15 +27,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
+      {" "}
+      {/* ✅ Changer en 'fr' si besoin */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <CustomSessionProvider>
           <AuthProvider>
             <CartProvider>
-              {" "}
-              {/* 🔥 On englobe toute l'app avec le panier */}
+              <Toaster position="bottom-right" reverseOrder={false} />
               {children}
             </CartProvider>
           </AuthProvider>

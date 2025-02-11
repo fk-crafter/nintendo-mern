@@ -2,6 +2,8 @@
 
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
@@ -10,6 +12,7 @@ export default function CheckoutPage() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter(); // ✅ Initialisation du router
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,30 +25,42 @@ export default function CheckoutPage() {
     setError("");
 
     try {
+      const token = localStorage.getItem("token");
+
+      const orderData = {
+        products: cart.map((item) => ({
+          product: item._id,
+          quantity: item.quantity,
+        })),
+        totalPrice: cart.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0
+        ),
+      };
+
+      console.log("🔹 Données envoyées :", orderData);
+
       const res = await fetch("http://localhost:5001/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
         },
-        body: JSON.stringify({
-          name,
-          address,
-          email,
-          items: cart,
-          total: cart.reduce(
-            (acc, item) => acc + item.price * item.quantity,
-            0
-          ),
-        }),
+        body: JSON.stringify(orderData),
       });
 
-      if (!res.ok) throw new Error("Erreur lors de la commande.");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Erreur lors de la commande.");
+      }
 
-      clearCart(); // 🔥 Vider le panier après la commande
-      alert("Commande passée avec succès !");
+      clearCart();
+      toast.success("🎉 Commande passée avec succès !", { duration: 4000 });
+      setTimeout(() => router.push("/"), 3000);
     } catch (err) {
-      console.error("Erreur lors de la commande :", err);
+      console.error("❌ Erreur lors de la commande :", err);
       setError("Erreur lors du traitement de la commande.");
+      toast.error("❌ Erreur lors du traitement de la commande.");
     } finally {
       setLoading(false);
     }
@@ -77,7 +92,7 @@ export default function CheckoutPage() {
 
           <form
             onSubmit={handleSubmit}
-            className="mt-4 space-y-3 bg-white p-6 rounded-lg shadow-md"
+            className="mt-4 space-y-3 bg-white text-black p-6 rounded-lg shadow-md"
           >
             {error && <p className="text-red-500">{error}</p>}
 
