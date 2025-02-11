@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
+import Link from "next/link";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 interface Order {
   _id: string;
@@ -41,7 +43,7 @@ export default function OrdersPage() {
     };
 
     fetchOrders();
-  }, [auth?.user]); // 🔥 On écoute `auth.user` au lieu de `session`
+  }, [auth?.user]);
 
   if (!auth?.user)
     return <p className="text-center text-red-500">Veuillez vous connecter.</p>;
@@ -52,6 +54,15 @@ export default function OrdersPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
+      {/* 🔥 Bouton retour vers l'accueil */}
+      <Link
+        href="/"
+        className="flex items-center text-blue-500 hover:text-blue-700 mb-4"
+      >
+        <ArrowLeftIcon className="w-5 h-5 mr-2" />
+        Retour à l&apos;accueil
+      </Link>
+
       <h1 className="text-2xl font-bold mb-4">Vos Commandes</h1>
 
       {orders.length === 0 ? (

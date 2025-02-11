@@ -102,4 +102,19 @@ router.delete("/:id", protect, admin, async (req, res) => {
   }
 });
 
+// @route   GET /api/orders/my
+// @desc    Récupérer les commandes de l'utilisateur connecté
+// @access  Privé (utilisateur connecté)
+router.get("/my", protect, async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user._id }).populate(
+      "products.product",
+      "name price"
+    );
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
 module.exports = router;
