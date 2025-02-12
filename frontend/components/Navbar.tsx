@@ -13,11 +13,8 @@ const Navbar = () => {
   const { cart, removeFromCart } = useCart();
   const [showCart, setShowCart] = useState(false);
 
-  console.log("Auth User:", auth?.user);
-  console.log("Session User:", session);
-
   return (
-    <nav className="bg-gray-900 text-white p-4 shadow-md">
+    <nav className="bg-gray-900 text-white p-4 shadow-md relative">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold">
           MonShop
@@ -76,10 +73,6 @@ const Navbar = () => {
 
           {session || auth?.user ? (
             <>
-              <span className="text-gray-300">
-                Salut, {session?.user?.name || auth?.user?.name}!
-              </span>
-
               <Link href="/orders" className="hover:text-gray-300">
                 Mes commandes
               </Link>
