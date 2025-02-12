@@ -54,6 +54,7 @@ router.get("/", protect, admin, async (req, res) => {
     const orders = await Order.find()
       .populate("user", "name email")
       .populate("products.product", "name price");
+
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur" });
@@ -70,6 +71,24 @@ router.get("/my", protect, async (req, res) => {
       "name price"
     );
     res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+// @route   DELETE /api/orders/:id
+// @desc    Supprimer une commande (Admin uniquement)
+// @access  Privé (Admin)
+router.delete("/:id", protect, admin, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Commande non trouvée" });
+    }
+
+    await order.deleteOne();
+    res.json({ message: "Commande supprimée avec succès" });
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur" });
   }

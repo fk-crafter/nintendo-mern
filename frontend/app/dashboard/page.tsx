@@ -5,6 +5,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 import ProductsAdmin from "@/components/dashboard/ProductsAdmin";
+import OrdersAdmin from "@/components/dashboard/OrdersAdmin";
 
 export default function DashboardPage() {
   const auth = useContext(AuthContext);
@@ -53,7 +54,7 @@ export default function DashboardPage() {
       </div>
 
       {activeSection === "products" && <ProductsAdmin />}
-      {activeSection === "orders" && <p>📜 Gestion des Commandes</p>}
+      {activeSection === "orders" && <OrdersAdmin />}
       {activeSection === "users" && <p>👥 Gestion des Utilisateurs</p>}
     </div>
   );
