@@ -86,4 +86,42 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// @route   DELETE /api/users/:id
+// @desc    Supprimer un utilisateur (Admin uniquement)
+// @access  Privé (Admin)
+router.delete("/:id", protect, admin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    await user.deleteOne();
+    res.json({ message: "Utilisateur supprimé avec succès" });
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+// @route   PUT /api/users/:id/role
+// @desc    Modifier le rôle d'un utilisateur (Admin uniquement)
+// @access  Privé (Admin)
+router.put("/:id/role", protect, admin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    user.role = user.role === "admin" ? "user" : "admin";
+
+    const updatedUser = await user.save();
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
 module.exports = router;
