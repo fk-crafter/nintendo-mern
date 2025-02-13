@@ -5,39 +5,48 @@ import { useSession, signOut } from "next-auth/react";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
-import { XCircleIcon } from "@heroicons/react/24/solid";
+import {
+  ShoppingCart,
+  LogOut,
+  User,
+  Package,
+  BarChart,
+  Settings,
+} from "lucide-react";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const auth = useContext(AuthContext);
-  const { cart, removeFromCart } = useCart();
+  const { cart } = useCart();
   const [showCart, setShowCart] = useState(false);
+  const [showAuthMenu, setShowAuthMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
     <nav className="bg-gray-900 text-white p-4 shadow-md relative">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold">
-          MonShop
+          MyShop
         </Link>
 
         <div className="flex gap-4 relative">
           <Link href="/products" className="hover:text-gray-300">
-            Produits
+            Products
           </Link>
 
           <div className="relative">
             <button
-              className="relative px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+              className="relative flex items-center gap-2 px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
               onClick={() => setShowCart(!showCart)}
             >
-              Panier ({cart.length})
+              <ShoppingCart size={18} /> Cart ({cart.length})
             </button>
 
             {showCart && (
               <div className="absolute right-0 mt-2 w-64 bg-white text-black shadow-lg rounded-lg p-4">
                 {cart.length === 0 ? (
                   <p className="text-center text-gray-500">
-                    Votre panier est vide.
+                    Your cart is empty.
                   </p>
                 ) : (
                   <>
@@ -54,16 +63,13 @@ const Navbar = () => {
                             {product.price}€ x {product.quantity}
                           </p>
                         </div>
-                        <button onClick={() => removeFromCart(product._id)}>
-                          <XCircleIcon className="w-5 h-5 text-red-500 hover:text-red-700" />
-                        </button>
                       </div>
                     ))}
                     <Link
                       href="/cart"
                       className="block text-center bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 mt-2"
                     >
-                      Voir mon panier
+                      View Cart
                     </Link>
                   </>
                 )}
@@ -72,38 +78,73 @@ const Navbar = () => {
           </div>
 
           {session || auth?.user ? (
-            <>
-              <Link href="/orders" className="hover:text-gray-300">
-                Mes commandes
-              </Link>
-
-              {auth?.user?.role === "admin" && (
-                <Link href="/dashboard" className="hover:text-gray-300">
-                  Admin
-                </Link>
-              )}
+            <div className="relative">
               <button
-                onClick={() => {
-                  if (session) {
-                    signOut();
-                  } else if (auth?.logout) {
-                    auth.logout();
-                  }
-                }}
-                className="hover:text-gray-300"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="hover:text-gray-300 flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-md"
               >
-                Se déconnecter
+                <Settings size={18} /> Manage Account ▼
               </button>
-            </>
+
+              {showUserMenu && (
+                <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-lg rounded-lg">
+                  <Link
+                    href="/orders"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200"
+                  >
+                    <Package size={18} /> My Orders
+                  </Link>
+
+                  {auth?.user?.role === "admin" && (
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200"
+                    >
+                      <BarChart size={18} /> Admin Panel
+                    </Link>
+                  )}
+
+                  <button
+                    onClick={() => {
+                      if (session) {
+                        signOut();
+                      } else if (auth?.logout) {
+                        auth.logout();
+                      }
+                    }}
+                    className="flex w-full text-left px-4 py-2 hover:bg-gray-200 items-center gap-2"
+                  >
+                    <LogOut size={18} /> Log Out
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
-            <>
-              <Link href="/login" className="hover:text-gray-300">
-                Connexion
-              </Link>
-              <Link href="/register" className="hover:text-gray-300">
-                Inscription
-              </Link>
-            </>
+            <div className="relative">
+              <button
+                onClick={() => setShowAuthMenu(!showAuthMenu)}
+                className="hover:text-gray-300 flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-md"
+              >
+                <User size={18} /> My Account ▼
+              </button>
+
+              {showAuthMenu && (
+                <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-lg rounded-lg">
+                  <Link
+                    href="/login"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200"
+                  >
+                    <LogOut size={18} /> Log In
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200"
+                  >
+                    <User size={18} /> Sign Up
+                  </Link>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

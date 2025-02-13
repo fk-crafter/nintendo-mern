@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ConfirmModal from "@/components/ConfirmModal";
 
 interface User {
   _id: string;
@@ -13,6 +14,8 @@ export default function UsersAdmin() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -28,65 +31,47 @@ export default function UsersAdmin() {
 
       if (!res.ok)
         throw new Error("Erreur lors du chargement des utilisateurs.");
-
       const data = await res.json();
       setUsers(data);
     } catch (err) {
       setError("Impossible de charger les utilisateurs.");
-      console.error("Erreur lors du chargement des utilisateurs :", err);
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDeleteUser = async (id: string) => {
-    if (!confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) return;
+  const handleDeleteUser = async () => {
+    if (!selectedUser) return;
 
     try {
-      const res = await fetch(`http://localhost:5001/api/users/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await fetch(
+        `http://localhost:5001/api/users/${selectedUser}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-      if (!res.ok)
-        throw new Error("Erreur lors de la suppression de l'utilisateur.");
-
-      setUsers(users.filter((user) => user._id !== id));
+      if (!res.ok) throw new Error("Erreur lors de la suppression.");
+      setUsers(users.filter((user) => user._id !== selectedUser));
+      setShowModal(false);
     } catch (err) {
       setError("Impossible de supprimer l'utilisateur.");
-      console.error("Erreur lors de la suppression de l'utilisateur :", err);
-    }
-  };
-
-  const handleToggleRole = async (id: string) => {
-    try {
-      const res = await fetch(`http://localhost:5001/api/users/${id}/role`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (!res.ok) throw new Error("Erreur lors de la modification du rôle.");
-
-      fetchUsers();
-    } catch (err) {
-      setError("Impossible de modifier le rôle.");
-      console.error("Erreur lors de la modification du rôle :", err);
+      console.error(err);
     }
   };
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">👥 Gestion des Utilisateurs</h2>
-
+      <h2 className="text-xl font-bold mb-4">👥 User Management</h2>
       {error && <p className="text-red-500">{error}</p>}
       {loading ? (
-        <p>Chargement...</p>
+        <p>Loading...</p>
       ) : users.length === 0 ? (
-        <p className="text-gray-500">Aucun utilisateur pour l&apos;instant.</p>
+        <p className="text-gray-500">No users for now.</p>
       ) : (
         <div className="space-y-4">
           {users.map((user) => (
@@ -107,22 +92,27 @@ export default function UsersAdmin() {
               </div>
               <div className="flex space-x-2">
                 <button
-                  onClick={() => handleToggleRole(user._id)}
-                  className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                >
-                  {user.role === "admin" ? "Rétrograder" : "Promouvoir"}
-                </button>
-                <button
-                  onClick={() => handleDeleteUser(user._id)}
+                  onClick={() => {
+                    setSelectedUser(user._id);
+                    setShowModal(true);
+                  }}
                   className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                 >
-                  Supprimer
+                  Delete
                 </button>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleDeleteUser}
+        title="Confirm deletion"
+        message="Are you sure you want to delete this user? This action is irreversible."
+      />
     </div>
   );
 }

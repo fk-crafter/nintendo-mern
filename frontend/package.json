@@ -12,6 +12,7 @@
     "@auth/core": "^0.34.2",
     "@heroicons/react": "^2.2.0",
     "heroicons": "^2.2.0",
+    "lucide-react": "^0.475.0",
     "motion": "^12.4.2",
     "next": "15.1.6",
     "next-auth": "^4.24.11",

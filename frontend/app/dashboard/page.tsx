@@ -21,7 +21,6 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (auth?.user === undefined) return;
-
     if (!auth?.user || auth?.user.role !== "admin") {
       router.push("/");
     } else {
@@ -34,8 +33,7 @@ export default function DashboardPage() {
     router.push(`/dashboard?section=${section}`, { scroll: false });
   };
 
-  if (loading)
-    return <p className="text-center">Chargement du tableau de bord...</p>;
+  if (loading) return <p className="text-center">Loading dashboard...</p>;
 
   return (
     <div className="max-w-5xl mx-auto p-6">
@@ -43,11 +41,10 @@ export default function DashboardPage() {
         href="/"
         className="inline-block mb-4 text-blue-500 hover:underline text-sm"
       >
-        ← Retour à l&apos;accueil
+        ← Back to Home
       </Link>
 
-      <h1 className="text-3xl font-bold mb-4">Dashboard Admin</h1>
-
+      <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
       <StatsAdmin />
 
       <div className="flex space-x-4 text-black mb-6">
@@ -59,7 +56,7 @@ export default function DashboardPage() {
           }`}
           onClick={() => handleSectionChange("products")}
         >
-          Produits
+          Products
         </button>
         <button
           className={`px-4 py-2 rounded ${
@@ -69,7 +66,7 @@ export default function DashboardPage() {
           }`}
           onClick={() => handleSectionChange("orders")}
         >
-          Commandes
+          Orders
         </button>
         <button
           className={`px-4 py-2 rounded ${
@@ -77,7 +74,7 @@ export default function DashboardPage() {
           }`}
           onClick={() => handleSectionChange("users")}
         >
-          Utilisateurs
+          Users
         </button>
       </div>
 

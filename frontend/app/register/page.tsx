@@ -29,7 +29,7 @@ export default function RegisterPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message || "Erreur lors de l'inscription");
+        throw new Error(data.message || "Error during registration");
       }
 
       setSuccessMessage(true);
@@ -40,7 +40,7 @@ export default function RegisterPage() {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Une erreur inconnue est survenue");
+        setError("An unknown error occurred");
       }
     } finally {
       setLoading(false);
@@ -49,7 +49,7 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4 text-center">Inscription</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">Sign Up</h1>
 
       {error && <p className="text-red-500 text-center">{error}</p>}
 
@@ -59,7 +59,7 @@ export default function RegisterPage() {
       >
         <input
           type="text"
-          placeholder="Nom"
+          placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="border p-2 w-full rounded-md mb-2"
@@ -67,7 +67,7 @@ export default function RegisterPage() {
         />
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email Address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="border p-2 w-full rounded-md mb-2"
@@ -75,7 +75,7 @@ export default function RegisterPage() {
         />
         <input
           type="password"
-          placeholder="Mot de passe"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="border p-2 w-full rounded-md mb-2"
@@ -86,7 +86,7 @@ export default function RegisterPage() {
           disabled={loading}
           className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
         >
-          {loading ? "Inscription..." : "S'inscrire"}
+          {loading ? "Signing up..." : "Sign Up"}
         </button>
       </form>
 
@@ -100,9 +100,9 @@ export default function RegisterPage() {
           >
             <div className="bg-white text-black p-6 rounded-lg shadow-lg text-center">
               <h2 className="text-xl font-bold text-green-600">
-                Inscription réussie ! 🎉
+                Registration Successful! 🎉
               </h2>
-              <p className="mt-2 text-gray-700">Redirection en cours...</p>
+              <p className="mt-2 text-gray-700">Redirecting...</p>
             </div>
           </motion.div>
         )}
