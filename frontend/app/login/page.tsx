@@ -42,14 +42,14 @@ const LoginPage = () => {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Une erreur inconnue est survenue.");
+        setError("An unknown error has occurred.");
       }
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Connexion</h1>
+      <h1 className="text-2xl font-bold mb-4">Login</h1>
       {error && <p className="text-red-500">{error}</p>}
 
       <form
@@ -66,7 +66,7 @@ const LoginPage = () => {
         />
         <input
           type="password"
-          placeholder="Mot de passe"
+          placeholder="password"
           className="border p-2 w-full mb-2"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -76,7 +76,7 @@ const LoginPage = () => {
           type="submit"
           className="bg-blue-500 text-white p-2 w-full rounded"
         >
-          Se connecter
+          Login
         </button>
       </form>
 
@@ -86,19 +86,19 @@ const LoginPage = () => {
           onClick={() => signIn("google", { callbackUrl: "/" })}
           className="bg-red-500 text-white p-2 w-full rounded mb-2"
         >
-          Connexion avec Google
+          Login with Google
         </button>
         <button
           onClick={() => signIn("github", { callbackUrl: "/" })}
           className="bg-gray-800 text-white p-2 w-full rounded mb-2"
         >
-          Connexion avec GitHub
+          Login with GitHub
         </button>
         <button
           onClick={() => signIn(undefined, { callbackUrl: "/" })}
           className="bg-purple-500 text-white p-2 w-full rounded"
         >
-          Connexion via Email
+          Login with Email
         </button>
       </div>
     </div>

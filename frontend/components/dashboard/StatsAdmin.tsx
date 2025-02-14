@@ -38,28 +38,30 @@ export default function StatsAdmin() {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">📊 Dashboard Statistics</h2>
+      <h2 className="text-2xl font-bold mb-6 text-white">
+        📊 Dashboard Statistics
+      </h2>
 
       {error && <p className="text-red-500">{error}</p>}
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-gray-500">Loading...</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-4">
-          <div className="bg-blue-500 text-white p-4 rounded-md shadow">
-            <p className="text-2xl font-bold">{stats.totalProducts}</p>
-            <p>Products</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-4">
+          <div className="bg-gradient-to-r from-gray-800 to-gray-600 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+            <p className="text-3xl font-bold">{stats.totalProducts}</p>
+            <p className="text-lg">Products</p>
           </div>
-          <div className="bg-green-500 text-white p-4 rounded-md shadow">
-            <p className="text-2xl font-bold">{stats.totalOrders}</p>
-            <p>Orders</p>
+          <div className="bg-gradient-to-r from-gray-800 to-gray-600 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+            <p className="text-3xl font-bold">{stats.totalOrders}</p>
+            <p className="text-lg">Orders</p>
           </div>
-          <div className="bg-yellow-500 text-white p-4 rounded-md shadow">
-            <p className="text-2xl font-bold">{stats.totalUsers}</p>
-            <p>Users</p>
+          <div className="bg-gradient-to-r from-gray-800 to-gray-600 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+            <p className="text-3xl font-bold">{stats.totalUsers}</p>
+            <p className="text-lg">Users</p>
           </div>
-          <div className="bg-red-500 text-white p-4 rounded-md shadow">
-            <p className="text-2xl font-bold">{stats.totalRevenue}€</p>
-            <p>Total Revenue</p>
+          <div className="bg-gradient-to-r from-gray-800 to-gray-600 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+            <p className="text-3xl font-bold">{stats.totalRevenue}€</p>
+            <p className="text-lg">Total Revenue</p>
           </div>
         </div>
       )}

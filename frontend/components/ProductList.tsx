@@ -38,9 +38,7 @@ const ProductList = () => {
   }, []);
 
   if (loading)
-    return (
-      <p className="text-center text-gray-500">Chargement des produits...</p>
-    );
+    return <p className="text-center text-gray-500">Loading products...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
@@ -50,7 +48,7 @@ const ProductList = () => {
           <ProductCard key={product._id} product={product} />
         ))
       ) : (
-        <p className="text-center col-span-3">Aucun produit disponible.</p>
+        <p className="text-center col-span-3">No products available.</p>
       )}
     </div>
   );

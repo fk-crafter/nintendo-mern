@@ -26,11 +26,11 @@ export default function ProductPage() {
     const fetchProduct = async () => {
       try {
         const res = await fetch(`http://localhost:5001/api/products/${id}`);
-        if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
+        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
         const data = await res.json();
         setProduct(data);
       } catch {
-        console.error("Produit introuvable ou erreur serveur.");
+        console.error("Product not found or server error.");
       } finally {
         setLoading(false);
       }
@@ -39,9 +39,9 @@ export default function ProductPage() {
     fetchProduct();
   }, [id]);
 
-  if (loading) return <p className="text-center">Chargement...</p>;
+  if (loading) return <p className="text-center">Loading...</p>;
   if (!product)
-    return <p className="text-center text-red-500">Produit introuvable.</p>;
+    return <p className="text-center text-red-500">Product not found.</p>;
 
   return (
     <div className="max-w-3xl mx-auto p-6 relative">
@@ -49,7 +49,7 @@ export default function ProductPage() {
         href="/"
         className="absolute top-2 left-2 bg-gray-200 text-gray-800 px-3 py-1 rounded-md text-sm hover:bg-gray-300"
       >
-        ← Accueil
+        ← home
       </Link>
 
       <h1 className="text-3xl font-bold mt-8">{product.name}</h1>
@@ -68,7 +68,7 @@ export default function ProductPage() {
         className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600"
         onClick={() => addToCart({ ...product, quantity: 1 })}
       >
-        Ajouter au panier
+        Add to cart
       </button>
     </div>
   );

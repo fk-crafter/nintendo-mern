@@ -30,13 +30,12 @@ export default function OrdersPage() {
           },
         });
 
-        if (!res.ok)
-          throw new Error("Erreur lors de la récupération des commandes.");
+        if (!res.ok) throw new Error("Error during the orders recovery.");
         const data = await res.json();
         setOrders(data);
       } catch (err) {
-        setError("Impossible de récupérer vos commandes.");
-        console.error("Erreur lors de la récupération des commandes :", err);
+        setError("Impossible to recover your orders.");
+        console.error("Error during the orders recovery :", err);
       } finally {
         setLoading(false);
       }
@@ -46,10 +45,9 @@ export default function OrdersPage() {
   }, [auth?.user]);
 
   if (!auth?.user)
-    return <p className="text-center text-red-500">Veuillez vous connecter.</p>;
+    return <p className="text-center text-red-500">Please login.</p>;
 
-  if (loading)
-    return <p className="text-center">Chargement des commandes...</p>;
+  if (loading) return <p className="text-center">Loading orders...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
@@ -59,13 +57,13 @@ export default function OrdersPage() {
         className="flex items-center text-blue-500 hover:text-blue-700 mb-4"
       >
         <ArrowLeftIcon className="w-5 h-5 mr-2" />
-        Retour à l&apos;accueil
+        Back to home
       </Link>
 
-      <h1 className="text-2xl font-bold mb-4">Vos Commandes</h1>
+      <h1 className="text-2xl font-bold mb-4">Your Orders</h1>
 
       {orders.length === 0 ? (
-        <p className="text-gray-500">Aucune commande passée.</p>
+        <p className="text-gray-500">No order passed.</p>
       ) : (
         <div className="space-y-4">
           {orders.map((order) => (
@@ -74,8 +72,7 @@ export default function OrdersPage() {
               className="border p-4 rounded-md shadow-md bg-white"
             >
               <p className="text-gray-700">
-                Commande passée le{" "}
-                {new Date(order.createdAt).toLocaleDateString()}
+                Order passed on {new Date(order.createdAt).toLocaleDateString()}
               </p>
               <ul className="mt-2 border-t pt-2 text-black">
                 {order.products.map(({ product, quantity }) => (

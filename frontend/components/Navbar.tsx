@@ -12,12 +12,13 @@ import {
   Package,
   BarChart,
   Settings,
+  XCircle,
 } from "lucide-react";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const auth = useContext(AuthContext);
-  const { cart } = useCart();
+  const { cart, removeFromCart } = useCart();
   const [showCart, setShowCart] = useState(false);
   const [showAuthMenu, setShowAuthMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -26,24 +27,24 @@ const Navbar = () => {
     <nav className="bg-gray-900 text-white p-4 shadow-md relative">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold">
-          MyShop
+          logo
         </Link>
 
         <div className="flex gap-4 relative">
-          <Link href="/products" className="hover:text-gray-300">
+          <Link href="/products" className="hover:text-gray-300 mt-2">
             Products
           </Link>
 
-          <div className="relative">
+          <div className="relative z-50">
             <button
-              className="relative flex items-center gap-2 px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+              className="relative flex items-center gap-2 px-4 py-2 bg-green-500 rounded hover:bg-green-600"
               onClick={() => setShowCart(!showCart)}
             >
               <ShoppingCart size={18} /> Cart ({cart.length})
             </button>
 
             {showCart && (
-              <div className="absolute right-0 mt-2 w-64 bg-white text-black shadow-lg rounded-lg p-4">
+              <div className="absolute right-0 mt-2 w-64 bg-white text-black shadow-lg rounded-lg p-4 z-50">
                 {cart.length === 0 ? (
                   <p className="text-center text-gray-500">
                     Your cart is empty.
@@ -53,7 +54,7 @@ const Navbar = () => {
                     {cart.map((product) => (
                       <div
                         key={product._id}
-                        className="flex items-center border-b py-2"
+                        className="flex items-center justify-between border-b py-2"
                       >
                         <div className="flex-1">
                           <p className="text-sm font-semibold">
@@ -63,11 +64,17 @@ const Navbar = () => {
                             {product.price}€ x {product.quantity}
                           </p>
                         </div>
+                        <button
+                          onClick={() => removeFromCart(product._id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <XCircle size={18} />
+                        </button>
                       </div>
                     ))}
                     <Link
                       href="/cart"
-                      className="block text-center bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 mt-2"
+                      className="block text-center bg-black text-white py-2 rounded-md  mt-2"
                     >
                       View Cart
                     </Link>

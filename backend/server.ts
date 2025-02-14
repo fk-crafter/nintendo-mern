@@ -1,21 +1,20 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const connectDB = require("./config/db");
+import express, { Request, Response, NextFunction } from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import connectDB from "./config/db";
 
-const userRoutes = require("./routes/userRoutes");
-const productRoutes = require("./routes/productRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const authRoutes = require("./routes/authRoutes");
-const statsRoutes = require("./routes/statsRoutes");
-
-const cors = require("cors");
+import userRoutes from "./routes/userRoutes";
+import productRoutes from "./routes/productRoutes";
+import orderRoutes from "./routes/orderRoutes";
+import authRoutes from "./routes/authRoutes";
+import statsRoutes from "./routes/statsRoutes";
 
 dotenv.config();
 connectDB();
 
 const app = express();
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -38,7 +37,7 @@ app.use(
   })
 );
 
-const PORT = process.env.PORT || 5001;
+const PORT: number = Number(process.env.PORT) || 5001;
 app.listen(PORT, () => {
   console.log(`🚀 Serveur démarré sur le port ${PORT}`);
 });

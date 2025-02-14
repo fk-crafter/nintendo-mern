@@ -8,11 +8,11 @@ export default function CartPage() {
   const { cart, removeFromCart, clearCart } = useCart();
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">Mon Panier 🛒</h1>
+    <div className="max-w-4xl mx-auto p-6 ">
+      <h1 className="text-3xl font-bold mb-4 z-50">My Cart 🛒</h1>
 
       {cart.length === 0 ? (
-        <p className="text-center text-gray-500">Votre panier est vide.</p>
+        <p className="text-center text-gray-500">Your cart is empty.</p>
       ) : (
         <>
           {cart.map((product) => (
@@ -34,7 +34,7 @@ export default function CartPage() {
                 className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
                 onClick={() => removeFromCart(product._id)}
               >
-                Supprimer
+                delete
               </button>
             </div>
           ))}
@@ -44,13 +44,13 @@ export default function CartPage() {
               className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
               onClick={clearCart}
             >
-              Vider le panier
+              Clear cart
             </button>
             <Link
               href="/checkout"
               className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
             >
-              Commander
+              Checkout
             </Link>
           </div>
         </>
