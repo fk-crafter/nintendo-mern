@@ -161,7 +161,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Menu latéral mobile */}
+      {/* menu mobile */}
       <div
         className={`fixed top-0 z-50 right-0 h-full w-64 bg-red-700 text-white shadow-lg transform ${
           showMenu ? "translate-x-0" : "translate-x-full"
