@@ -29,7 +29,6 @@ const Navbar = () => {
   return (
     <nav className="bg-red-600 text-white py-3 shadow-md rounded-lg md:max-w-6xl md:mx-auto md:mt-4">
       <div className="container mx-auto flex justify-between items-center px-4">
-        {/* Logo Nintendo */}
         <Link href="/">
           <Image
             src={nintendoLogo}
@@ -38,7 +37,6 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Menu Burger pour mobile */}
         <button
           className="md:hidden text-white"
           onClick={() => setShowMenu(!showMenu)}
@@ -46,14 +44,12 @@ const Navbar = () => {
           {showMenu ? <X size={28} /> : <Menu size={28} />}
         </button>
 
-        {/* Menu Desktop */}
         <div className="hidden md:flex gap-8 items-center">
           <Link href="/products" className="hover:text-gray-200 text-lg">
             Products
           </Link>
 
-          {/* Panier */}
-          <div className="relative">
+          <div className="relative z-50">
             <button
               className="relative flex items-center gap-2 px-4 py-2 bg-white text-red-600 rounded-lg hover:bg-gray-100"
               onClick={() => setShowCart(!showCart)}
@@ -102,7 +98,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Connexion / Gestion compte */}
           {session || auth?.user ? (
             <div className="relative">
               <button
