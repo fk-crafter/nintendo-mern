@@ -27,8 +27,9 @@ const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
-    <nav className="bg-red-600 text-white py-3 shadow-md">
-      <div className="container mx-auto flex justify-between items-center max-w-5xl px-4">
+    <nav className="bg-red-600 text-white py-3 shadow-md rounded-lg md:max-w-6xl md:mx-auto md:mt-4">
+      <div className="container mx-auto flex justify-between items-center px-4">
+        {/* Logo Nintendo */}
         <Link href="/">
           <Image
             src={nintendoLogo}
@@ -37,6 +38,7 @@ const Navbar = () => {
           />
         </Link>
 
+        {/* Menu Burger pour mobile */}
         <button
           className="md:hidden text-white"
           onClick={() => setShowMenu(!showMenu)}
@@ -44,14 +46,16 @@ const Navbar = () => {
           {showMenu ? <X size={28} /> : <Menu size={28} />}
         </button>
 
-        <div className="hidden md:flex gap-6 items-center">
+        {/* Menu Desktop */}
+        <div className="hidden md:flex gap-8 items-center">
           <Link href="/products" className="hover:text-gray-200 text-lg">
             Products
           </Link>
 
+          {/* Panier */}
           <div className="relative">
             <button
-              className="relative flex items-center gap-2 px-3 py-2 bg-white text-red-600 rounded-lg hover:bg-gray-100"
+              className="relative flex items-center gap-2 px-4 py-2 bg-white text-red-600 rounded-lg hover:bg-gray-100"
               onClick={() => setShowCart(!showCart)}
             >
               <ShoppingCart size={18} /> Cart ({cart.length})
@@ -98,11 +102,12 @@ const Navbar = () => {
             )}
           </div>
 
+          {/* Connexion / Gestion compte */}
           {session || auth?.user ? (
             <div className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="hover:text-gray-200 flex items-center gap-2 px-3 py-2 bg-black text-white rounded-lg"
+                className="hover:text-gray-200 flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg"
               >
                 <Settings size={18} /> Manage ▼
               </button>
@@ -141,13 +146,13 @@ const Navbar = () => {
             <div className="flex gap-4">
               <Link
                 href="/login"
-                className="hover:text-gray-200 flex items-center gap-2 px-3 py-2 bg-black text-white rounded-lg"
+                className="hover:text-gray-200 flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg"
               >
                 <LogOut size={18} /> Log In
               </Link>
               <Link
                 href="/register"
-                className="hover:text-gray-200 flex items-center gap-2 px-3 py-2 bg-white text-red-600 rounded-lg"
+                className="hover:bg-gray-100 flex items-center gap-2 px-4 py-2 bg-white text-red-600 rounded-lg"
               >
                 <User size={18} /> Sign Up
               </Link>
@@ -156,11 +161,11 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* menu mobile */}
+      {/* Menu latéral mobile */}
       <div
         className={`fixed top-0 z-50 right-0 h-full w-64 bg-red-700 text-white shadow-lg transform ${
           showMenu ? "translate-x-0" : "translate-x-full"
-        } transition-transform duration-300 md:hidden`}
+        } transition-transform duration-300 md:hidden rounded-l-lg`}
       >
         <div className="flex justify-between items-center px-4 py-3 border-b border-red-500">
           <h2 className="text-xl font-bold">Menu</h2>
@@ -175,7 +180,7 @@ const Navbar = () => {
           </Link>
 
           <button
-            className="flex items-center gap-2 px-3 py-2 bg-white text-red-600 rounded-lg hover:bg-gray-100"
+            className="flex items-center gap-2 px-4 py-2 bg-white text-red-600 rounded-lg hover:bg-gray-100"
             onClick={() => setShowCart(!showCart)}
           >
             <ShoppingCart size={18} /> Cart ({cart.length})

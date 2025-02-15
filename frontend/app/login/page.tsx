@@ -48,7 +48,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen relative">
+      <button
+        onClick={() => router.push("/")}
+        className="absolute top-4 left-4 bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+      >
+        ← Back to Home
+      </button>
+
       <h1 className="text-2xl font-bold mb-4">Login</h1>
       {error && <p className="text-red-500">{error}</p>}
 
@@ -66,7 +73,7 @@ const LoginPage = () => {
         />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           className="border p-2 w-full mb-2"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -80,7 +87,6 @@ const LoginPage = () => {
         </button>
       </form>
 
-      {/* Connexion avec NextAuth */}
       <div className="mt-4">
         <button
           onClick={() => signIn("google", { callbackUrl: "/" })}
