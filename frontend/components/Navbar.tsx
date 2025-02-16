@@ -27,17 +27,14 @@ const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
-  // Fonction pour fermer tous les autres menus ouverts
   const closeAllMenus = () => {
     setShowCart(false);
     setShowUserMenu(false);
-    setShowMenu(false);
   };
 
   return (
     <nav className="bg-red-600 text-white py-3 shadow-md rounded-lg md:max-w-6xl md:mx-auto md:mt-4">
       <div className="container mx-auto flex justify-between items-center px-4">
-        {/* Logo Nintendo */}
         <Link href="/">
           <Image
             src={nintendoLogo}
@@ -46,36 +43,32 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Menu burger mobile */}
         <button
           className="md:hidden text-white"
           onClick={() => {
             closeAllMenus();
-            setShowMenu(!showMenu);
+            setShowMenu((prev) => !prev);
           }}
         >
           {showMenu ? <X size={28} /> : <Menu size={28} />}
         </button>
 
-        {/* Navigation Desktop */}
         <div className="hidden md:flex gap-8 items-center">
           <Link href="/products" className="hover:text-gray-200 text-lg">
             Products
           </Link>
 
-          {/* Panier */}
           <div className="relative">
             <button
               className="flex items-center gap-2 px-4 py-2 bg-white text-red-600 rounded-lg hover:bg-gray-100"
               onClick={() => {
                 closeAllMenus();
-                setShowCart(!showCart);
+                setShowCart((prev) => !prev);
               }}
             >
               <ShoppingCart size={18} /> Cart ({cart.length})
             </button>
 
-            {/* Dropdown Cart */}
             <AnimatePresence>
               {showCart && (
                 <motion.div
@@ -124,20 +117,18 @@ const Navbar = () => {
             </AnimatePresence>
           </div>
 
-          {/* Connexion / Gestion de compte */}
           {session || auth?.user ? (
             <div className="relative">
               <button
                 onClick={() => {
                   closeAllMenus();
-                  setShowUserMenu(!showUserMenu);
+                  setShowUserMenu((prev) => !prev);
                 }}
                 className="hover:text-gray-200 flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg"
               >
                 <Settings size={18} /> Manage ▼
               </button>
 
-              {/* Dropdown User Menu */}
               <AnimatePresence>
                 {showUserMenu && (
                   <motion.div
@@ -191,6 +182,68 @@ const Navbar = () => {
           )}
         </div>
       </div>
+
+      {/* menu mobile */}
+      <AnimatePresence>
+        {showMenu && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 z-50 right-0 h-full w-64 bg-red-700 text-white shadow-lg rounded-l-lg flex flex-col gap-4 p-6 md:hidden"
+          >
+            <button
+              onClick={() => setShowMenu(false)}
+              className="text-white text-right"
+            >
+              <X size={28} />
+            </button>
+
+            <Link href="/products" className="hover:text-gray-300 text-lg">
+              Products
+            </Link>
+
+            <Link
+              href="/cart"
+              className="flex items-center gap-2 bg-white text-red-600 px-4 py-2 rounded-lg hover:bg-gray-100"
+            >
+              <ShoppingCart size={18} /> Cart ({cart.length})
+            </Link>
+
+            {session || auth?.user ? (
+              <>
+                <Link href="/orders" className="hover:text-gray-300">
+                  My Orders
+                </Link>
+                {auth?.user?.role === "admin" && (
+                  <Link href="/dashboard" className="hover:text-gray-300">
+                    Admin Panel
+                  </Link>
+                )}
+                <button
+                  onClick={() => {
+                    if (session) signOut();
+                    else if (auth?.logout) auth.logout();
+                  }}
+                  className="hover:text-gray-300"
+                >
+                  Log Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="hover:text-gray-300">
+                  Log In
+                </Link>
+                <Link href="/register" className="hover:text-gray-300">
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
