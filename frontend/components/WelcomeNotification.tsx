@@ -9,11 +9,16 @@ export default function WelcomeNotification() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const lastLogin = localStorage.getItem("lastLogin");
+
     if (token) {
       setIsLoggedIn(true);
-      setShowWelcome(true);
-      const timer = setTimeout(() => setShowWelcome(false), 5000);
-      return () => clearTimeout(timer);
+
+      if (!lastLogin || lastLogin !== token) {
+        setShowWelcome(true);
+        localStorage.setItem("lastLogin", token);
+        setTimeout(() => setShowWelcome(false), 5000);
+      }
     }
   }, []);
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import { motion } from "framer-motion";
 
 interface Product {
   _id: string;
@@ -38,19 +39,28 @@ const ProductList = () => {
   }, []);
 
   if (loading)
-    return <p className="text-center text-gray-500">Loading products...</p>;
+    return (
+      <p className="text-center text-gray-500 text-lg">Loading products...</p>
+    );
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+    <motion.div
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {products.length > 0 ? (
         products.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))
       ) : (
-        <p className="text-center col-span-3">No products available.</p>
+        <p className="text-center col-span-3 text-gray-500">
+          No products available.
+        </p>
       )}
-    </div>
+    </motion.div>
   );
 };
 
