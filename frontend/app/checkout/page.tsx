@@ -38,8 +38,6 @@ export default function CheckoutPage() {
         ),
       };
 
-      console.log("🔹 Données envoyées :", orderData);
-
       const res = await fetch("http://localhost:5001/api/orders", {
         method: "POST",
         headers: {
@@ -55,7 +53,7 @@ export default function CheckoutPage() {
       }
 
       clearCart();
-      toast.success("🎉 Order passed successfully !", { duration: 4000 });
+      toast.success("🎉 Order placed successfully!", { duration: 4000 });
       setTimeout(() => router.push("/"), 3000);
     } catch (err) {
       console.error("❌ Error during the order :", err);
@@ -67,67 +65,89 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">checkout</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+      <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+        <h1 className="text-3xl font-extrabold text-red-600 mb-6 text-center">
+          Checkout
+        </h1>
 
-      {cart.length === 0 ? (
-        <p className="text-gray-500">Your cart is empty.</p>
-      ) : (
-        <>
-          <ul className="border p-4 rounded-md text-black bg-gray-100">
-            {cart.map((item) => (
-              <li key={item._id} className="flex justify-between border-b py-2">
-                <span>
-                  {item.name} x {item.quantity}
-                </span>
-                <span className="font-bold">{item.price * item.quantity}€</span>
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-4 text-xl font-bold">
-            Total:{" "}
-            {cart.reduce((acc, item) => acc + item.price * item.quantity, 0)}€
+        {cart.length === 0 ? (
+          <p className="text-gray-500 text-center text-lg">
+            Your cart is empty. 🛒
           </p>
+        ) : (
+          <>
+            <div className="border p-4 rounded-md bg-gray-50">
+              <h2 className="text-xl font-bold text-gray-800 mb-3">
+                Order Summary 🛍️
+              </h2>
+              <ul className="divide-y divide-gray-300">
+                {cart.map((item) => (
+                  <li key={item._id} className="flex justify-between py-3">
+                    <span className="text-gray-700">
+                      {item.name} x {item.quantity}
+                    </span>
+                    <span className="font-bold text-red-600">
+                      {item.price * item.quantity}€
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-2xl font-bold text-gray-900 text-right">
+                Total:{" "}
+                <span className="text-red-600">
+                  {cart.reduce(
+                    (acc, item) => acc + item.price * item.quantity,
+                    0
+                  )}
+                  €
+                </span>
+              </p>
+            </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="mt-4 space-y-3 bg-white text-black p-6 rounded-lg shadow-md"
-          >
-            {error && <p className="text-red-500">{error}</p>}
-
-            <input
-              type="text"
-              placeholder="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border p-2 w-full rounded-md"
-            />
-            <input
-              type="text"
-              placeholder="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="border p-2 w-full rounded-md"
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border p-2 w-full rounded-md"
-            />
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+            <form
+              onSubmit={handleSubmit}
+              className="mt-6 space-y-4 text-black bg-white p-6 rounded-lg shadow-md border border-gray-300"
             >
-              {loading ? "Order in progress..." : "checkout"}
-            </button>
-          </form>
-        </>
-      )}
+              {error && (
+                <p className="text-red-500 text-center font-semibold">
+                  {error}
+                </p>
+              )}
+
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="border p-3 w-full rounded-md focus:ring-2 focus:ring-red-500 outline-none transition text-lg"
+              />
+              <input
+                type="text"
+                placeholder="Delivery Address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="border p-3 w-full rounded-md focus:ring-2 focus:ring-red-500 outline-none transition text-lg"
+              />
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="border p-3 w-full rounded-md focus:ring-2 focus:ring-red-500 outline-none transition text-lg"
+              />
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition font-bold text-lg shadow-md"
+              >
+                {loading ? "Processing Order..." : "Confirm Order 🛒"}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
     </div>
   );
 }

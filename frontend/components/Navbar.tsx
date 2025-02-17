@@ -75,7 +75,7 @@ const Navbar = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 mt-2 w-64 bg-white text-black shadow-lg rounded-lg p-4"
+                  className="absolute z-50 right-0 mt-2 w-64 bg-white text-black shadow-lg rounded-lg p-4"
                 >
                   {cart.length === 0 ? (
                     <p className="text-center text-gray-500">
@@ -106,7 +106,7 @@ const Navbar = () => {
                       ))}
                       <Link
                         href="/cart"
-                        className="block text-center bg-black text-white py-2 rounded-md mt-2"
+                        className="block text-center  bg-black text-white py-2 rounded-md mt-2"
                       >
                         View Cart
                       </Link>
