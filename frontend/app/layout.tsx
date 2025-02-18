@@ -4,7 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import CustomSessionProvider from "@/components/SessionProvider";
 import { CartProvider } from "@/context/CartContext";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "@/components/ui/toaster"; // ✅ Import ShadCN Toaster
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,14 +18,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Nintendo e-Shop",
-  description: "a little shop for nintendo fans",
+  description: "A little shop for Nintendo fans",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr">
       <body
@@ -34,7 +32,7 @@ export default function RootLayout({
         <CustomSessionProvider>
           <AuthProvider>
             <CartProvider>
-              <Toaster position="bottom-right" reverseOrder={false} />
+              <Toaster /> {/* ✅ Utilisation du Toaster de ShadCN */}
               {children}
             </CartProvider>
           </AuthProvider>

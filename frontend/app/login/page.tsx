@@ -52,18 +52,22 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen relative px-4 bg-gray-900">
+    <div className="flex flex-col items-center justify-center min-h-screen relative px-4">
+      <div className="absolute top-0 left-0 w-full h-1/2 bg-red-600"></div>
+
+      <div className="absolute bottom-0 left-0 w-full h-1/2 bg-white"></div>
+
       <Image
         src={nintendoLogo}
         alt="Nintendo Logo"
         width={150}
         height={60}
-        className="mb-6"
+        className="mb-6 relative z-10"
       />
 
       <button
         onClick={() => router.push("/")}
-        className="absolute top-4 left-4 flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition font-bold"
+        className="absolute top-4 left-4 flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition font-bold  z-10"
       >
         ← Back to Home
       </button>
@@ -72,7 +76,7 @@ const LoginPage = () => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="bg-white p-8 text-black rounded-xl shadow-lg w-full max-w-md border-4 border-red-600"
+        className="bg-white p-8 text-black rounded-xl shadow-lg w-full max-w-md border-4 border-red-600 relative z-10"
       >
         <h1 className="text-3xl font-extrabold text-center mb-4 text-red-600">
           Welcome Back

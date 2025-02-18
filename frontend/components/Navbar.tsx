@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import {
   Menu,
@@ -26,11 +26,32 @@ const Navbar = () => {
   const [showCart, setShowCart] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement | null>(null);
 
   const closeAllMenus = () => {
     setShowCart(false);
     setShowUserMenu(false);
   };
+
+  // ✅ Ferme le menu "Manage" si on clique en dehors
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setShowUserMenu(false);
+      }
+    }
+
+    if (showUserMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showUserMenu]);
 
   return (
     <nav className="bg-red-600 text-white py-3 shadow-md rounded-lg md:max-w-6xl md:mx-auto md:mt-4">
@@ -45,10 +66,7 @@ const Navbar = () => {
 
         <button
           className="md:hidden text-white"
-          onClick={() => {
-            closeAllMenus();
-            setShowMenu((prev) => !prev);
-          }}
+          onClick={() => setShowMenu((prev) => !prev)}
         >
           {showMenu ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -106,7 +124,7 @@ const Navbar = () => {
                       ))}
                       <Link
                         href="/cart"
-                        className="block text-center  bg-black text-white py-2 rounded-md mt-2"
+                        className="block text-center bg-black text-white py-2 rounded-md mt-2"
                       >
                         View Cart
                       </Link>
@@ -118,12 +136,9 @@ const Navbar = () => {
           </div>
 
           {session || auth?.user ? (
-            <div className="relative">
+            <div className="relative z-50" ref={userMenuRef}>
               <button
-                onClick={() => {
-                  closeAllMenus();
-                  setShowUserMenu((prev) => !prev);
-                }}
+                onClick={() => setShowUserMenu((prev) => !prev)}
                 className="hover:text-gray-200 flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg"
               >
                 <Settings size={18} /> Manage ▼
@@ -183,7 +198,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* menu mobile */}
+      {/* ✅ Menu mobile remis comme avant */}
       <AnimatePresence>
         {showMenu && (
           <motion.div
@@ -222,10 +237,7 @@ const Navbar = () => {
                   </Link>
                 )}
                 <button
-                  onClick={() => {
-                    if (session) signOut();
-                    else if (auth?.logout) auth.logout();
-                  }}
+                  onClick={() => (session ? signOut() : auth?.logout?.())}
                   className="hover:text-gray-300"
                 >
                   Log Out
