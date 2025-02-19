@@ -33,6 +33,7 @@ export default function ProductsAdmin() {
   const fetchProducts = async () => {
     try {
       const res = await fetch("http://localhost:5001/api/products");
+      if (!res.ok) throw new Error("Error loading products.");
       const data = await res.json();
       setProducts(data);
     } catch (err) {
@@ -82,6 +83,31 @@ export default function ProductsAdmin() {
       console.error("Error adding product:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = async () => {
+    if (!selectedProduct) return;
+
+    try {
+      const res = await fetch(
+        `http://localhost:5001/api/products/${selectedProduct}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!res.ok) throw new Error("Error deleting product.");
+
+      setProducts(products.filter((p) => p._id !== selectedProduct));
+    } catch (err) {
+      setError("Failed to delete product.");
+      console.error("Error deleting product:", err);
+    } finally {
+      setShowModal(false);
     }
   };
 
@@ -204,10 +230,7 @@ export default function ProductsAdmin() {
       <ConfirmModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        onConfirm={() => {
-          setProducts(products.filter((p) => p._id !== selectedProduct));
-          setShowModal(false);
-        }}
+        onConfirm={handleDeleteProduct}
         title="Confirm Deletion"
         message="Are you sure you want to delete this product? This action cannot be undone."
       />
