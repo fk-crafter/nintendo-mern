@@ -27,13 +27,8 @@ const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const cartRef = useRef<HTMLDivElement | null>(null);
 
-  const closeAllMenus = () => {
-    setShowCart(false);
-    setShowUserMenu(false);
-  };
-
-  // ✅ Ferme le menu "Manage" si on clique en dehors
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -52,6 +47,22 @@ const Navbar = () => {
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showUserMenu]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
+        setShowCart(false);
+      }
+    }
+
+    if (showCart) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showCart]);
 
   return (
     <nav className="bg-red-600 text-white py-3 shadow-md rounded-lg md:max-w-6xl md:mx-auto md:mt-4">
@@ -76,11 +87,11 @@ const Navbar = () => {
             Products
           </Link>
 
-          <div className="relative">
+          <div className="relative" ref={cartRef}>
             <button
               className="flex items-center gap-2 px-4 py-2 bg-white text-red-600 rounded-lg hover:bg-gray-100"
               onClick={() => {
-                closeAllMenus();
+                setShowUserMenu(false);
                 setShowCart((prev) => !prev);
               }}
             >
@@ -138,7 +149,10 @@ const Navbar = () => {
           {session || auth?.user ? (
             <div className="relative z-50" ref={userMenuRef}>
               <button
-                onClick={() => setShowUserMenu((prev) => !prev)}
+                onClick={() => {
+                  setShowCart(false);
+                  setShowUserMenu((prev) => !prev);
+                }}
                 className="hover:text-gray-200 flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg"
               >
                 <Settings size={18} /> Manage ▼
@@ -197,65 +211,6 @@ const Navbar = () => {
           )}
         </div>
       </div>
-
-      {/* ✅ Menu mobile remis comme avant */}
-      <AnimatePresence>
-        {showMenu && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-0 z-50 right-0 h-full w-64 bg-red-700 text-white shadow-lg rounded-l-lg flex flex-col gap-4 p-6 md:hidden"
-          >
-            <button
-              onClick={() => setShowMenu(false)}
-              className="text-white text-right"
-            >
-              <X size={28} />
-            </button>
-
-            <Link href="/products" className="hover:text-gray-300 text-lg">
-              Products
-            </Link>
-
-            <Link
-              href="/cart"
-              className="flex items-center gap-2 bg-white text-red-600 px-4 py-2 rounded-lg hover:bg-gray-100"
-            >
-              <ShoppingCart size={18} /> Cart ({cart.length})
-            </Link>
-
-            {session || auth?.user ? (
-              <>
-                <Link href="/orders" className="hover:text-gray-300">
-                  My Orders
-                </Link>
-                {auth?.user?.role === "admin" && (
-                  <Link href="/dashboard" className="hover:text-gray-300">
-                    Admin Panel
-                  </Link>
-                )}
-                <button
-                  onClick={() => (session ? signOut() : auth?.logout?.())}
-                  className="hover:text-gray-300"
-                >
-                  Log Out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className="hover:text-gray-300">
-                  Log In
-                </Link>
-                <Link href="/register" className="hover:text-gray-300">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
   );
 };

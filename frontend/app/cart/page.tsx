@@ -8,7 +8,15 @@ export default function CartPage() {
   const { cart, removeFromCart, clearCart } = useCart();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6 relative">
+      {/* 🔙 Bouton Retour */}
+      <button
+        onClick={() => window.history.back()}
+        className="absolute top-6 left-6 bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition font-semibold shadow-md"
+      >
+        ← Back
+      </button>
+
       <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-6 border border-gray-200">
         <h1 className="text-3xl font-extrabold text-red-600 mb-6 text-center">
           My Cart 🛒
