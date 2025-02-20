@@ -1,6 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Bar, Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function StatsAdmin() {
   const [stats, setStats] = useState({
@@ -8,9 +31,8 @@ export default function StatsAdmin() {
     totalOrders: 0,
     totalUsers: 0,
     totalRevenue: 0,
+    ordersOverTime: [],
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchStats();
@@ -29,42 +51,95 @@ export default function StatsAdmin() {
       const data = await res.json();
       setStats(data);
     } catch (err) {
-      setError("Unable to load statistics.");
       console.error("Error loading statistics:", err);
-    } finally {
-      setLoading(false);
     }
   };
 
-  return (
-    <div>
-      <h2 className="text-2xl font-bold mb-6 text-white">
-        📊 Dashboard Statistics
-      </h2>
+  const barChartData = {
+    labels: ["Products", "Orders", "Users", "Revenue (€)"],
+    datasets: [
+      {
+        label: "Current Stats",
+        data: [
+          stats.totalProducts,
+          stats.totalOrders,
+          stats.totalUsers,
+          stats.totalRevenue,
+        ],
+        backgroundColor: ["#FFC107", "#FF5722", "#03A9F4", "#4CAF50"],
+        borderRadius: 6,
+      },
+    ],
+  };
 
-      {error && <p className="text-red-500">{error}</p>}
-      {loading ? (
-        <p className="text-gray-500">Loading...</p>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-4">
-          <div className="bg-gradient-to-r from-gray-800 to-gray-600 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-            <p className="text-3xl font-bold">{stats.totalProducts}</p>
-            <p className="text-lg">Products</p>
+  const lineChartData = {
+    labels: stats.ordersOverTime
+      ? stats.ordersOverTime.map((_, i) => `Day ${i + 1}`)
+      : [],
+    datasets: [
+      {
+        label: "Orders Over Time",
+        data: stats.ordersOverTime ? stats.ordersOverTime : [],
+        borderColor: "#FF5733",
+        backgroundColor: "rgba(255, 87, 51, 0.2)",
+        fill: true,
+        tension: 0.3,
+      },
+    ],
+  };
+
+  return (
+    <div className="p-6 max-w-6xl mx-auto">
+      <section className="mb-8">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Summary</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <p className="text-4xl font-bold text-gray-900">
+              {stats.totalProducts}
+            </p>
+            <p className="text-lg text-gray-600">Total Products</p>
           </div>
-          <div className="bg-gradient-to-r from-gray-800 to-gray-600 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-            <p className="text-3xl font-bold">{stats.totalOrders}</p>
-            <p className="text-lg">Orders</p>
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <p className="text-4xl font-bold text-gray-900">
+              {stats.totalOrders}
+            </p>
+            <p className="text-lg text-gray-600">Total Orders</p>
           </div>
-          <div className="bg-gradient-to-r from-gray-800 to-gray-600 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-            <p className="text-3xl font-bold">{stats.totalUsers}</p>
-            <p className="text-lg">Users</p>
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <p className="text-4xl font-bold text-gray-900">
+              {stats.totalUsers}
+            </p>
+            <p className="text-lg text-gray-600">Total Users</p>
           </div>
-          <div className="bg-gradient-to-r from-gray-800 to-gray-600 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-            <p className="text-3xl font-bold">{stats.totalRevenue}€</p>
-            <p className="text-lg">Total Revenue</p>
+          <div className="bg-white p-6 rounded-lg shadow border">
+            <p className="text-4xl font-bold text-gray-900">
+              {stats.totalRevenue}€
+            </p>
+            <p className="text-lg text-gray-600">Total Revenue</p>
           </div>
         </div>
-      )}
+      </section>
+
+      <section>
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+          Statistics Overview
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white p-6 shadow-lg rounded-lg border">
+            <h3 className="text-xl font-semibold text-gray-800 text-center mb-4">
+              📊 General Stats
+            </h3>
+            <Bar data={barChartData} />
+          </div>
+
+          <div className="bg-white p-6 shadow-lg rounded-lg border">
+            <h3 className="text-xl font-semibold text-gray-800 text-center mb-4">
+              📈 Orders Over Time
+            </h3>
+            <Line data={lineChartData} />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

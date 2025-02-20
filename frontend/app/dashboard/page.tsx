@@ -15,7 +15,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const initialSection = searchParams.get("section") || "products";
+  const initialSection = searchParams.get("section") || "summary";
   const [activeSection, setActiveSection] = useState(initialSection);
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +36,7 @@ export default function DashboardPage() {
   if (loading) return <p className="text-center">Loading dashboard...</p>;
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6">
       <Link
         href="/"
         className="inline-block mb-4 text-blue-500 hover:underline text-sm"
@@ -44,40 +44,30 @@ export default function DashboardPage() {
         ← Back to Home
       </Link>
 
-      <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
-      <StatsAdmin />
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>
 
-      <div className="flex space-x-4 text-black mb-6">
-        <button
-          className={`px-4 py-2 rounded ${
-            activeSection === "products"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200"
-          }`}
-          onClick={() => handleSectionChange("products")}
-        >
-          Products
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${
-            activeSection === "orders"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200"
-          }`}
-          onClick={() => handleSectionChange("orders")}
-        >
-          Orders
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${
-            activeSection === "users" ? "bg-blue-500 text-white" : "bg-gray-200"
-          }`}
-          onClick={() => handleSectionChange("users")}
-        >
-          Users
-        </button>
-      </div>
+      <nav className="flex space-x-2 border-b pb-4 mb-6 text-gray-700">
+        {[
+          { label: "Summary", key: "summary" },
+          { label: "Products", key: "products" },
+          { label: "Orders", key: "orders" },
+          { label: "Users", key: "users" },
+        ].map(({ label, key }) => (
+          <button
+            key={key}
+            className={`px-6 py-2 text-sm font-semibold transition-all rounded-t-md border-b-4 ${
+              activeSection === key
+                ? "bg-white text-black border-black shadow-md"
+                : "bg-gray-100 text-gray-600 border-transparent hover:bg-gray-200"
+            }`}
+            onClick={() => handleSectionChange(key)}
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
 
+      {activeSection === "summary" && <StatsAdmin />}
       {activeSection === "products" && <ProductsAdmin />}
       {activeSection === "orders" && <OrdersAdmin />}
       {activeSection === "users" && <UsersAdmin />}

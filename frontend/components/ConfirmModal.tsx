@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -26,26 +26,36 @@ export default function ConfirmModal({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50"
         >
-          <div className="bg-white p-6 rounded-lg shadow-md text-center w-96">
-            <h2 className="text-xl font-bold text-red-600">{title}</h2>
-            <p className="text-gray-600 mt-2">{message}</p>
-            <div className="mt-4 flex justify-center space-x-4">
+          <motion.div
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            className="bg-white p-6 rounded-[20px] shadow-2xl border-4 border-black text-center w-96 relative"
+          >
+            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-1 rounded-full shadow-md border-2 border-black text-lg font-bold">
+              Alert!
+            </div>
+            <h2 className="text-2xl font-extrabold text-red-600 drop-shadow-md">
+              {title}
+            </h2>
+            <p className="text-gray-700 mt-3 text-lg font-medium">{message}</p>
+            <div className="mt-6 flex justify-center space-x-4">
               <button
                 onClick={onClose}
-                className="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition"
+                className="px-5 py-2 bg-gray-300 text-black border-2 border-black rounded-full shadow-md hover:bg-gray-400 transition transform hover:scale-105"
               >
                 Cancel
               </button>
               <button
                 onClick={onConfirm}
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                className="px-5 py-2 bg-red-500 text-white border-2 border-black rounded-full shadow-md hover:bg-red-600 transition transform hover:scale-105"
               >
                 Confirm
               </button>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
