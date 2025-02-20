@@ -23,19 +23,13 @@ ChartJS.register(
   Legend
 );
 
-const generateFakeData = (days: number, maxValue: number) => {
-  return Array.from({ length: days }, () =>
-    Math.floor(Math.random() * maxValue)
-  );
-};
-
 export default function StatsAdmin() {
   const [stats, setStats] = useState({
-    totalProducts: 100,
-    totalOrders: 50,
-    totalUsers: 30,
-    totalRevenue: 1200,
-    ordersOverTime: generateFakeData(10, 100),
+    totalProducts: 0,
+    totalOrders: 0,
+    totalUsers: 0,
+    totalRevenue: 0,
+    ordersOverTime: [],
   });
 
   useEffect(() => {
@@ -44,29 +38,64 @@ export default function StatsAdmin() {
 
   const fetchStats = async () => {
     try {
-      setTimeout(() => {
-        setStats({
-          totalProducts: 100,
-          totalOrders: 50,
-          totalUsers: 30,
-          totalRevenue: 1200,
-          ordersOverTime: generateFakeData(10, 100),
-        });
-      }, 1000);
+      const res = await fetch("http://localhost:5001/api/stats", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!res.ok) throw new Error("Error loading statistics.");
+
+      const data = await res.json();
+      setStats(data);
     } catch (err) {
       console.error("Error loading statistics:", err);
     }
   };
 
+  const ordersData =
+    stats.ordersOverTime && stats.ordersOverTime.length > 0
+      ? stats.ordersOverTime
+      : [0, 0, 0, 0];
+
   const lineChartData = {
-    labels: Array.from(
-      { length: stats.ordersOverTime.length },
-      (_, i) => `Day ${i + 1}`
-    ),
+    labels: ordersData.map((_, i) => `Day ${i + 1}`),
     datasets: [
       {
+        label: "Total Products",
+        data: new Array(ordersData.length).fill(stats.totalProducts),
+        borderColor: "#FFC107",
+        backgroundColor: "rgba(255, 193, 7, 0.2)",
+        fill: true,
+        tension: 0.3,
+      },
+      {
+        label: "Total Orders",
+        data: new Array(ordersData.length).fill(stats.totalOrders),
+        borderColor: "#FF5722",
+        backgroundColor: "rgba(255, 87, 34, 0.2)",
+        fill: true,
+        tension: 0.3,
+      },
+      {
+        label: "Total Users",
+        data: new Array(ordersData.length).fill(stats.totalUsers),
+        borderColor: "#03A9F4",
+        backgroundColor: "rgba(3, 169, 244, 0.2)",
+        fill: true,
+        tension: 0.3,
+      },
+      {
+        label: "Total Revenue",
+        data: new Array(ordersData.length).fill(stats.totalRevenue),
+        borderColor: "#4CAF50",
+        backgroundColor: "rgba(76, 175, 80, 0.2)",
+        fill: true,
+        tension: 0.3,
+      },
+      {
         label: "Orders Over Time",
-        data: stats.ordersOverTime,
+        data: ordersData,
         borderColor: "#FF5733",
         backgroundColor: "rgba(255, 87, 51, 0.2)",
         fill: true,
@@ -109,11 +138,11 @@ export default function StatsAdmin() {
 
       <section>
         <h2 className="text-3xl font-bold text-gray-800 mb-6">
-          Orders Evolution
+          Statistics Overview
         </h2>
         <div className="bg-white p-6 shadow-lg rounded-lg border">
           <h3 className="text-xl font-semibold text-gray-800 text-center mb-4">
-            📈 Orders Over Time
+            📈 All Stats in One Curve
           </h3>
           <Line data={lineChartData} />
         </div>

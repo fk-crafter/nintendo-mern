@@ -19,12 +19,13 @@ export default function ProductsAdmin() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [stock, setStock] = useState("");
   const [category, setCategory] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchProducts();
@@ -42,7 +43,7 @@ export default function ProductsAdmin() {
     }
   };
 
-  const handleAddProduct = async (e: React.FormEvent) => {
+  const handleAddOrUpdateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
@@ -53,8 +54,13 @@ export default function ProductsAdmin() {
     }
 
     try {
-      const res = await fetch("http://localhost:5001/api/products", {
-        method: "POST",
+      const method = isEditing ? "PUT" : "POST";
+      const url = isEditing
+        ? `http://localhost:5001/api/products/${selectedProduct}`
+        : "http://localhost:5001/api/products";
+
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -69,7 +75,10 @@ export default function ProductsAdmin() {
         }),
       });
 
-      if (!res.ok) throw new Error("Error adding product.");
+      if (!res.ok)
+        throw new Error(
+          isEditing ? "Error updating product." : "Error adding product."
+        );
 
       setName("");
       setDescription("");
@@ -77,13 +86,28 @@ export default function ProductsAdmin() {
       setStock("");
       setCategory("");
       setImage("");
+      setIsEditing(false);
+      setSelectedProduct(null);
       fetchProducts();
     } catch (err) {
-      setError("Unable to add product.");
-      console.error("Error adding product:", err);
+      setError(
+        isEditing ? "Unable to update product." : "Unable to add product."
+      );
+      console.error("Error:", err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleEditProduct = (product: Product) => {
+    setName(product.name);
+    setDescription(product.description);
+    setPrice(product.price.toString());
+    setStock(product.stock.toString());
+    setCategory(product.category);
+    setImage(product.image);
+    setSelectedProduct(product._id);
+    setIsEditing(true);
   };
 
   const handleDeleteProduct = async () => {
@@ -108,6 +132,7 @@ export default function ProductsAdmin() {
       console.error("Error deleting product:", err);
     } finally {
       setShowModal(false);
+      setSelectedProduct(null);
     }
   };
 
@@ -121,11 +146,11 @@ export default function ProductsAdmin() {
         {error && <p className="text-red-500 text-center">{error}</p>}
 
         <form
-          onSubmit={handleAddProduct}
+          onSubmit={handleAddOrUpdateProduct}
           className="bg-white p-6 shadow-md rounded-lg mb-6 border border-gray-300"
         >
           <h3 className="text-xl font-semibold mb-4 text-gray-800">
-            ➕ Add New Product
+            {isEditing ? "✏️ Edit Product" : "➕ Add New Product"}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -188,13 +213,16 @@ export default function ProductsAdmin() {
             />
           </div>
 
-          {/* ✅ Changement de couleur du bouton Add Product pour un rouge Nintendo plus marqué */}
           <button
             type="submit"
             disabled={loading}
             className="bg-red-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-red-700 transition-all duration-200 font-bold w-full mt-4"
           >
-            {loading ? "Adding..." : "🎮 Add Product"}
+            {loading
+              ? "Processing..."
+              : isEditing
+              ? "✏️ Update Product"
+              : "🎮 Add Product"}
           </button>
         </form>
 
@@ -202,29 +230,33 @@ export default function ProductsAdmin() {
           <h3 className="text-2xl font-bold text-gray-800 mb-4">
             📋 Product List
           </h3>
-
           <div className="space-y-4">
             {products.map((product) => (
               <div
                 key={product._id}
-                className="flex items-center justify-between border border-gray-300 p-4 rounded-lg bg-gray-50 shadow-md"
+                className="flex items-center justify-between border p-4 rounded-lg bg-gray-50 shadow-md"
               >
                 <div>
-                  <p className="font-bold text-lg text-gray-900">
-                    {product.name}
-                  </p>
+                  <p className="font-bold">{product.name}</p>
                   <p className="text-gray-600">{product.price}€</p>
                 </div>
-                {/* ✅ Changement du bouton Delete pour mieux s'intégrer */}
-                <button
-                  onClick={() => {
-                    setSelectedProduct(product._id);
-                    setShowModal(true);
-                  }}
-                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-all shadow-md"
-                >
-                  🗑️ Delete
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEditProduct(product)}
+                    className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-700"
+                  >
+                    ✏️ Edit
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedProduct(product._id);
+                      setShowModal(true);
+                    }}
+                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-700"
+                  >
+                    🗑️ Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -236,7 +268,7 @@ export default function ProductsAdmin() {
         onClose={() => setShowModal(false)}
         onConfirm={handleDeleteProduct}
         title="Confirm Deletion"
-        message="Are you sure you want to delete this product? This action cannot be undone."
+        message="Are you sure you want to delete this product?"
       />
     </div>
   );
