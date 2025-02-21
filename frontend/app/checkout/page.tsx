@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
 export default function CheckoutPage() {
-  const { cart, clearCart } = useCart();
+  const { cart } = useCart();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
@@ -14,8 +14,9 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!name || !address || !email) {
       setError("All fields are required !");
       return;
@@ -25,12 +26,14 @@ export default function CheckoutPage() {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
-
+      // Stocker les infos de la commande dans localStorage
       const orderData = {
+        customer: { name, address, email },
         products: cart.map((item) => ({
           product: item._id,
+          name: item.name,
           quantity: item.quantity,
+          price: item.price,
         })),
         totalPrice: cart.reduce(
           (acc, item) => acc + item.price * item.quantity,
@@ -38,27 +41,17 @@ export default function CheckoutPage() {
         ),
       };
 
-      const res = await fetch("http://localhost:5001/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: JSON.stringify(orderData),
+      localStorage.setItem("orderData", JSON.stringify(orderData));
+
+      toast.success("✅ Order details saved! Redirecting to payment...", {
+        duration: 3000,
       });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Error during the order.");
-      }
-
-      clearCart();
-      toast.success("🎉 Order placed successfully!", { duration: 4000 });
-      setTimeout(() => router.push("/"), 3000);
+      setTimeout(() => router.push("/payment"), 2000);
     } catch (err) {
-      console.error("❌ Error during the order :", err);
-      setError("Error during the order processing.");
-      toast.error("❌ Error during the order processing.");
+      console.error("❌ Error saving order:", err);
+      setError("Error processing your order.");
+      toast.error("❌ Error processing your order.");
     } finally {
       setLoading(false);
     }
@@ -142,7 +135,9 @@ export default function CheckoutPage() {
                 disabled={loading}
                 className="w-full bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition font-bold text-lg shadow-md"
               >
-                {loading ? "Processing Order..." : "Confirm Order 🛒"}
+                {loading
+                  ? "Redirecting to Payment..."
+                  : "Proceed to Payment 💳"}
               </button>
             </form>
           </>
