@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 import ProductsAdmin from "@/components/dashboard/ProductsAdmin";
 import OrdersAdmin from "@/components/dashboard/OrdersAdmin";
@@ -36,17 +37,22 @@ export default function DashboardPage() {
   if (loading) return <p className="text-center">Loading dashboard...</p>;
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6 relative">
       <Link
         href="/"
-        className="inline-block mb-4 text-blue-500 hover:underline text-sm"
+        className="absolute top-6 left-6 flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-110 active:scale-90 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
       >
-        ← Back to Home
+        <ArrowLeft className="w-6 h-6" />
+        <span className="text-lg tracking-wider">Back to home</span>
       </Link>
 
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>
+      <div className="mt-16"></div>
 
-      <nav className="flex space-x-2 border-b pb-4 mb-6 text-gray-700">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">
+        Admin Dashboard
+      </h1>
+
+      <nav className="flex space-x-2 border-b pb-4 mb-12 text-gray-700">
         {[
           { label: "Summary", key: "summary" },
           { label: "Products", key: "products" },

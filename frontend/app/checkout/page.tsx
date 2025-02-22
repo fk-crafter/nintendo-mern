@@ -4,21 +4,39 @@ import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import Cards from "react-credit-cards-2";
+import "react-credit-cards-2/dist/es/styles-compiled.css";
+import { ArrowLeft } from "lucide-react";
 
 export default function CheckoutPage() {
-  const { cart } = useCart();
+  const { cart, clearCart } = useCart();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCVC, setCardCVC] = useState("");
+
+  const [focus, setFocus] = useState<
+    "name" | "number" | "expiry" | "cvc" | undefined
+  >(undefined);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!name || !address || !email) {
-      setError("All fields are required !");
+    if (
+      !name ||
+      !address ||
+      !email ||
+      !cardNumber ||
+      !cardName ||
+      !cardExpiry ||
+      !cardCVC
+    ) {
+      setError("All fields and payment details are required!");
       return;
     }
 
@@ -26,32 +44,41 @@ export default function CheckoutPage() {
     setError("");
 
     try {
-      // Stocker les infos de la commande dans localStorage
+      const token = localStorage.getItem("token");
+
       const orderData = {
-        customer: { name, address, email },
         products: cart.map((item) => ({
           product: item._id,
-          name: item.name,
           quantity: item.quantity,
-          price: item.price,
         })),
         totalPrice: cart.reduce(
           (acc, item) => acc + item.price * item.quantity,
           0
         ),
+        cardDetails: { cardNumber, cardName, cardExpiry, cardCVC },
       };
 
-      localStorage.setItem("orderData", JSON.stringify(orderData));
-
-      toast.success("✅ Order details saved! Redirecting to payment...", {
-        duration: 3000,
+      const res = await fetch("http://localhost:5001/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: JSON.stringify(orderData),
       });
 
-      setTimeout(() => router.push("/payment"), 2000);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Error during the order.");
+      }
+
+      clearCart();
+      toast.success("🎉 Order placed successfully!", { duration: 4000 });
+      setTimeout(() => router.push("/"), 3000);
     } catch (err) {
-      console.error("❌ Error saving order:", err);
-      setError("Error processing your order.");
-      toast.error("❌ Error processing your order.");
+      console.error("❌ Error during the order :", err);
+      setError("Error during the order processing.");
+      toast.error("❌ Error during the order processing.");
     } finally {
       setLoading(false);
     }
@@ -59,7 +86,16 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+      <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6 border border-gray-200 relative">
+        {/* Nintendo Style Back Button 🎮 */}
+        <button
+          onClick={() => router.back()}
+          className="absolute top-4 left-4 flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-110 active:scale-90 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
+        >
+          <ArrowLeft className="w-6 h-6" />
+          <span className="text-lg tracking-wider">Back</span>
+        </button>
+
         <h1 className="text-3xl font-extrabold text-red-600 mb-6 text-center">
           Checkout
         </h1>
@@ -70,7 +106,7 @@ export default function CheckoutPage() {
           </p>
         ) : (
           <>
-            <div className="border p-4 rounded-md bg-gray-50">
+            <div className="border p-4 rounded-md bg-gray-50 mb-6">
               <h2 className="text-xl font-bold text-gray-800 mb-3">
                 Order Summary 🛍️
               </h2>
@@ -100,7 +136,7 @@ export default function CheckoutPage() {
 
             <form
               onSubmit={handleSubmit}
-              className="mt-6 space-y-4 text-black bg-white p-6 rounded-lg shadow-md border border-gray-300"
+              className="space-y-4 bg-white p-6 rounded-lg shadow-md border border-gray-300"
             >
               {error && (
                 <p className="text-red-500 text-center font-semibold">
@@ -108,36 +144,84 @@ export default function CheckoutPage() {
                 </p>
               )}
 
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="border p-3 w-full rounded-md focus:ring-2 focus:ring-red-500 outline-none transition text-lg"
-              />
-              <input
-                type="text"
-                placeholder="Delivery Address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="border p-3 w-full rounded-md focus:ring-2 focus:ring-red-500 outline-none transition text-lg"
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="border p-3 w-full rounded-md focus:ring-2 focus:ring-red-500 outline-none transition text-lg"
-              />
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-3">
+                  Shipping Information
+                </h2>
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="border p-3 w-full rounded-md"
+                />
+                <input
+                  type="text"
+                  placeholder="Delivery Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="border p-3 w-full rounded-md"
+                />
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="border p-3 w-full rounded-md"
+                />
+              </div>
+
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-3">
+                  Payment Information
+                </h2>
+                <Cards
+                  number={cardNumber}
+                  name={cardName}
+                  expiry={cardExpiry}
+                  cvc={cardCVC}
+                  focused={focus}
+                />
+                <input
+                  type="text"
+                  placeholder="Cardholder Name"
+                  value={cardName}
+                  onChange={(e) => setCardName(e.target.value)}
+                  onFocus={() => setFocus("name")}
+                  className="border p-3 mt-6 w-full rounded-md"
+                />
+                <input
+                  type="text"
+                  placeholder="Card Number"
+                  value={cardNumber}
+                  onChange={(e) => setCardNumber(e.target.value)}
+                  onFocus={() => setFocus("number")}
+                  className="border p-3 w-full rounded-md"
+                />
+                <input
+                  type="text"
+                  placeholder="Expiry Date (MM/YY)"
+                  value={cardExpiry}
+                  onChange={(e) => setCardExpiry(e.target.value)}
+                  onFocus={() => setFocus("expiry")}
+                  className="border p-3 w-full rounded-md"
+                />
+                <input
+                  type="text"
+                  placeholder="CVC"
+                  value={cardCVC}
+                  onChange={(e) => setCardCVC(e.target.value)}
+                  onFocus={() => setFocus("cvc")}
+                  className="border p-3 w-full rounded-md"
+                />
+              </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition font-bold text-lg shadow-md"
+                className="w-full bg-red-600 text-white py-3 rounded-md"
               >
-                {loading
-                  ? "Redirecting to Payment..."
-                  : "Proceed to Payment 💳"}
+                {loading ? "Processing Order..." : "Confirm Order 🛒"}
               </button>
             </form>
           </>

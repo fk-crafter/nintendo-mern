@@ -51,48 +51,62 @@ export default function OrdersPage() {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <Link
-        href="/"
-        className="flex items-center text-blue-500 hover:text-blue-700 mb-4"
-      >
-        <ArrowLeftIcon className="w-5 h-5 mr-2" />
-        Back to home
-      </Link>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+      <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-6 border border-gray-800">
+        {/* 🎮 Nintendo Style Back Button */}
+        <Link
+          href="/"
+          className="flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-110 active:scale-90 border-4 border-gray-900 hover:bg-red-700 hover:border-black w-fit mb-6"
+        >
+          <ArrowLeftIcon className="w-6 h-6" />
+          <span className="text-lg tracking-wider">Back to Home</span>
+        </Link>
 
-      <h1 className="text-2xl font-bold mb-4">Your Orders</h1>
+        <h1 className="text-3xl font-extrabold text-red-600 mb-6 text-center">
+          Your Orders 📦
+        </h1>
 
-      {orders.length === 0 ? (
-        <p className="text-gray-500">No order passed.</p>
-      ) : (
-        <div className="space-y-4">
-          {orders.map((order) => (
-            <div
-              key={order._id}
-              className="border p-4 rounded-md shadow-md bg-white"
-            >
-              <p className="text-gray-700">
-                Order passed on {new Date(order.createdAt).toLocaleDateString()}
-              </p>
-              <ul className="mt-2 border-t pt-2 text-black">
-                {order.products.map(({ product, quantity }) => (
-                  <li key={product.name} className="flex justify-between">
-                    <span>
-                      {product.name} x {quantity}
-                    </span>
-                    <span className="font-bold">
-                      {product.price * quantity}€
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-2 font-bold text-blue-500">
-                Total: {order.totalPrice}€
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+        {orders.length === 0 ? (
+          <p className="text-gray-500 text-center text-lg">
+            No orders placed yet. 🛒
+          </p>
+        ) : (
+          <div className="space-y-6">
+            {orders.map((order) => (
+              <div
+                key={order._id}
+                className="border-4 border-black p-6 rounded-lg shadow-md bg-gray-50"
+              >
+                <p className="text-gray-700 font-semibold text-lg">
+                  📅 Ordered on{" "}
+                  <span className="text-red-600 font-bold">
+                    {new Date(order.createdAt).toLocaleDateString()}
+                  </span>
+                </p>
+                <ul className="mt-4 border-t-2 border-black pt-4 text-black space-y-2">
+                  {order.products.map(({ product, quantity }) => (
+                    <li
+                      key={product.name}
+                      className="flex justify-between text-lg font-semibold"
+                    >
+                      <span>
+                        {product.name} x{" "}
+                        <span className="text-red-600">{quantity}</span>
+                      </span>
+                      <span className="font-bold text-black">
+                        {product.price * quantity}€
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 text-xl font-bold text-blue-600 text-right">
+                  💰 Total: {order.totalPrice}€
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
