@@ -26,6 +26,7 @@
     "heroicons": "^2.2.0",
     "lucide-react": "^0.475.0",
     "motion": "^12.4.3",
+    "nes.css": "^2.2.1",
     "next": "15.1.6",
     "next-auth": "^4.24.7",
     "react": "^19.0.0",
