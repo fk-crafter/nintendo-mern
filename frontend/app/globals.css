@@ -72,8 +72,6 @@ body {
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -81,4 +79,9 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ff0000 !important;
 }

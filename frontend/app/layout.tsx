@@ -4,7 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import CustomSessionProvider from "@/components/SessionProvider";
 import { CartProvider } from "@/context/CartContext";
-import { Toaster } from "@/components/ui/toaster"; // ✅ Import ShadCN Toaster
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +32,7 @@ export default function RootLayout({
         <CustomSessionProvider>
           <AuthProvider>
             <CartProvider>
-              <Toaster /> {/* ✅ Utilisation du Toaster de ShadCN */}
+              <Toaster />
               {children}
             </CartProvider>
           </AuthProvider>

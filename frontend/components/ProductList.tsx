@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
 interface Product {
   _id: string;
@@ -98,16 +101,24 @@ const ProductList = () => {
             <h2 className="text-3xl font-bold text-gray-800 mb-4 capitalize">
               {category} Collection
             </h2>
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 },
+              }}
+              navigation
+              className="relative"
             >
               {items.map((product) => (
-                <ProductCard key={product._id} product={product} />
+                <SwiperSlide key={product._id}>
+                  <ProductCard product={product} />
+                </SwiperSlide>
               ))}
-            </motion.div>
+            </Swiper>
           </section>
         ) : null
       )}
