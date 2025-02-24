@@ -73,8 +73,8 @@ export default function CheckoutPage() {
       }
 
       clearCart();
-      toast.success("🎉 Order placed successfully!", { duration: 4000 });
-      setTimeout(() => router.push("/"), 3000);
+      toast.success("🎉 Order placed successfully!", { duration: 3000 });
+      setTimeout(() => router.push("/confirmation"), 2000);
     } catch (err) {
       console.error("❌ Error during the order :", err);
       setError("Error during the order processing.");
