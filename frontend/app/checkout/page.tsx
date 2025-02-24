@@ -216,7 +216,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-red-600 text-white py-3 rounded-full font-bold shadow-md transition-all transform hover:scale-110 active:scale-90 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
+                className="w-full bg-red-600 text-white py-3 rounded-full font-bold shadow-md transition-all transform active:scale-90 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
               >
                 {loading ? "Processing Order..." : "Confirm Order 🛒"}
               </button>
