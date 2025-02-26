@@ -76,7 +76,7 @@ const ProductList = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="p-6">
+    <div id="products-section" className="p-6">
       <div className="flex justify-center space-x-4 mb-6">
         {categories.map((category) => (
           <button
