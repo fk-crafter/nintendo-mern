@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
@@ -37,7 +37,7 @@ export default function HeroSection() {
         className="relative z-10 max-w-3xl px-6 flex flex-col items-center justify-center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
           <div className="flex flex-col">

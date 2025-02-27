@@ -65,7 +65,13 @@ const Navbar = () => {
   }, [showCart]);
 
   return (
-    <nav className="bg-red-600 text-white py-3 shadow-md rounded-lg md:max-w-6xl md:mx-auto md:mt-4">
+    <motion.nav
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="bg-red-600 text-white py-3 shadow-md rounded-lg md:max-w-6xl md:mx-auto md:mt-4"
+    >
+      {" "}
       <div className="container mx-auto flex justify-between items-center px-4">
         <Link href="/">
           <Image
@@ -211,7 +217,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

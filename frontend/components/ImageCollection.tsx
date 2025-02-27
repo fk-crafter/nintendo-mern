@@ -3,6 +3,7 @@ import Image1 from "@/public/img/hero1.png";
 import Image2 from "@/public/img/hero2.png";
 import Image3 from "@/public/img/hero3.png";
 import { motion } from "framer-motion";
+
 const images = [
   { src: Image1, title: "Zelda Collection" },
   { src: Image2, title: "Mario Collection" },
@@ -17,7 +18,10 @@ export default function ImageCollection() {
           <motion.div
             key={index}
             className="relative w-[250px] h-[250px] rounded-xl overflow-hidden shadow-lg flex justify-center items-center bg-red-700"
-            initial={{ scale: 1, rotate: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             whileHover={{
               scale: 1.08,
               boxShadow: "0px 0px 40px rgba(255, 0, 0, 0.6)",
