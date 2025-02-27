@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import nintendoLogo from "@/public/img/nintendologo.png";
 import { useCart } from "@/context/CartContext";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 const Navbar = () => {
   const { data: session } = useSession();

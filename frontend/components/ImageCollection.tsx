@@ -2,7 +2,7 @@ import Image from "next/image";
 import Image1 from "@/public/img/hero1.png";
 import Image2 from "@/public/img/hero2.png";
 import Image3 from "@/public/img/hero3.png";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 const images = [
   { src: Image1, title: "Zelda Collection" },
