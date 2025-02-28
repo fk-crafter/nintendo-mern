@@ -1,66 +1,87 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image1 from "@/public/img/hero1.png";
 import Image2 from "@/public/img/hero2.png";
 import Image3 from "@/public/img/hero3.png";
-import { motion } from "motion/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const images = [
-  { src: Image1, title: "Zelda Collection" },
-  { src: Image2, title: "Mario Collection" },
-  { src: Image3, title: "Pokémon Collection" },
+  { src: Image1, title: "Zelda Collection", text: "Choose your own world" },
+  { src: Image2, title: "Mario Collection", text: "Jump into the adventure" },
+  { src: Image3, title: "Pokémon Collection", text: "Catch them all" },
 ];
 
 export default function ImageCollection() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const imagesRef = useRef<HTMLDivElement[]>([]);
+  const [activeText, setActiveText] = useState(images[0].text);
+
+  useEffect(() => {
+    if (!containerRef.current || imagesRef.current.length === 0) return;
+
+    const sections = imagesRef.current;
+
+    gsap.to(sections, {
+      y: `-${window.innerHeight * (sections.length - 1)}px`,
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: `+=${window.innerHeight * sections.length}`,
+        scrub: true,
+        pin: true,
+      },
+    });
+
+    sections.forEach((section, index) => {
+      gsap.to(section, {
+        scale: 1.3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+          onUpdate: (self) => {
+            if (self.progress > 0.5) {
+              setActiveText(images[index].text);
+            }
+          },
+        },
+      });
+    });
+  }, []);
+
   return (
-    <div className="max-w-6xl mx-auto mt-32 px-6">
-      <div className="flex justify-between gap-10">
-        {images.map((image, index) => (
-          <motion.div
-            key={index}
-            className="relative w-[250px] h-[250px] rounded-xl overflow-hidden shadow-lg flex justify-center items-center bg-red-700"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            whileHover={{
-              scale: 1.08,
-              boxShadow: "0px 0px 40px rgba(255, 0, 0, 0.6)",
-              transition: { type: "spring", stiffness: 200, damping: 10 },
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Image
-              src={image.src}
-              alt={image.title}
-              fill
-              className="object-cover pointer-events-none"
-            />
-
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-            />
-
-            <motion.div
-              className="absolute inset-0 rounded-xl pointer-events-none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.6, 0] }}
-              transition={{
-                duration: 1.8,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
-              style={{ boxShadow: "0px 0px 40px rgba(255, 0, 0, 0.6)" }}
-            />
-
-            <div className="absolute bottom-0 left-0 bg-black bg-opacity-60 w-full text-white text-center py-3 rounded-b-xl text-lg font-semibold">
-              {image.title}
-            </div>
-          </motion.div>
-        ))}
+    <div ref={containerRef} className="relative w-full">
+      {/* Texte Fixe Dynamique */}
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 text-5xl font-extrabold text-[#E60012] drop-shadow-lg uppercase tracking-wide transition-all duration-500 ease-in-out">
+        {activeText}
       </div>
+
+      {images.map((image, index) => (
+        <div
+          key={index}
+          ref={(el) => {
+            if (el) imagesRef.current[index] = el;
+          }}
+          className="w-full h-screen flex justify-center items-center"
+        >
+          <Image
+            src={image.src}
+            alt={image.title}
+            className="object-contain w-[40vw] h-[40vh] max-w-screen max-h-screen"
+          />
+
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-black bg-opacity-60 px-6 py-3 rounded-lg text-white text-xl font-semibold">
+            {image.title}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
