@@ -16,7 +16,7 @@ const images = [
 ];
 
 export default function ImageCollection() {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef(null);
   const imagesRef = useRef<HTMLDivElement[]>([]);
   const [activeText, setActiveText] = useState(images[0].text);
 
@@ -24,14 +24,15 @@ export default function ImageCollection() {
     if (!containerRef.current || imagesRef.current.length === 0) return;
 
     const sections = imagesRef.current;
+    const totalHeight = window.innerHeight * (sections.length - 1);
 
     gsap.to(sections, {
-      y: `-${window.innerHeight * (sections.length - 1)}px`,
+      y: `-${totalHeight}px`,
       ease: "power1.inOut",
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
-        end: `+=${window.innerHeight * sections.length}`,
+        end: `+=${totalHeight}px`,
         scrub: true,
         pin: true,
       },
@@ -57,9 +58,8 @@ export default function ImageCollection() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full">
-      {/* Texte Fixe Dynamique */}
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 text-5xl font-extrabold text-[#E60012] drop-shadow-lg uppercase tracking-wide transition-all duration-500 ease-in-out">
+    <div ref={containerRef} className="relative w-full h-[120vh]">
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 text-5xl font-extrabold text-[#E60012] drop-shadow-[0_0_10px_rgba(255,0,0,0.6)] uppercase tracking-wide transition-all duration-500 ease-in-out">
         {activeText}
       </div>
 
