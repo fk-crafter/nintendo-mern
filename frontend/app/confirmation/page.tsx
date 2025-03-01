@@ -51,7 +51,6 @@ export default function OrderConfirmation() {
           features={features}
           title="What's Next?"
           autoPlayInterval={4000}
-          imageHeight="h-[500px]"
         />
       </div>
     </div>
