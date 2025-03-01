@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "npm run build && node dist/server.js",
-    "dev": "nodemon server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",
