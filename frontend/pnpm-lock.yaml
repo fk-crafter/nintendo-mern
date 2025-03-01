@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@auth/core':
-        specifier: ^0.34.2
+        specifier: 0.34.2
         version: 0.34.2
       '@emotion/react':
         specifier: ^11.14.0
