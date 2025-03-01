@@ -26,7 +26,7 @@ const Guarantees = () => {
   ];
 
   return (
-    <section className=" py-12 px-6 md:px-12">
+    <section className="py-12 px-6 md:px-12">
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-3xl font-bold text-gray-800">Our Guarantees</h2>
         <p className="text-gray-600 mt-2">
@@ -36,7 +36,8 @@ const Guarantees = () => {
           {guarantees.map((guarantee, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center text-center"
+              className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center text-center 
+                         hover:shadow-2xl hover:shadow-red-500/30 transition-all duration-300"
             >
               {guarantee.icon}
               <h3 className="text-lg font-semibold mt-4">{guarantee.title}</h3>
