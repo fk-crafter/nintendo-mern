@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import ProductCard from "./ProductCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -32,11 +33,11 @@ const ProductList = () => {
         const data = await res.json();
         setProducts(data);
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Impossible de charger les produits");
-        }
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Impossible de charger les produits"
+        );
       } finally {
         setLoading(false);
       }
@@ -95,33 +96,59 @@ const ProductList = () => {
         ))}
       </div>
 
-      {Object.entries(filteredProducts).map(([category, items]) =>
-        items.length > 0 ? (
-          <section key={category} className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4 capitalize">
-              {category} Collection
-            </h2>
-            <Swiper
-              modules={[Navigation]}
-              spaceBetween={20}
-              slidesPerView={1}
-              breakpoints={{
-                640: { slidesPerView: 2 },
-                768: { slidesPerView: 3 },
-                1024: { slidesPerView: 4 },
-              }}
-              navigation
-              className="relative"
-            >
-              {items.map((product) => (
-                <SwiperSlide key={product._id}>
-                  <ProductCard product={product} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </section>
-        ) : null
-      )}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={selectedCategory}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          viewport={{ once: false }}
+        >
+          {Object.entries(filteredProducts).map(([category, items]) =>
+            items.length > 0 ? (
+              <motion.section
+                key={category}
+                className="mb-12"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                viewport={{ once: false }}
+              >
+                <h2 className="text-3xl font-bold text-gray-800 mb-4 capitalize">
+                  {category} Collection
+                </h2>
+                <Swiper
+                  modules={[Navigation]}
+                  spaceBetween={20}
+                  slidesPerView={1}
+                  breakpoints={{
+                    640: { slidesPerView: 2 },
+                    768: { slidesPerView: 3 },
+                    1024: { slidesPerView: 4 },
+                  }}
+                  navigation
+                  className="relative"
+                >
+                  {items.map((product) => (
+                    <SwiperSlide key={product._id}>
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        viewport={{ once: false }}
+                      >
+                        <ProductCard product={product} />
+                      </motion.div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </motion.section>
+            ) : null
+          )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };

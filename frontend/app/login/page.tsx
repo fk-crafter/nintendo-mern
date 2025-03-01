@@ -5,7 +5,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Github, LogIn } from "lucide-react";
 import nintendoLogo from "@/public/img/nintendologo.png";
 
