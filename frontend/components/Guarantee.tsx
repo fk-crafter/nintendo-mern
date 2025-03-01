@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { ShieldCheck, Truck, CreditCard, RefreshCcw } from "lucide-react";
 
 const Guarantees = () => {
@@ -33,19 +33,17 @@ const Guarantees = () => {
       <div className="max-w-6xl mx-auto text-center">
         <motion.h2
           className="text-3xl font-bold text-gray-800"
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
           Our Guarantees
         </motion.h2>
         <motion.p
           className="text-gray-600 mt-2"
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
         >
           Shop with peace of mind—our promises to you.
         </motion.p>
@@ -56,9 +54,9 @@ const Guarantees = () => {
               key={index}
               className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center text-center 
                          hover:shadow-2xl hover:shadow-red-500/30 transition-all duration-300"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 1, delay: index * 0.2, ease: "easeOut" }}
               viewport={{ once: true }}
             >
               {guarantee.icon}
