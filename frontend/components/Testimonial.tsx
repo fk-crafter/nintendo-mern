@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/magicui/marquee";
 
@@ -24,23 +25,27 @@ const reviews = [
     img: "https://avatar.vercel.sh/john",
   },
   {
-    name: "Alice",
-    username: "@alice",
-    body: "This is the best purchase I've ever made. Highly recommended!",
-    img: "https://avatar.vercel.sh/alice",
+    name: "Jane",
+    username: "@jane",
+    body: "I'm at a loss for words. This is amazing. I love it.",
+    img: "https://avatar.vercel.sh/jane",
   },
   {
-    name: "Bob",
-    username: "@bob",
-    body: "Incredible quality and fast shipping. 10/10!",
-    img: "https://avatar.vercel.sh/bob",
+    name: "Jenny",
+    username: "@jenny",
+    body: "I'm at a loss for words. This is amazing. I love it.",
+    img: "https://avatar.vercel.sh/jenny",
+  },
+  {
+    name: "James",
+    username: "@james",
+    body: "I'm at a loss for words. This is amazing. I love it.",
+    img: "https://avatar.vercel.sh/james",
   },
 ];
 
 const firstRow = reviews.slice(0, reviews.length / 2);
 const secondRow = reviews.slice(reviews.length / 2);
-const thirdRow = reviews.slice(0, reviews.length / 2);
-const fourthRow = reviews.slice(reviews.length / 2);
 
 const ReviewCard = ({
   img,
@@ -56,7 +61,7 @@ const ReviewCard = ({
   return (
     <figure
       className={cn(
-        "relative h-full w-36 cursor-pointer overflow-hidden rounded-xl border p-4 shadow-md",
+        "relative h-full w-64 cursor-pointer overflow-hidden rounded-xl border p-4 shadow-md",
         "border-gray-300 bg-white hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
       )}
     >
@@ -67,7 +72,7 @@ const ReviewCard = ({
           height={32}
           alt={name}
           src={img}
-          priority={true}
+          priority
         />
         <div className="flex flex-col">
           <figcaption className="text-sm font-medium dark:text-white">
@@ -83,7 +88,67 @@ const ReviewCard = ({
   );
 };
 
+const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    window.addEventListener("resize", listener);
+    return () => window.removeEventListener("resize", listener);
+  }, [matches, query]);
+
+  return matches;
+};
+
+const MarqueeDesktop = () => {
+  return (
+    <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+      <Marquee pauseOnHover className="[--duration:20s]">
+        {firstRow.map((review) => (
+          <ReviewCard key={review.username} {...review} />
+        ))}
+      </Marquee>
+      <Marquee reverse pauseOnHover className="[--duration:20s]">
+        {secondRow.map((review) => (
+          <ReviewCard key={review.username} {...review} />
+        ))}
+      </Marquee>
+    </div>
+  );
+};
+
+const MarqueeMobile = () => {
+  return (
+    <div className="relative flex h-96 w-full flex-row items-center justify-center gap-4 overflow-hidden [perspective:300px]">
+      <div
+        className="flex flex-row items-center gap-4"
+        style={{
+          transform:
+            "translateX(-100px) translateY(0px) translateZ(-100px) rotateX(20deg) rotateY(-10deg) rotateZ(20deg)",
+        }}
+      >
+        <Marquee pauseOnHover vertical className="[--duration:20s]">
+          {firstRow.map((review) => (
+            <ReviewCard key={review.username} {...review} />
+          ))}
+        </Marquee>
+        <Marquee reverse pauseOnHover className="[--duration:20s]" vertical>
+          {secondRow.map((review) => (
+            <ReviewCard key={review.username} {...review} />
+          ))}
+        </Marquee>
+      </div>
+    </div>
+  );
+};
+
 export function Testimonials() {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   return (
     <section className="py-12 px-6 md:px-12 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-6xl mx-auto text-center">
@@ -95,40 +160,8 @@ export function Testimonials() {
         </p>
       </div>
 
-      <div className="relative flex h-96 w-full flex-row items-center justify-center gap-4 overflow-hidden [perspective:300px] mt-8">
-        <div
-          className="flex flex-row items-center gap-4"
-          style={{
-            transform:
-              "translateX(-100px) translateY(0px) translateZ(-100px) rotateX(20deg) rotateY(-10deg) rotateZ(20deg)",
-          }}
-        >
-          <Marquee pauseOnHover vertical className="[--duration:20s]">
-            {firstRow.map((review) => (
-              <ReviewCard key={review.username} {...review} />
-            ))}
-          </Marquee>
-          <Marquee reverse pauseOnHover className="[--duration:20s]" vertical>
-            {secondRow.map((review) => (
-              <ReviewCard key={review.username} {...review} />
-            ))}
-          </Marquee>
-          <Marquee reverse pauseOnHover className="[--duration:20s]" vertical>
-            {thirdRow.map((review) => (
-              <ReviewCard key={review.username} {...review} />
-            ))}
-          </Marquee>
-          <Marquee pauseOnHover className="[--duration:20s]" vertical>
-            {fourthRow.map((review) => (
-              <ReviewCard key={review.username} {...review} />
-            ))}
-          </Marquee>
-        </div>
-
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-gray-50 dark:from-gray-900"></div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-gray-50 dark:from-gray-900"></div>
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-gray-50 dark:from-gray-900"></div>
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-gray-50 dark:from-gray-900"></div>
+      <div className="mt-8">
+        {isMobile ? <MarqueeMobile /> : <MarqueeDesktop />}
       </div>
     </section>
   );
