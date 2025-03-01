@@ -1,5 +1,4 @@
-"use client";
-
+import { BlurFade } from "@/components/magicui/blur-fade";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -42,34 +41,37 @@ const ProductCard = ({ product }: { product: Product }) => {
     <motion.div
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.2 }}
-      className="w-full max-w-xs"
+      className="w-full max-w-sm flex flex-col items-center"
     >
-      <Card className="relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-all duration-200 hover:shadow-lg">
+      <Card className="relative overflow-hidden rounded-xl border border-gray-300 bg-white shadow-lg transition-all duration-200 hover:shadow-xl w-80">
         <CardHeader className="relative p-0">
-          <Image
-            src={product.image}
-            alt={product.name}
-            width={300}
-            height={200}
-            className="w-full h-44 object-cover rounded-t-lg"
-          />
-
-          <Badge className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">
+          <BlurFade delay={0.2} inView>
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={320}
+              height={400}
+              className="w-full h-64 object-cover rounded-t-xl"
+            />
+          </BlurFade>
+          <Badge className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">
             {product.price}€
           </Badge>
         </CardHeader>
 
-        <CardContent className="p-4">
-          <CardTitle className="text-lg font-semibold text-gray-800">
+        <CardContent className="p-5 flex flex-col items-center text-center">
+          <CardTitle className="text-xl font-semibold text-gray-900">
             {product.name}
           </CardTitle>
-          <p className="text-gray-500 text-sm mt-1">{product.description}</p>
+          <p className="text-gray-600 text-sm mt-2 mb-4">
+            {product.description}
+          </p>
 
-          <div className="flex gap-2 mt-4">
+          <div className="flex flex-col gap-3 w-full">
             <Button
               onClick={handleAddToCart}
               disabled={isAdding}
-              className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-md transition"
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition"
             >
               <FaShoppingCart className="mr-2" />{" "}
               {isAdding ? "Adding..." : "Add to Cart"}
@@ -78,11 +80,11 @@ const ProductCard = ({ product }: { product: Product }) => {
             <Button
               variant="outline"
               asChild
-              className="border-gray-300 hover:bg-gray-100 transition"
+              className="w-full border-gray-300 hover:bg-gray-100 transition"
             >
               <Link
                 href={`/products/${product._id}`}
-                className="flex-1 text-gray-700 font-semibold"
+                className="text-gray-700 font-semibold"
               >
                 <FaEye className="mr-2" /> View
               </Link>
