@@ -78,7 +78,6 @@ export default function ImageCollection() {
             className="object-contain w-[80vw] h-[30vh] lg:w-[40vw] lg:h-[40vh] max-w-screen max-h-screen"
           />
 
-          {/* ✅ Remonter le titre sous l'image pour éviter qu'il soit trop bas */}
           <div className="absolute bottom-16 lg:bottom-20 left-1/2 -translate-x-1/2 bg-black bg-opacity-60 px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-white text-sm lg:text-xl font-semibold">
             {image.title}
           </div>
