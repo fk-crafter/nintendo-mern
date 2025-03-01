@@ -104,7 +104,7 @@ const ProductList = () => {
           exit={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
         >
           {Object.entries(filteredProducts).map(([category, items]) =>
             items.length > 0 ? (
@@ -114,7 +114,7 @@ const ProductList = () => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
               >
                 <h2 className="text-3xl font-bold text-gray-800 mb-4 capitalize">
                   {category} Collection
@@ -137,7 +137,7 @@ const ProductList = () => {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.4, ease: "easeOut" }}
-                        viewport={{ once: false }}
+                        viewport={{ once: true }}
                       >
                         <ProductCard product={product} />
                       </motion.div>
