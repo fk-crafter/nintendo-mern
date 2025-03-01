@@ -88,6 +88,73 @@ const Navbar = () => {
           {showMenu ? <X size={28} /> : <Menu size={28} />}
         </button>
 
+        {/* Menu Mobile */}
+        {showMenu && (
+          <div className="absolute top-16 left-0 w-full bg-white text-black flex flex-col items-center shadow-md z-50 py-4">
+            <Link
+              href="/products"
+              className="py-2 text-lg hover:text-gray-500"
+              onClick={() => setShowMenu(false)}
+            >
+              Products
+            </Link>
+            <Link
+              href="/cart"
+              className="py-2 text-lg hover:text-gray-500"
+              onClick={() => setShowMenu(false)}
+            >
+              Cart ({cart.length})
+            </Link>
+            {session || auth?.user ? (
+              <>
+                <Link
+                  href="/orders"
+                  className="py-2 text-lg hover:text-gray-500"
+                  onClick={() => setShowMenu(false)}
+                >
+                  My Orders
+                </Link>
+                {auth?.user?.role === "admin" && (
+                  <Link
+                    href="/dashboard"
+                    className="py-2 text-lg hover:text-gray-500"
+                    onClick={() => setShowMenu(false)}
+                  >
+                    Admin Panel
+                  </Link>
+                )}
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    if (session) signOut();
+                    else if (auth?.logout) auth.logout();
+                  }}
+                  className="py-2 text-lg hover:text-gray-500"
+                >
+                  Log Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="py-2 text-lg hover:text-gray-500"
+                  onClick={() => setShowMenu(false)}
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/register"
+                  className="py-2 text-lg hover:text-gray-500"
+                  onClick={() => setShowMenu(false)}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        )}
+
         <div className="hidden md:flex gap-8 items-center">
           <Link href="/products" className="hover:text-gray-200 text-lg">
             Products
