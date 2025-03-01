@@ -7,6 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import ImageCollection from "@/components/ImageCollection";
 import Footer from "@/components/Footer";
 import Guarantees from "@/components/Guarantee";
+import Testimonial from "@/components/Testimonial";
 
 export default function Home() {
   return (
@@ -19,6 +20,8 @@ export default function Home() {
       <main className="p-6 mt-12">
         <ProductList />
       </main>
+      <Testimonial />
+
       <Footer />
     </div>
   );

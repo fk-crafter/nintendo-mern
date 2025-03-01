@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: "upload.wikimedia.org",
         pathname: "/**",
       },
+      {
+        protocol: "https", // ✅ Ajout du domaine `avatar.vercel.sh`
+        hostname: "avatar.vercel.sh",
+        pathname: "/**",
+      },
     ],
   },
 };
