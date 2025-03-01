@@ -59,7 +59,8 @@ export default function ImageCollection() {
 
   return (
     <div ref={containerRef} className="relative w-full h-[120vh]">
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 text-5xl font-extrabold text-[#E60012] drop-shadow-[0_0_10px_rgba(255,0,0,0.6)] uppercase tracking-wide transition-all duration-500 ease-in-out">
+      {/* ✅ Déplacement du texte principal pour éviter le chevauchement */}
+      <div className="absolute top-24 lg:top-32 left-1/2 -translate-x-1/2 text-xl lg:text-4xl font-extrabold text-[#E60012] drop-shadow-[0_0_10px_rgba(255,0,0,0.6)] uppercase tracking-wide text-center whitespace-nowrap transition-all duration-500 ease-in-out">
         {activeText}
       </div>
 
@@ -69,15 +70,16 @@ export default function ImageCollection() {
           ref={(el) => {
             if (el) imagesRef.current[index] = el;
           }}
-          className="w-full h-screen flex justify-center items-center"
+          className="w-full h-screen flex justify-center items-center relative"
         >
           <Image
             src={image.src}
             alt={image.title}
-            className="object-contain w-[40vw] h-[40vh] max-w-screen max-h-screen"
+            className="object-contain w-[80vw] h-[30vh] lg:w-[40vw] lg:h-[40vh] max-w-screen max-h-screen"
           />
 
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-black bg-opacity-60 px-6 py-3 rounded-lg text-white text-xl font-semibold">
+          {/* ✅ Remonter le titre sous l'image pour éviter qu'il soit trop bas */}
+          <div className="absolute bottom-16 lg:bottom-20 left-1/2 -translate-x-1/2 bg-black bg-opacity-60 px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-white text-sm lg:text-xl font-semibold">
             {image.title}
           </div>
         </div>

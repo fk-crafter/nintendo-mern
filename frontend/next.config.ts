@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
-        protocol: "https", // ✅ Ajout du domaine `avatar.vercel.sh`
+        protocol: "https",
         hostname: "avatar.vercel.sh",
         pathname: "/**",
       },
