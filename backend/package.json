@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node --trace-warnings dist/server.js",
-    "build": "tsc",
+    "start": "node dist/server.js",
     "dev": "nodemon server.ts"
   },
   "keywords": [],
@@ -19,7 +18,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.11.0",
+    "mongoose": "^8.10.0",
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
