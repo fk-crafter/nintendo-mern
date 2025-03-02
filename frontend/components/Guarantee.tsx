@@ -36,6 +36,7 @@ const Guarantees = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
+          viewport={{ once: true }}
         >
           Our Guarantees
         </motion.h2>
@@ -44,6 +45,7 @@ const Guarantees = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+          viewport={{ once: true }}
         >
           Shop with peace of mind—our promises to you.
         </motion.p>
