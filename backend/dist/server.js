@@ -12,6 +12,8 @@ const productRoutes_1 = __importDefault(require("./routes/productRoutes"));
 const orderRoutes_1 = __importDefault(require("./routes/orderRoutes"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const statsRoutes_1 = __importDefault(require("./routes/statsRoutes"));
+const uploadRoutes_1 = __importDefault(require("./routes/uploadRoutes"));
+const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 (0, db_1.default)();
 const app = (0, express_1.default)();
@@ -27,6 +29,8 @@ app.use("/api/products", productRoutes_1.default);
 app.use("/api/orders", orderRoutes_1.default);
 app.use("/api/auth", authRoutes_1.default);
 app.use("/api/stats", statsRoutes_1.default);
+app.use("/api/upload", uploadRoutes_1.default);
+app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "uploads")));
 app.use((0, cors_1.default)({
     origin: "http://localhost:3000",
     methods: "GET,POST,PUT,DELETE",
