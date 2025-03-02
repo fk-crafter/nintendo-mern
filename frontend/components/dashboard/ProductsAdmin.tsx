@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import ConfirmModal from "@/components/ConfirmModal";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface Product {
   _id: string;
@@ -227,39 +228,124 @@ export default function ProductsAdmin() {
         </form>
 
         <div className="bg-red-50 p-6 shadow-md rounded-lg border border-red-300">
-          <h3 className="text-2xl font-bold text-red-800 mb-4">
-            📋 Product List
-          </h3>
-          <div className="space-y-4">
-            {products.map((product) => (
-              <div
-                key={product._id}
-                className="flex items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md"
-              >
-                <div>
-                  <p className="font-bold text-red-800">{product.name}</p>
-                  <p className="text-red-600">{product.price}€</p>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEditProduct(product)}
-                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                  >
-                    ✏️ Edit
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedProduct(product._id);
-                      setShowModal(true);
-                    }}
-                    className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800"
-                  >
-                    🗑️ Delete
-                  </button>
-                </div>
+          <h3 className="text-2xl font-bold text-red-800 mb-4">Product List</h3>
+
+          {/* Zelda Category */}
+          {products.some((product) => product.category === "zelda") && (
+            <div className="mb-6">
+              <h4 className="text-xl font-bold text-red-800 mb-2">Zelda</h4>
+              <div className="space-y-4">
+                {products
+                  .filter((product) => product.category === "zelda")
+                  .map((product) => (
+                    <div
+                      key={product._id}
+                      className="flex items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md"
+                    >
+                      <div>
+                        <p className="font-bold text-red-800">{product.name}</p>
+                        <p className="text-red-600">{product.price}€</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEditProduct(product)}
+                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 flex items-center gap-1"
+                        >
+                          <Pencil size={16} /> Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedProduct(product._id);
+                            setShowModal(true);
+                          }}
+                          className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
+                        >
+                          <Trash2 size={16} /> Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
+
+          {/* Mario Category */}
+          {products.some((product) => product.category === "mario") && (
+            <div className="mb-6">
+              <h4 className="text-xl font-bold text-red-800 mb-2">Mario</h4>
+              <div className="space-y-4">
+                {products
+                  .filter((product) => product.category === "mario")
+                  .map((product) => (
+                    <div
+                      key={product._id}
+                      className="flex items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md"
+                    >
+                      <div>
+                        <p className="font-bold text-red-800">{product.name}</p>
+                        <p className="text-red-600">{product.price}€</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEditProduct(product)}
+                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 flex items-center gap-1"
+                        >
+                          <Pencil size={16} /> Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedProduct(product._id);
+                            setShowModal(true);
+                          }}
+                          className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
+                        >
+                          <Trash2 size={16} /> Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* Pokémon Category */}
+          {products.some((product) => product.category === "pokemon") && (
+            <div className="mb-6">
+              <h4 className="text-xl font-bold text-red-800 mb-2">Pokémon</h4>
+              <div className="space-y-4">
+                {products
+                  .filter((product) => product.category === "pokemon")
+                  .map((product) => (
+                    <div
+                      key={product._id}
+                      className="flex items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md"
+                    >
+                      <div>
+                        <p className="font-bold text-red-800">{product.name}</p>
+                        <p className="text-red-600">{product.price}€</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEditProduct(product)}
+                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 flex items-center gap-1"
+                        >
+                          <Pencil size={16} /> Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedProduct(product._id);
+                            setShowModal(true);
+                          }}
+                          className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
+                        >
+                          <Trash2 size={16} /> Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

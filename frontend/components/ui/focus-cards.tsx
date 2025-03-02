@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 
-// Définition du type Card
 type Card = {
   title: string;
   src: string;
@@ -16,7 +15,7 @@ export const Card = React.memo(
     hovered,
     setHovered,
   }: {
-    card: Card; // 🔄 Remplace "any" par "Card"
+    card: Card;
     index: number;
     hovered: number | null;
     setHovered: React.Dispatch<React.SetStateAction<number | null>>;
