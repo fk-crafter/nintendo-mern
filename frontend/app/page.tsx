@@ -8,7 +8,7 @@ import ImageCollection from "@/components/ImageCollection";
 import Footer from "@/components/Footer";
 import Guarantees from "@/components/Guarantee";
 import Testimonial from "@/components/Testimonial";
-
+import FloatingCart from "@/components/FloatingCart";
 export default function Home() {
   return (
     <div>
@@ -23,6 +23,7 @@ export default function Home() {
       <Testimonial />
 
       <Footer />
+      <FloatingCart />
     </div>
   );
 }

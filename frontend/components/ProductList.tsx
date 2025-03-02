@@ -103,7 +103,7 @@ const ProductList = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
           viewport={{ once: true }}
         >
           {Object.entries(filteredProducts).map(([category, items]) =>
