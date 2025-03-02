@@ -44,6 +44,29 @@ export default function ProductsAdmin() {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await fetch("http://localhost:5001/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Erreur lors de l'upload de l'image");
+
+      const data = await res.json();
+      setImage(data.imageUrl); // Mettre à jour l'état avec l'URL retournée
+    } catch (err) {
+      console.error(err);
+      alert("Échec de l'upload de l'image !");
+    }
+  };
+
   const handleAddOrUpdateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -205,12 +228,17 @@ export default function ProductsAdmin() {
               required
             />
             <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 bg-white text-red-800"
+            />
+            <input
               type="text"
               placeholder="Image URL"
               value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700"
-              required
+              readOnly
+              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 bg-gray-100 text-gray-800"
             />
           </div>
 

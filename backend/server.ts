@@ -9,6 +9,9 @@ import orderRoutes from "./routes/orderRoutes";
 import authRoutes from "./routes/authRoutes";
 import statsRoutes from "./routes/statsRoutes";
 
+import uploadRoutes from "./routes/uploadRoutes";
+import path from "path";
+
 dotenv.config();
 connectDB();
 
@@ -28,6 +31,9 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/stats", statsRoutes);
+
+app.use("/api/upload", uploadRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(
   cors({

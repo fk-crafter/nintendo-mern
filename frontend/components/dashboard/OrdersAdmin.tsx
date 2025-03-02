@@ -100,13 +100,19 @@ export default function OrdersAdmin() {
               </p>
 
               <div className="mt-3 border-t border-gray-300 pt-3 space-y-2">
-                {order.products.map(({ product, quantity }) => (
-                  <div key={product.name} className="flex justify-between">
+                {order.products.map(({ product, quantity }, index) => (
+                  <div
+                    key={product?.name || index}
+                    className="flex justify-between"
+                  >
                     <span className="text-gray-800 text-base">
-                      🎁 {product.name} x {quantity}
+                      🎁{" "}
+                      {product?.name
+                        ? `${product.name} x ${quantity}`
+                        : "Unknown Product"}
                     </span>
                     <span className="font-bold text-gray-900">
-                      💰 {product.price * quantity}€
+                      💰 {product?.price ? product.price * quantity : "N/A"}€
                     </span>
                   </div>
                 ))}

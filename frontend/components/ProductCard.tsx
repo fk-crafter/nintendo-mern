@@ -49,9 +49,9 @@ const ProductCard = ({ product }: { product: Product }) => {
             <Image
               src={product.image}
               alt={product.name}
-              width={320}
-              height={400}
-              className="w-full h-64 object-cover rounded-t-xl"
+              width={250}
+              height={300}
+              className="w-auto h-72 object-contain rounded-t-xl"
             />
           </BlurFade>
           <Badge className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">
