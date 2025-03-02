@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node dist/server.js",
-    "dev": "nodemon server.ts",
-    "build": "tsc"
+    "start": "node --trace-warnings dist/server.js",
+    "build": "tsc",
+    "dev": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",
