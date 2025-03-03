@@ -33,7 +33,8 @@ router.post(
       return;
     }
 
-    const imageUrl = `http://localhost:5001/uploads/${req.file.filename}`;
+    const imageUrl = `${process.env.BACKEND_URL}/uploads/${req.file.filename}`;
+
     res.status(201).json({ imageUrl });
   }
 );
