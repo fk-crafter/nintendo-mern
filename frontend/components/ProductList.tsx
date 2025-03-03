@@ -129,15 +129,16 @@ const ProductList = () => {
                     1024: { slidesPerView: 4 },
                   }}
                   navigation
-                  className="relative"
+                  className="relative !overflow-visible"
                 >
                   {items.map((product) => (
-                    <SwiperSlide key={product._id}>
+                    <SwiperSlide key={product._id} className="!p-0">
                       <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.4, ease: "easeOut" }}
                         viewport={{ once: true }}
+                        className="m-0 p-0"
                       >
                         <ProductCard product={product} />
                       </motion.div>
