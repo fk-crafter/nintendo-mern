@@ -34,7 +34,9 @@ export default function ProductsAdmin() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/products");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`
+      );
       if (!res.ok) throw new Error("Error loading products.");
       const data = await res.json();
       setProducts(data);
@@ -52,10 +54,13 @@ export default function ProductsAdmin() {
     formData.append("image", file);
 
     try {
-      const res = await fetch("http://localhost:5001/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!res.ok) throw new Error("Erreur lors de l'upload de l'image");
 
@@ -80,8 +85,8 @@ export default function ProductsAdmin() {
     try {
       const method = isEditing ? "PUT" : "POST";
       const url = isEditing
-        ? `http://localhost:5001/api/products/${selectedProduct}`
-        : "http://localhost:5001/api/products";
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${selectedProduct}`
+        : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`;
 
       const res = await fetch(url, {
         method,
@@ -139,7 +144,7 @@ export default function ProductsAdmin() {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/products/${selectedProduct}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${selectedProduct}`,
         {
           method: "DELETE",
           headers: {

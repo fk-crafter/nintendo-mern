@@ -23,11 +23,14 @@ export default function UsersAdmin() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/users", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (!res.ok)
         throw new Error("Erreur lors du chargement des utilisateurs.");
@@ -46,7 +49,7 @@ export default function UsersAdmin() {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/users/${selectedUser}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${selectedUser}`,
         {
           method: "DELETE",
           headers: {
