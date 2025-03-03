@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         hostname: "avatar.vercel.sh",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "nintendo-mern.onrender.com",
+      },
     ],
   },
 };
