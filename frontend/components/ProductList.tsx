@@ -32,14 +32,12 @@ const ProductList = () => {
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`
         );
 
-        if (!res.ok) throw new Error("Erreur lors du chargement des produits");
+        if (!res.ok) throw new Error("Error loading products");
         const data = await res.json();
         setProducts(data);
       } catch (error: unknown) {
         setError(
-          error instanceof Error
-            ? error.message
-            : "Impossible de charger les produits"
+          error instanceof Error ? error.message : "Impossible to load products"
         );
       } finally {
         setLoading(false);
