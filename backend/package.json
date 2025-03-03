@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc"
+    "build": "rm -rf node_modules package-lock.json dist && npm install && tsc"
   },
   "keywords": [],
   "author": "",
