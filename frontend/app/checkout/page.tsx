@@ -58,17 +58,14 @@ export default function CheckoutPage() {
         cardDetails: { cardNumber, cardName, cardExpiry, cardCVC },
       };
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-          body: JSON.stringify(orderData),
-        }
-      );
+      const res = await fetch("http://localhost:5001/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: JSON.stringify(orderData),
+      });
 
       if (!res.ok) {
         const errorData = await res.json();

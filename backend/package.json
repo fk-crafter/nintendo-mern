@@ -4,8 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "rm -rf node_modules package-lock.json dist && npm install && tsc"
+    "dev": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +18,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.6.3",
+    "mongoose": "^8.11.0",
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {

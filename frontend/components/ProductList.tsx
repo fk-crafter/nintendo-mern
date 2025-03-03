@@ -28,16 +28,15 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`
-        );
-
-        if (!res.ok) throw new Error("Error loading products");
+        const res = await fetch("http://localhost:5001/api/products");
+        if (!res.ok) throw new Error("Erreur lors du chargement des produits");
         const data = await res.json();
         setProducts(data);
       } catch (error: unknown) {
         setError(
-          error instanceof Error ? error.message : "Impossible to load products"
+          error instanceof Error
+            ? error.message
+            : "Impossible de charger les produits"
         );
       } finally {
         setLoading(false);
