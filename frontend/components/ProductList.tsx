@@ -121,7 +121,7 @@ const ProductList = () => {
                 </h2>
                 <Swiper
                   modules={[Navigation]}
-                  spaceBetween={20}
+                  spaceBetween={40}
                   slidesPerView={1}
                   breakpoints={{
                     640: { slidesPerView: 2 },
@@ -132,13 +132,12 @@ const ProductList = () => {
                   className="relative !overflow-visible"
                 >
                   {items.map((product) => (
-                    <SwiperSlide key={product._id} className="!p-0">
+                    <SwiperSlide key={product._id}>
                       <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.4, ease: "easeOut" }}
                         viewport={{ once: true }}
-                        className="m-0 p-0"
                       >
                         <ProductCard product={product} />
                       </motion.div>

@@ -85,3 +85,8 @@ body {
 .swiper-button-next {
   color: #ff0000 !important;
 }
+
+html,
+body {
+  overflow-x: hidden;
+}

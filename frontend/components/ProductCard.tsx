@@ -43,7 +43,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       transition={{ duration: 0.2 }}
       className="w-full max-w-sm flex flex-col items-center"
     >
-      <Card className="relative overflow-hidden rounded-xl border border-gray-300 bg-white shadow-lg transition-all duration-200 hover:shadow-xl w-80 m-0 p-0">
+      <Card className="relative overflow-hidden rounded-xl border border-gray-300 bg-white shadow-lg transition-all duration-200 hover:shadow-xl w-80">
         <CardHeader className="relative p-0">
           <BlurFade delay={0.2} inView>
             <Image
@@ -59,7 +59,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           </Badge>
         </CardHeader>
 
-        <CardContent className="p-4 flex flex-col items-center text-center">
+        <CardContent className="p-5 flex flex-col items-center text-center">
           <CardTitle className="text-xl font-semibold text-gray-900">
             {product.name}
           </CardTitle>

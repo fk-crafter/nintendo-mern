@@ -5,7 +5,6 @@ import fs from "fs";
 
 const router = Router();
 
-// Assure-toi que le dossier "uploads" existe
 const uploadDir = path.join(__dirname, "../uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -33,8 +32,7 @@ router.post(
       return;
     }
 
-    const imageUrl = `${process.env.BACKEND_URL}/uploads/${req.file.filename}`;
-
+    const imageUrl = `http://localhost:5001/uploads/${req.file.filename}`;
     res.status(201).json({ imageUrl });
   }
 );
