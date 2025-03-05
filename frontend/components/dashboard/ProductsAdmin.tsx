@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import ConfirmModal from "@/components/ConfirmModal";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Gamepad2, PlusCircle, Edit3 } from "lucide-react";
 import { useRef } from "react";
 
 interface Product {
@@ -181,9 +181,9 @@ export default function ProductsAdmin() {
 
   return (
     <div className="min-h-screen  flex flex-col items-center p-6">
-      <div className="max-w-4xl w-full bg-white rounded-lg shadow-xl p-6 border border-red-800">
-        <h2 className="text-4xl font-extrabold text-red-700 mb-6 text-center drop-shadow-lg">
-          🎮 Nintendo Product Manager
+      <div className="w-full max-w-lg md:max-w-4xl bg-white rounded-lg shadow-xl p-6 border border-red-800">
+        <h2 className="text-4xl font-extrabold text-red-700 mb-6 text-center drop-shadow-lg flex items-center justify-center gap-2">
+          <Gamepad2 size={32} /> Product Manager
         </h2>
 
         {error && <p className="text-red-700 text-center">{error}</p>}
@@ -192,11 +192,12 @@ export default function ProductsAdmin() {
           onSubmit={handleAddOrUpdateProduct}
           className="bg-red-50 p-6 shadow-md rounded-lg mb-6 border border-red-300"
         >
-          <h3 className="text-xl font-semibold mb-4 text-red-800">
-            {isEditing ? "✏️ Edit Product" : "➕ Add New Product"}
+          <h3 className="text-xl font-semibold mb-4 text-red-800 flex items-center gap-2">
+            {isEditing ? <Edit3 size={20} /> : <PlusCircle size={20} />}
+            {isEditing ? "Edit Product" : "Add New Product"}
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
             <input
               type="text"
               placeholder="Name"
@@ -225,11 +226,11 @@ export default function ProductsAdmin() {
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 mt-4"
+            className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 mt-4 resize-none"
             required
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div className="flex flex-col gap-4 mt-4 md:grid md:grid-cols-3">
             <input
               type="number"
               placeholder="Price (€)"
@@ -276,13 +277,19 @@ export default function ProductsAdmin() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-red-700 text-white px-6 py-3 rounded-lg shadow-md hover:bg-red-800 transition-all duration-200 font-bold w-full mt-4"
+            className="bg-red-700 text-white py-3 mt-4 rounded-lg shadow-md hover:bg-red-800 transition-all duration-200 font-bold w-full md:w-auto px-6 flex items-center gap-2 justify-center"
           >
-            {loading
-              ? "Processing..."
-              : isEditing
-              ? "✏️ Update Product"
-              : "🎮 Add Product"}
+            {loading ? (
+              "Processing..."
+            ) : isEditing ? (
+              <>
+                <Edit3 size={20} /> Update Product
+              </>
+            ) : (
+              <>
+                <PlusCircle size={20} /> Add Product
+              </>
+            )}
           </button>
         </form>
 
@@ -298,7 +305,7 @@ export default function ProductsAdmin() {
                   .map((product) => (
                     <div
                       key={product._id}
-                      className="flex items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md"
+                      className="flex flex-col md:flex-row items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md gap-3"
                     >
                       <div>
                         <p className="font-bold text-red-800">{product.name}</p>
@@ -336,7 +343,7 @@ export default function ProductsAdmin() {
                   .map((product) => (
                     <div
                       key={product._id}
-                      className="flex items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md"
+                      className="flex flex-col md:flex-row items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md gap-3"
                     >
                       <div>
                         <p className="font-bold text-red-800">{product.name}</p>
@@ -374,7 +381,7 @@ export default function ProductsAdmin() {
                   .map((product) => (
                     <div
                       key={product._id}
-                      className="flex items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md"
+                      className="flex flex-col md:flex-row items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md gap-3"
                     >
                       <div>
                         <p className="font-bold text-red-800">{product.name}</p>
