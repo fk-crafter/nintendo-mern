@@ -2,7 +2,6 @@
 
 import { createContext, useState, useEffect, ReactNode } from "react";
 
-// Définition du type de l'utilisateur
 interface User {
   id: string;
   name: string;
@@ -10,34 +9,33 @@ interface User {
   role: string;
 }
 
-// Définition du type du contexte
 interface AuthContextType {
   user: User | null;
   login: (token: string) => void;
   logout: () => void;
+  loading: boolean; // Ajout de l'état de chargement
 }
 
-// Création du contexte avec une valeur par défaut
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
 
-// Provider du contexte
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); // Ajout du state loading
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // Vérifier si un token est stocké dans localStorage (évite l'erreur "window is not defined")
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const decodedUser = JSON.parse(atob(token.split(".")[1])); // Décoder le JWT (attention, pas sécurisé pour des données sensibles)
+          const decodedUser = JSON.parse(atob(token.split(".")[1]));
           setUser(decodedUser);
         } catch (error) {
           console.error("Erreur lors du décodage du token", error);
         }
       }
+      setLoading(false); // On arrête le chargement après avoir essayé de récupérer l'utilisateur
     }
   }, []);
 
@@ -53,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -18,23 +18,16 @@ export default function DashboardPage() {
 
   const initialSection = searchParams.get("section") || "summary";
   const [activeSection, setActiveSection] = useState(initialSection);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (auth?.user === undefined) return;
+    if (auth?.loading) return;
+
     if (!auth?.user || auth?.user.role !== "admin") {
       router.push("/");
-    } else {
-      setLoading(false);
     }
-  }, [auth, router]);
+  }, [auth?.user, auth?.loading, router]);
 
-  const handleSectionChange = (section: string) => {
-    setActiveSection(section);
-    router.push(`/dashboard?section=${section}`, { scroll: false });
-  };
-
-  if (loading) return <p className="text-center">Loading dashboard...</p>;
+  if (auth?.loading) return <p className="text-center">Checking...</p>;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 md:p-6 relative">
@@ -65,7 +58,7 @@ export default function DashboardPage() {
                 ? "bg-white text-black border-black shadow-md"
                 : "bg-gray-100 text-gray-600 border-transparent hover:bg-gray-200"
             }`}
-            onClick={() => handleSectionChange(key)}
+            onClick={() => setActiveSection(key)}
           >
             {label}
           </button>
