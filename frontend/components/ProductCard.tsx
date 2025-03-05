@@ -51,7 +51,7 @@ const ProductCard = ({ product }: { product: Product }) => {
               alt={product.name}
               width={250}
               height={300}
-              className="w-auto h-72 object-contain rounded-t-xl"
+              className="w-auto h-72 object-contain rounded-t-xl mx-auto"
             />
           </BlurFade>
           <Badge className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">

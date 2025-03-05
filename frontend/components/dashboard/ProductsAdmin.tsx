@@ -44,10 +44,7 @@ export default function ProductsAdmin() {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-
-    const file = e.target.files[0];
+  const handleImageUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
 
@@ -60,10 +57,23 @@ export default function ProductsAdmin() {
       if (!res.ok) throw new Error("Erreur lors de l'upload de l'image");
 
       const data = await res.json();
-      setImage(data.imageUrl); // Mettre à jour l'état avec l'URL retournée
+      setImage(data.imageUrl);
     } catch (err) {
       console.error(err);
       alert("Échec de l'upload de l'image !");
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (e.dataTransfer.files.length > 0) {
+      handleImageUpload(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleImageUpload(e.target.files[0]);
     }
   };
 
@@ -227,19 +237,29 @@ export default function ProductsAdmin() {
               className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700"
               required
             />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 bg-white text-red-800"
-            />
-            <input
-              type="text"
-              placeholder="Image URL"
-              value={image}
-              readOnly
-              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 bg-gray-100 text-gray-800"
-            />
+            <div
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleDrop}
+              className="border border-dashed border-red-300 p-6 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 bg-white text-red-800 text-center cursor-pointer"
+            >
+              <p>Drag and drop an image here or click to select a file</p>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+            </div>
+
+            {image && (
+              <div className="mt-4">
+                <img
+                  src={image}
+                  alt="Uploaded"
+                  className="w-full max-h-48 object-cover rounded-md shadow-md"
+                />
+              </div>
+            )}
           </div>
 
           <button
@@ -258,7 +278,6 @@ export default function ProductsAdmin() {
         <div className="bg-red-50 p-6 shadow-md rounded-lg border border-red-300">
           <h3 className="text-2xl font-bold text-red-800 mb-4">Product List</h3>
 
-          {/* Zelda Category */}
           {products.some((product) => product.category === "zelda") && (
             <div className="mb-6">
               <h4 className="text-xl font-bold text-red-800 mb-2">Zelda</h4>
@@ -297,7 +316,6 @@ export default function ProductsAdmin() {
             </div>
           )}
 
-          {/* Mario Category */}
           {products.some((product) => product.category === "mario") && (
             <div className="mb-6">
               <h4 className="text-xl font-bold text-red-800 mb-2">Mario</h4>
@@ -336,7 +354,6 @@ export default function ProductsAdmin() {
             </div>
           )}
 
-          {/* Pokémon Category */}
           {products.some((product) => product.category === "pokemon") && (
             <div className="mb-6">
               <h4 className="text-xl font-bold text-red-800 mb-2">Pokémon</h4>
