@@ -118,6 +118,36 @@ router.delete(
   }
 );
 
+// @route   PUT /api/users/:id
+// @desc    Modifier les informations d'un utilisateur (Admin uniquement)
+// @access  Privé (Admin)
+router.put(
+  "/:id",
+  protect,
+  admin,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { name, email, role } = req.body; // Récupérer les champs à modifier
+      const user = await User.findById(req.params.id);
+
+      if (!user) {
+        res.status(404).json({ message: "Utilisateur non trouvé" });
+        return;
+      }
+
+      if (name) user.name = name;
+      if (email) user.email = email;
+      if (role) user.role = role;
+
+      const updatedUser = await user.save({ validateBeforeSave: false });
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Erreur de mise à jour :", error);
+      res.status(500).json({ message: "Erreur serveur" });
+    }
+  }
+);
+
 // @route   PUT /api/users/:id/role
 // @desc    Modifier le rôle d'un utilisateur (Admin uniquement)
 // @access  Privé (Admin)

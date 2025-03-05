@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ConfirmModal from "@/components/ConfirmModal";
 import { Pencil, Trash2 } from "lucide-react";
+import { useRef } from "react";
 
 interface Product {
   _id: string;
@@ -27,6 +28,8 @@ export default function ProductsAdmin() {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     fetchProducts();
@@ -61,6 +64,12 @@ export default function ProductsAdmin() {
     } catch (err) {
       console.error(err);
       alert("Échec de l'upload de l'image !");
+    }
+  };
+
+  const handleClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // Déclenche le clic sur l'input caché
     }
   };
 
@@ -238,12 +247,14 @@ export default function ProductsAdmin() {
               required
             />
             <div
+              onClick={handleClick}
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleDrop}
               className="border border-dashed border-red-300 p-6 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 bg-white text-red-800 text-center cursor-pointer"
             >
               <p>Drag and drop an image here or click to select a file</p>
               <input
+                ref={fileInputRef}
                 type="file"
                 accept="image/*"
                 onChange={handleFileSelect}
