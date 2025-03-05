@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ConfirmModal from "@/components/ConfirmModal";
+import { ShoppingCart, Calendar, Package, Trash2 } from "lucide-react";
 
 interface Order {
   _id: string;
@@ -68,8 +69,9 @@ export default function OrdersAdmin() {
 
   return (
     <div className="p-6 min-h-screen bg-gray-100">
-      <h2 className="text-3xl font-extrabold text-red-500 mb-6 text-center drop-shadow-md">
-        🎮 Order Management
+      <h2 className="text-2xl lg:text-3xl font-extrabold text-red-500 mb-6 text-center drop-shadow-md flex items-center justify-center gap-2">
+        <ShoppingCart className="w-7 h-7 lg:w-8 lg:h-8" />
+        Order Management
       </h2>
 
       {error && <p className="text-red-600 text-center font-bold">{error}</p>}
@@ -82,70 +84,73 @@ export default function OrdersAdmin() {
           No orders available. 😢
         </p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-col gap-6">
           {orders.map((order) => (
             <div
               key={order._id}
-              className="bg-white p-6 rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition-all"
+              className="bg-white p-6 rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition-all flex flex-col md:flex-row items-center md:items-start gap-6 w-full"
             >
-              <div className="flex justify-between items-center">
-                <p className="text-lg font-bold text-black">
-                  🛒 {order.user ? `${order.user.name}` : "Unknown user"}
+              <div className="flex flex-col w-full md:w-1/4">
+                <p className="text-lg font-bold text-black flex items-center gap-2">
+                  <ShoppingCart className="w-5 h-5 text-gray-700" />
+                  {order.user ? `${order.user.name}` : "Unknown user"}
                 </p>
                 <p className="text-sm text-gray-500">{order.user?.email}</p>
+                <p className="text-gray-600 text-sm mt-1 flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-gray-600" />
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </p>
               </div>
 
-              <p className="text-gray-600 text-sm mt-1">
-                📅 {new Date(order.createdAt).toLocaleDateString()}
-              </p>
-
-              <div className="mt-3 border-t border-gray-300 pt-3 space-y-2">
+              <div className="flex-1 border-l pl-6 space-y-2">
                 {order.products.map(({ product, quantity }, index) => (
                   <div
                     key={product?.name || index}
-                    className="flex justify-between"
+                    className="flex justify-between items-center"
                   >
-                    <span className="text-gray-800 text-base">
-                      🎁{" "}
+                    <span className="text-gray-800 text-base flex items-center gap-2">
+                      <Package className="w-4 h-4 text-gray-600" />
                       {product?.name
                         ? `${product.name} x ${quantity}`
                         : "Unknown Product"}
                     </span>
                     <span className="font-bold text-gray-900">
-                      💰 {product?.price ? product.price * quantity : "N/A"}€
+                      {product?.price ? product.price * quantity : "N/A"}€
                     </span>
                   </div>
                 ))}
               </div>
 
-              <p className="mt-3 text-xl font-extrabold text-red-600">
-                🔥 Total: {order.totalPrice}€
-              </p>
+              <div className="w-full md:w-1/4 flex flex-col items-center md:items-end">
+                <p className="text-xl font-extrabold text-red-600 flex items-center gap-2">
+                  Total: {order.totalPrice}€
+                </p>
+                <p className="mt-2 text-sm">
+                  Status:{" "}
+                  <span
+                    className={`uppercase px-3 py-1 rounded-full text-white text-xs font-bold ${
+                      order.status === "pending"
+                        ? "bg-yellow-500"
+                        : order.status === "completed"
+                        ? "bg-green-500"
+                        : "bg-gray-500"
+                    }`}
+                  >
+                    {order.status}
+                  </span>
+                </p>
 
-              <p className="mt-2 text-sm">
-                Status:{" "}
-                <span
-                  className={`uppercase px-3 py-1 rounded-full text-white text-xs font-bold ${
-                    order.status === "pending"
-                      ? "bg-yellow-500"
-                      : order.status === "completed"
-                      ? "bg-green-500"
-                      : "bg-gray-500"
-                  }`}
+                <button
+                  onClick={() => {
+                    setSelectedOrder(order._id);
+                    setShowModal(true);
+                  }}
+                  className="mt-4 bg-red-500 text-white text-lg px-4 py-2 rounded-md shadow-md hover:bg-red-600 transition-all flex items-center gap-2"
                 >
-                  {order.status}
-                </span>
-              </p>
-
-              <button
-                onClick={() => {
-                  setSelectedOrder(order._id);
-                  setShowModal(true);
-                }}
-                className="mt-4 bg-red-500 text-white text-lg px-4 py-2 rounded-md shadow-md hover:bg-red-600 transition-all w-full"
-              >
-                🗑 Delete
-              </button>
+                  <Trash2 className="w-5 h-5" />
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
