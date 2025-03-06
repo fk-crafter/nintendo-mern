@@ -8,7 +8,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import nintendoLogo from "@/public/img/nintendologo.png";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, X, Check, Info } from "lucide-react";
 
 const registerSchema = z
   .object({
@@ -38,6 +38,9 @@ export default function RegisterPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showTooltipConfirmPassword, setShowTooltipConfirmPassword] =
+    useState(false);
 
   const [passwordCriteria, setPasswordCriteria] = useState({
     length: false,
@@ -167,49 +170,6 @@ export default function RegisterPage() {
               }}
             />
 
-            <div className="mt-2 text-sm">
-              <p
-                className={`flex items-center gap-2 ${
-                  passwordCriteria.length ? "text-green-600" : "text-red-500"
-                }`}
-              >
-                {passwordCriteria.length ? "✅" : "❌"} Password has more than 8
-                characters.
-              </p>
-              <p
-                className={`flex items-center gap-2 ${
-                  passwordCriteria.specialChar
-                    ? "text-green-600"
-                    : "text-red-500"
-                }`}
-              >
-                {passwordCriteria.specialChar ? "✅" : "❌"} Password has
-                special characters.
-              </p>
-              <p
-                className={`flex items-center gap-2 ${
-                  passwordCriteria.number ? "text-green-600" : "text-red-500"
-                }`}
-              >
-                {passwordCriteria.number ? "✅" : "❌"} Password has a number.
-              </p>
-              <p
-                className={`flex items-center gap-2 ${
-                  passwordCriteria.uppercase ? "text-green-600" : "text-red-500"
-                }`}
-              >
-                {passwordCriteria.uppercase ? "✅" : "❌"} Password has a
-                capital letter.
-              </p>
-              <p
-                className={`flex items-center gap-2 ${
-                  passwordCriteria.match ? "text-green-600" : "text-red-500"
-                }`}
-              >
-                {passwordCriteria.match ? "✅" : "❌"} Passwords match.
-              </p>
-            </div>
-
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -217,6 +177,70 @@ export default function RegisterPage() {
             >
               {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>
+
+            <div
+              className="absolute right-10 top-[14px] text-gray-500 cursor-pointer"
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+            >
+              <Info size={16} />
+            </div>
+
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password.message}</p>
+            )}
+
+            <AnimatePresence>
+              {showTooltip && (
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 5 }}
+                  className="absolute right-0 top-12 bg-white border border-gray-300 shadow-md rounded-md p-3 z-50 w-64 text-sm"
+                >
+                  <p
+                    className={`flex items-center gap-2 ${
+                      passwordCriteria.length
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {passwordCriteria.length ? <Check /> : <X />} At least 8
+                    characters
+                  </p>
+                  <p
+                    className={`flex items-center gap-2 ${
+                      passwordCriteria.specialChar
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {passwordCriteria.specialChar ? <Check /> : <X />} 1 special
+                    character (@#%&*!)
+                  </p>
+                  <p
+                    className={`flex items-center gap-2 ${
+                      passwordCriteria.number
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {passwordCriteria.number ? <Check /> : <X />} 1 number
+                  </p>
+                  <p
+                    className={`flex items-center gap-2 ${
+                      passwordCriteria.uppercase
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {passwordCriteria.uppercase ? <Check /> : <X />} 1 capital
+                    character
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
@@ -236,12 +260,48 @@ export default function RegisterPage() {
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-3 text-gray-500 hover:text-black transition"
+              className="absolute right-3 top-3 text-gray-500 hover:text-black transition z-10"
             >
               {showConfirmPassword ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>
+
+            <div
+              className="absolute right-10 top-[14px] text-gray-500 cursor-pointer z-10"
+              onMouseEnter={() => setShowTooltipConfirmPassword(true)}
+              onMouseLeave={() => setShowTooltipConfirmPassword(false)}
+            >
+              <Info size={16} />
+
+              {/* Tooltip placé correctement */}
+              <AnimatePresence>
+                {showTooltipConfirmPassword && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 5 }}
+                    className="absolute right-0 top-6 bg-white border border-gray-300 shadow-md rounded-md p-3 z-50 w-52 text-sm"
+                  >
+                    <p
+                      className={`flex items-center gap-2 ${
+                        passwordCriteria.match
+                          ? "text-green-600"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {passwordCriteria.match ? (
+                        <Check size={16} />
+                      ) : (
+                        <X size={16} />
+                      )}{" "}
+                      Passwords match
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm">
+              <p className="text-red-500 text-sm mt-2">
                 {errors.confirmPassword.message}
               </p>
             )}
@@ -265,7 +325,7 @@ export default function RegisterPage() {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
-            className="fixed inset-0 z-50  flex items-center justify-center bg-black bg-opacity-50"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           >
             <div className="bg-white  text-black p-6 rounded-lg shadow-lg text-center border-4 border-red-600">
               <h2 className="text-2xl font-bold text-green-600">
