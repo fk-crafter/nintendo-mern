@@ -39,13 +39,32 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    length: false,
+    specialChar: false,
+    number: false,
+    uppercase: false,
+    match: false,
+  });
+
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registerSchema),
   });
+
+  const validatePassword = (password: string, confirmPassword: string) => {
+    setPasswordCriteria({
+      length: password.length >= 8,
+      specialChar: /[@#%&*!]/.test(password),
+      number: /[0-9]/.test(password),
+      uppercase: /[A-Z]/.test(password),
+      match: password === confirmPassword,
+    });
+  };
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     setError("");
@@ -143,7 +162,54 @@ export default function RegisterPage() {
               {...register("password")}
               placeholder="Password"
               className="border border-gray-300 p-3 w-full rounded-md focus:ring-2 focus:ring-red-600 outline-none transition text-lg"
+              onChange={(e) => {
+                validatePassword(e.target.value, getValues("confirmPassword"));
+              }}
             />
+
+            <div className="mt-2 text-sm">
+              <p
+                className={`flex items-center gap-2 ${
+                  passwordCriteria.length ? "text-green-600" : "text-red-500"
+                }`}
+              >
+                {passwordCriteria.length ? "✅" : "❌"} Password has more than 8
+                characters.
+              </p>
+              <p
+                className={`flex items-center gap-2 ${
+                  passwordCriteria.specialChar
+                    ? "text-green-600"
+                    : "text-red-500"
+                }`}
+              >
+                {passwordCriteria.specialChar ? "✅" : "❌"} Password has
+                special characters.
+              </p>
+              <p
+                className={`flex items-center gap-2 ${
+                  passwordCriteria.number ? "text-green-600" : "text-red-500"
+                }`}
+              >
+                {passwordCriteria.number ? "✅" : "❌"} Password has a number.
+              </p>
+              <p
+                className={`flex items-center gap-2 ${
+                  passwordCriteria.uppercase ? "text-green-600" : "text-red-500"
+                }`}
+              >
+                {passwordCriteria.uppercase ? "✅" : "❌"} Password has a
+                capital letter.
+              </p>
+              <p
+                className={`flex items-center gap-2 ${
+                  passwordCriteria.match ? "text-green-600" : "text-red-500"
+                }`}
+              >
+                {passwordCriteria.match ? "✅" : "❌"} Passwords match.
+              </p>
+            </div>
+
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -162,7 +228,11 @@ export default function RegisterPage() {
               {...register("confirmPassword")}
               placeholder="Confirm Password"
               className="border border-gray-300 p-3 w-full rounded-md focus:ring-2 focus:ring-red-600 outline-none transition text-lg"
+              onChange={(e) => {
+                validatePassword(getValues("password"), e.target.value);
+              }}
             />
+
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -179,8 +249,10 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            className="w-full bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition text-lg font-bold"
-            disabled={loading}
+            className="w-full bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition text-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={
+              loading || !Object.values(passwordCriteria).every(Boolean)
+            }
           >
             {loading ? "Signing up..." : "Sign Up"}
           </button>
