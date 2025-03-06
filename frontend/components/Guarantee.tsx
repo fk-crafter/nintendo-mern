@@ -35,7 +35,7 @@ const Guarantees = () => {
           className="text-3xl font-bold text-gray-800"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true }}
         >
           Our Guarantees
@@ -44,7 +44,7 @@ const Guarantees = () => {
           className="text-gray-600 mt-2"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           viewport={{ once: true }}
         >
           Shop with peace of mind—our promises to you.
@@ -58,7 +58,11 @@ const Guarantees = () => {
                          hover:shadow-2xl hover:shadow-red-500/30 transition-all duration-300"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 1, delay: index * 0.2, ease: "easeOut" }}
+              transition={{
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: "easeOut",
+              }}
               viewport={{ once: true }}
             >
               {guarantee.icon}
