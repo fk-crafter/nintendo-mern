@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import ConfirmModal from "@/components/ConfirmModal";
 import { Pencil, Trash2, Gamepad2, PlusCircle, Edit3 } from "lucide-react";
 import { useRef } from "react";
+import Image from "next/image";
 
 interface Product {
   _id: string;
@@ -265,7 +266,7 @@ export default function ProductsAdmin() {
 
             {image && (
               <div className="mt-4">
-                <img
+                <Image
                   src={image}
                   alt="Uploaded"
                   className="w-full max-h-48 object-cover rounded-md shadow-md"
