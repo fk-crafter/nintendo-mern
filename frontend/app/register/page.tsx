@@ -265,9 +265,9 @@ export default function RegisterPage() {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           >
-            <div className="bg-white text-black p-6 rounded-lg shadow-lg text-center border-4 border-red-600">
+            <div className="bg-white z-50 text-black p-6 rounded-lg shadow-lg text-center border-4 border-red-600">
               <h2 className="text-2xl font-bold text-green-600">
                 Registration Successful! 🎉
               </h2>
