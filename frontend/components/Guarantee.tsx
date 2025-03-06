@@ -1,9 +1,19 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { ShieldCheck, Truck, CreditCard, RefreshCcw } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Guarantees = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const guarantees = [
     {
       icon: <Truck size={40} className="text-red-500" />,
@@ -51,25 +61,36 @@ const Guarantees = () => {
         </motion.p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-          {guarantees.map((guarantee, index) => (
-            <motion.div
-              key={index}
-              className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center text-center 
-                         hover:shadow-2xl hover:shadow-red-500/30 transition-all duration-300"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{
-                duration: 0.6,
-                delay: index * 0.1,
-                ease: "easeOut",
-              }}
-              viewport={{ once: true }}
-            >
-              {guarantee.icon}
-              <h3 className="text-lg font-semibold mt-4">{guarantee.title}</h3>
-              <p className="text-gray-500 mt-2">{guarantee.description}</p>
-            </motion.div>
-          ))}
+          {guarantees.map((guarantee, index) => {
+            const MotionWrapper = isMobile ? "div" : motion.div;
+            const motionProps = isMobile
+              ? {}
+              : {
+                  initial: { opacity: 0 },
+                  whileInView: { opacity: 1 },
+                  transition: {
+                    duration: 0.6,
+                    delay: index * 0.1,
+                    ease: "easeOut",
+                  },
+                  viewport: { once: true },
+                };
+
+            return (
+              <MotionWrapper
+                key={index}
+                className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center text-center 
+                           hover:shadow-2xl hover:shadow-red-500/30 transition-all duration-300"
+                {...motionProps}
+              >
+                {guarantee.icon}
+                <h3 className="text-lg font-semibold mt-4">
+                  {guarantee.title}
+                </h3>
+                <p className="text-gray-500 mt-2">{guarantee.description}</p>
+              </MotionWrapper>
+            );
+          })}
         </div>
       </div>
     </section>
