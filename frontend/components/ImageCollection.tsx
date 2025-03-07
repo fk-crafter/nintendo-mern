@@ -59,9 +59,13 @@ export default function ImageCollection() {
 
   return (
     <div ref={containerRef} className="relative w-full h-[120vh]">
-      {/* ✅ Déplacement du texte principal pour éviter le chevauchement */}
-      <div className="absolute top-24 lg:top-32 left-1/2 -translate-x-1/2 text-xl lg:text-4xl font-extrabold text-[#E60012] drop-shadow-[0_0_10px_rgba(255,0,0,0.6)] uppercase tracking-wide text-center whitespace-nowrap transition-all duration-500 ease-in-out">
-        {activeText}
+      <div className="absolute top-24 lg:top-32 left-1/2 -translate-x-1/2">
+        <div
+          key={activeText}
+          className="text-xl lg:text-4xl font-extrabold text-[#E60012] drop-shadow-[0_0_10px_rgba(255,0,0,0.6)] uppercase tracking-wide text-center whitespace-nowrap animate-fadeInOut"
+        >
+          {activeText}
+        </div>
       </div>
 
       {images.map((image, index) => (

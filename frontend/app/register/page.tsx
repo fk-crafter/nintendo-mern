@@ -272,7 +272,6 @@ export default function RegisterPage() {
             >
               <Info size={16} />
 
-              {/* Tooltip placé correctement */}
               <AnimatePresence>
                 {showTooltipConfirmPassword && (
                   <motion.div
