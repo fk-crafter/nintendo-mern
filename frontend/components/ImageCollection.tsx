@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
@@ -55,6 +54,18 @@ export default function ImageCollection() {
           },
         },
       });
+
+      gsap.to(section.querySelector(".image"), {
+        opacity: 1,
+        delay: 1.1,
+        duration: 0.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: section,
+          start: "top center",
+          toggleActions: "play none none reverse",
+        },
+      });
     });
   }, []);
 
@@ -83,10 +94,14 @@ export default function ImageCollection() {
               : "bg-yellow-200"
           }`}
         >
+          <div className="absolute inset-0 flex justify-center items-center text-4xl lg:text-6xl font-extrabold text-black opacity-20 z-0">
+            {image.text}
+          </div>
+
           <Image
             src={image.src}
             alt={image.title}
-            className="object-contain w-[80vw] h-[30vh] lg:w-[40vw] lg:h-[40vh] max-w-screen max-h-screen"
+            className="image object-contain w-[80vw] h-[30vh] lg:w-[40vw] lg:h-[40vh] max-w-screen max-h-screen relative z-10 opacity-0"
           />
 
           <div
