@@ -5,19 +5,17 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  LineElement,
-  PointElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  LineElement,
-  PointElement,
+  BarElement,
   Title,
   Tooltip,
   Legend
@@ -53,53 +51,20 @@ export default function StatsAdmin() {
     }
   };
 
-  const ordersData =
-    stats.ordersOverTime && stats.ordersOverTime.length > 0
-      ? stats.ordersOverTime
-      : [0, 0, 0, 0];
-
-  const lineChartData = {
-    labels: ordersData.map((_, i) => `Day ${i + 1}`),
+  const barChartData = {
+    labels: ["Total Products", "Total Orders", "Total Users", "Total Revenue"],
     datasets: [
       {
-        label: "Total Products",
-        data: new Array(ordersData.length).fill(stats.totalProducts),
-        borderColor: "#FFC107",
-        backgroundColor: "rgba(255, 193, 7, 0.2)",
-        fill: true,
-        tension: 0.3,
-      },
-      {
-        label: "Total Orders",
-        data: new Array(ordersData.length).fill(stats.totalOrders),
-        borderColor: "#FF5722",
-        backgroundColor: "rgba(255, 87, 34, 0.2)",
-        fill: true,
-        tension: 0.3,
-      },
-      {
-        label: "Total Users",
-        data: new Array(ordersData.length).fill(stats.totalUsers),
-        borderColor: "#03A9F4",
-        backgroundColor: "rgba(3, 169, 244, 0.2)",
-        fill: true,
-        tension: 0.3,
-      },
-      {
-        label: "Total Revenue",
-        data: new Array(ordersData.length).fill(stats.totalRevenue),
-        borderColor: "#4CAF50",
-        backgroundColor: "rgba(76, 175, 80, 0.2)",
-        fill: true,
-        tension: 0.3,
-      },
-      {
-        label: "Orders Over Time",
-        data: ordersData,
-        borderColor: "#FF5733",
-        backgroundColor: "rgba(255, 87, 51, 0.2)",
-        fill: true,
-        tension: 0.3,
+        label: "Stats Overview",
+        data: [
+          stats.totalProducts,
+          stats.totalOrders,
+          stats.totalUsers,
+          stats.totalRevenue / 10, // On divise pour équilibrer les tailles
+        ],
+        backgroundColor: ["#FFC107", "#FF5722", "#03A9F4", "#4CAF50"],
+        borderColor: ["#FFA000", "#E64A19", "#0288D1", "#388E3C"],
+        borderWidth: 1,
       },
     ],
   };
@@ -142,9 +107,9 @@ export default function StatsAdmin() {
         </h2>
         <div className="bg-white p-6 shadow-lg rounded-lg border">
           <h3 className="text-xl font-semibold text-gray-800 text-center mb-4">
-            📈 All Stats in One Curve
+            📊 Overview of Stats
           </h3>
-          <Line data={lineChartData} />
+          <Bar data={barChartData} />
         </div>
       </section>
     </div>
