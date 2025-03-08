@@ -105,7 +105,7 @@ export default function ImageCollection() {
           />
 
           <div
-            className={`absolute bottom-10 sm:bottom-16 lg:bottom-20 left-1/2 -translate-x-1/2 px-4 py-2 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 rounded-lg text-white text-xs sm:text-sm lg:text-xl font-semibold text-center ${
+            className={`absolute bottom-16 sm:bottom-16 lg:bottom-20 left-1/2 -translate-x-1/2 px-4 py-2 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 rounded-lg text-white text-xs sm:text-sm lg:text-xl font-semibold text-center ${
               index === 0
                 ? "bg-green-800"
                 : index === 1
