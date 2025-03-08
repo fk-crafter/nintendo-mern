@@ -71,10 +71,10 @@ export default function ImageCollection() {
 
   return (
     <div ref={containerRef} className="relative w-full h-[120vh]">
-      <div className="absolute top-24 lg:top-32 left-1/2 -translate-x-1/2">
+      <div className="absolute top-24 lg:top-32 left-1/2 -translate-x-1/2 w-full text-center">
         <div
           key={activeText}
-          className="text-xl lg:text-4xl font-extrabold text-[#E60012] drop-shadow-[0_0_10px_rgba(255,0,0,0.6)] uppercase tracking-wide text-center whitespace-nowrap animate-fadeInOut"
+          className="text-base sm:text-lg lg:text-4xl font-extrabold text-[#E60012] drop-shadow-[0_0_10px_rgba(255,0,0,0.6)] uppercase tracking-wide text-center whitespace-nowrap animate-fadeInOut"
         >
           {activeText}
         </div>
@@ -94,18 +94,18 @@ export default function ImageCollection() {
               : "bg-yellow-200"
           }`}
         >
-          <div className="absolute inset-0 flex justify-center items-center text-4xl lg:text-6xl font-extrabold text-black opacity-20 z-0">
+          <div className="absolute inset-0 flex justify-center items-center text-2xl sm:text-4xl lg:text-6xl font-extrabold text-black opacity-20 z-0 text-center">
             {image.text}
           </div>
 
           <Image
             src={image.src}
             alt={image.title}
-            className="image object-contain w-[80vw] h-[30vh] lg:w-[40vw] lg:h-[40vh] max-w-screen max-h-screen relative z-10 opacity-0"
+            className="image object-contain w-[90vw] h-[25vh] sm:w-[80vw] sm:h-[30vh] lg:w-[40vw] lg:h-[40vh] max-w-screen max-h-screen relative z-10 opacity-0"
           />
 
           <div
-            className={`absolute bottom-16 lg:bottom-20 left-1/2 -translate-x-1/2 px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-white text-sm lg:text-xl font-semibold ${
+            className={`absolute bottom-10 sm:bottom-16 lg:bottom-20 left-1/2 -translate-x-1/2 px-4 py-2 sm:px-5 sm:py-2.5 lg:px-6 lg:py-3 rounded-lg text-white text-xs sm:text-sm lg:text-xl font-semibold text-center ${
               index === 0
                 ? "bg-green-800"
                 : index === 1
