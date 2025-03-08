@@ -60,7 +60,7 @@ export default function StatsAdmin() {
           stats.totalProducts,
           stats.totalOrders,
           stats.totalUsers,
-          stats.totalRevenue / 10, // On divise pour équilibrer les tailles
+          stats.totalRevenue / 10,
         ],
         backgroundColor: ["#FFC107", "#FF5722", "#03A9F4", "#4CAF50"],
         borderColor: ["#FFA000", "#E64A19", "#0288D1", "#388E3C"],

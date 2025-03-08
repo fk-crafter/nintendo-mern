@@ -69,7 +69,7 @@ export default function OrdersAdmin() {
 
   return (
     <div className="p-6 min-h-screen bg-gray-100">
-      <h2 className="text-2xl lg:text-3xl font-extrabold text-red-500 mb-6 text-center drop-shadow-md flex items-center justify-center gap-2">
+      <h2 className="text-2xl lg:text-3xl font-extrabold text-red-800 mb-6 text-center drop-shadow-md flex items-center justify-center gap-2">
         <ShoppingCart className="w-7 h-7 lg:w-8 lg:h-8" />
         Order Management
       </h2>

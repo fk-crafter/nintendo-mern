@@ -120,9 +120,9 @@ export default function UsersAdmin() {
 
   return (
     <div className="max-w-4xl mx-auto mt-6 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6 text-center flex items-center justify-center gap-2">
-        <Users className="w-6 h-6 lg:w-8 lg:h-8 text-gray-700" />
-        Manage Users
+      <h2 className="text-2xl lg:text-3xl font-bold mb-4 text-red-800 lg:mb-6 text-center flex items-center justify-center gap-2">
+        <Users className="w-6 h-6 lg:w-8 lg:h-8" />
+        Users Management
       </h2>
 
       {error && <p className="text-red-500 text-center">{error}</p>}

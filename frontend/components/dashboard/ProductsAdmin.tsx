@@ -70,7 +70,7 @@ export default function ProductsAdmin() {
 
   const handleClick = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click(); // Déclenche le clic sur l'input caché
+      fileInputRef.current.click();
     }
   };
 
@@ -183,15 +183,15 @@ export default function ProductsAdmin() {
   return (
     <div className="min-h-screen  flex flex-col items-center p-6">
       <div className="w-full max-w-lg md:max-w-4xl bg-white rounded-lg shadow-xl p-6 border border-red-800">
-        <h2 className="text-4xl font-extrabold text-red-700 mb-6 text-center drop-shadow-lg flex items-center justify-center gap-2">
-          <Gamepad2 size={32} /> Product Manager
+        <h2 className="text-4xl font-extrabold text-red-800 mb-6 text-center drop-shadow-lg flex items-center justify-center gap-2">
+          <Gamepad2 size={32} /> Product Management
         </h2>
 
         {error && <p className="text-red-700 text-center">{error}</p>}
 
         <form
           onSubmit={handleAddOrUpdateProduct}
-          className="bg-red-50 p-6 shadow-md rounded-lg mb-6 border border-red-300"
+          className="bg-gray-50 p-6 shadow-md rounded-lg mb-6 border border-gray-300"
         >
           <h3 className="text-xl font-semibold mb-4 text-red-800 flex items-center gap-2">
             {isEditing ? <Edit3 size={20} /> : <PlusCircle size={20} />}
@@ -204,14 +204,14 @@ export default function ProductsAdmin() {
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700"
+              className="border border-gray-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-500"
               required
             />
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 bg-red-50 text-red-800"
+              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700  "
               required
             >
               <option value="" disabled hidden>
@@ -227,7 +227,7 @@ export default function ProductsAdmin() {
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 mt-4 resize-none"
+            className="border  p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 mt-4 resize-none"
             required
           />
 
@@ -237,7 +237,7 @@ export default function ProductsAdmin() {
               placeholder="Price (€)"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700"
+              className="border mt-5 border-gray-300 p-6 h-11 rounded-md w-full outline-none focus:ring-2 focus:ring-red-500"
               required
             />
             <input
@@ -245,9 +245,10 @@ export default function ProductsAdmin() {
               placeholder="Stock"
               value={stock}
               onChange={(e) => setStock(e.target.value)}
-              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700"
+              className="border mt-5 border-gray-300 p-6 h-11 rounded-md w-full outline-none focus:ring-2 focus:ring-red-500"
               required
             />
+
             <div
               onClick={handleClick}
               onDragOver={(e) => e.preventDefault()}
@@ -294,7 +295,7 @@ export default function ProductsAdmin() {
           </button>
         </form>
 
-        <div className="bg-red-50 p-6 shadow-md rounded-lg border border-red-300">
+        <div className="bg-white p-6 shadow-md rounded-lg border border-gray-300">
           <h3 className="text-2xl font-bold text-red-800 mb-4">Product List</h3>
 
           {products.some((product) => product.category === "zelda") && (
@@ -306,7 +307,7 @@ export default function ProductsAdmin() {
                   .map((product) => (
                     <div
                       key={product._id}
-                      className="flex flex-col md:flex-row items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md gap-3"
+                      className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
                     >
                       <div>
                         <p className="font-bold text-red-800">{product.name}</p>
@@ -315,7 +316,7 @@ export default function ProductsAdmin() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEditProduct(product)}
-                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 flex items-center gap-1"
+                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
                         >
                           <Pencil size={16} /> Edit
                         </button>
@@ -344,7 +345,7 @@ export default function ProductsAdmin() {
                   .map((product) => (
                     <div
                       key={product._id}
-                      className="flex flex-col md:flex-row items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md gap-3"
+                      className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
                     >
                       <div>
                         <p className="font-bold text-red-800">{product.name}</p>
@@ -353,7 +354,7 @@ export default function ProductsAdmin() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEditProduct(product)}
-                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 flex items-center gap-1"
+                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
                         >
                           <Pencil size={16} /> Edit
                         </button>
@@ -382,7 +383,7 @@ export default function ProductsAdmin() {
                   .map((product) => (
                     <div
                       key={product._id}
-                      className="flex flex-col md:flex-row items-center justify-between border border-red-300 p-4 rounded-lg bg-red-50 shadow-md gap-3"
+                      className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
                     >
                       <div>
                         <p className="font-bold text-red-800">{product.name}</p>
@@ -391,7 +392,7 @@ export default function ProductsAdmin() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEditProduct(product)}
-                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 flex items-center gap-1"
+                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
                         >
                           <Pencil size={16} /> Edit
                         </button>
