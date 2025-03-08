@@ -82,7 +82,15 @@ export default function ImageCollection() {
             className="object-contain w-[80vw] h-[30vh] lg:w-[40vw] lg:h-[40vh] max-w-screen max-h-screen"
           />
 
-          <div className="absolute bottom-16 lg:bottom-20 left-1/2 -translate-x-1/2 bg-black bg-opacity-60 px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-white text-sm lg:text-xl font-semibold">
+          <div
+            className={`absolute bottom-16 lg:bottom-20 left-1/2 -translate-x-1/2 px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-white text-sm lg:text-xl font-semibold ${
+              index === 0
+                ? "bg-green-800"
+                : index === 1
+                ? "bg-red-800"
+                : "bg-yellow-600"
+            }`}
+          >
             {image.title}
           </div>
         </div>
