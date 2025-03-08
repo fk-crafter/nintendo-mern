@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
@@ -74,7 +75,13 @@ export default function ImageCollection() {
           ref={(el) => {
             if (el) imagesRef.current[index] = el;
           }}
-          className="w-full h-screen flex justify-center items-center relative"
+          className={`w-full h-screen flex justify-center items-center relative ${
+            index === 0
+              ? "bg-green-200"
+              : index === 1
+              ? "bg-red-200"
+              : "bg-yellow-200"
+          }`}
         >
           <Image
             src={image.src}
