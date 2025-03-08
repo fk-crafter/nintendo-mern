@@ -75,7 +75,7 @@ export default function HeroSection() {
         </div>
 
         <div className="mt-6 md:mt-10 flex justify-center">
-          <AvatarGroup total={94}>
+          <AvatarGroup total={103}>
             {reviews.map((user, index) => (
               <Tooltip
                 key={index}
@@ -98,6 +98,11 @@ export default function HeroSection() {
           4.8/5
         </div>
         <Rating name="read-only" value={4.8} precision={0.1} readOnly />
+        <div className="mt-4 md:mt-6 flex items-center gap-2 text-sm md:text-base">
+          <span className="font-semibold text-gray-700">
+            Trusted by 99+ users
+          </span>
+        </div>
       </div>
     </section>
   );
