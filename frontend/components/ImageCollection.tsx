@@ -59,7 +59,19 @@ export default function ImageCollection() {
 
   return (
     <div ref={containerRef} className="relative w-full h-[120vh]">
-      <div className="absolute top-24 lg:top-32 left-1/2 -translate-x-1/2">
+      {/* Fond dynamique */}
+      <div
+        className={`absolute top-0 left-0 w-full h-full transition-colors duration-500 ${
+          activeText === "Choose your own world"
+            ? "bg-green-100"
+            : activeText === "Jump into the adventure"
+            ? "bg-red-100"
+            : "bg-yellow-100"
+        }`}
+      />
+
+      {/* Texte au-dessus */}
+      <div className="absolute top-56 lg:top-32 left-1/2 -translate-x-1/2 z-10 transition-all duration-300">
         <div
           key={activeText}
           className="text-xl lg:text-4xl font-extrabold text-[#E60012] drop-shadow-[0_0_10px_rgba(255,0,0,0.6)] uppercase tracking-wide text-center whitespace-nowrap animate-fadeInOut"
@@ -74,7 +86,7 @@ export default function ImageCollection() {
           ref={(el) => {
             if (el) imagesRef.current[index] = el;
           }}
-          className="w-full h-screen flex justify-center items-center relative"
+          className="w-full h-screen flex justify-center items-center relative z-10"
         >
           <Image
             src={image.src}
@@ -83,7 +95,7 @@ export default function ImageCollection() {
           />
 
           <div
-            className={`absolute bottom-16 lg:bottom-20 left-1/2 -translate-x-1/2 px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-white text-sm lg:text-xl font-semibold ${
+            className={`absolute bottom-24 lg:bottom-20 left-1/2 -translate-x-1/2 px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-white text-sm lg:text-xl font-semibold ${
               index === 0
                 ? "bg-green-800"
                 : index === 1
