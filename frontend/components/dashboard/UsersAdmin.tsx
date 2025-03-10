@@ -29,14 +29,13 @@ export default function UsersAdmin() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(
-        "https://nintendo-backend-u0dz.onrender.com/api/users",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+      const res = await fetch(`${API_URL}/api/users`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (!res.ok) throw new Error("Error when loading users.");
       const data = await res.json();
@@ -53,15 +52,14 @@ export default function UsersAdmin() {
     if (!selectedUser) return;
 
     try {
-      const res = await fetch(
-        `https://nintendo-backend-u0dz.onrender.com/api/users/${selectedUser}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+      const res = await fetch(`${API_URL}/api/users/${selectedUser}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (!res.ok) throw new Error("Error when deleting.");
       setUsers(users.filter((user) => user._id !== selectedUser));
@@ -103,17 +101,16 @@ export default function UsersAdmin() {
     }
 
     try {
-      const res = await fetch(
-        `https://nintendo-backend-u0dz.onrender.com/api/users/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify(updatedUsers[userId]),
-        }
-      );
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+      const res = await fetch(`${API_URL}/api/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(updatedUsers[userId]),
+      });
 
       if (!res.ok) throw new Error("Error when updating.");
       fetchUsers();

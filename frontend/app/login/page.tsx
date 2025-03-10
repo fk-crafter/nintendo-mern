@@ -27,16 +27,15 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(
-        "https://nintendo-backend-u0dz.onrender.com/api/users/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+      const res = await fetch(`${API_URL}/api/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);

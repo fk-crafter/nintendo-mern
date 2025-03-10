@@ -38,9 +38,9 @@ export default function ProductsAdmin() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(
-        "https://nintendo-backend-u0dz.onrender.com/api/products"
-      );
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+      const res = await fetch(`${API_URL}/api/products`);
       if (!res.ok) throw new Error("Error loading products.");
       const data = await res.json();
       setProducts(data);
@@ -55,13 +55,12 @@ export default function ProductsAdmin() {
     formData.append("image", file);
 
     try {
-      const res = await fetch(
-        "https://nintendo-backend-u0dz.onrender.com/api/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+      const res = await fetch(`${API_URL}/api/upload`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (!res.ok) throw new Error("Erreur lors de l'upload de l'image");
 
@@ -104,9 +103,11 @@ export default function ProductsAdmin() {
 
     try {
       const method = isEditing ? "PUT" : "POST";
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+
       const url = isEditing
-        ? `https://nintendo-backend-u0dz.onrender.com/api/products/${selectedProduct}`
-        : "https://nintendo-backend-u0dz.onrender.com/api/products";
+        ? `${API_URL}/api/products/${selectedProduct}`
+        : `${API_URL}/api/products`;
 
       const res = await fetch(url, {
         method,
@@ -163,15 +164,14 @@ export default function ProductsAdmin() {
     if (!selectedProduct) return;
 
     try {
-      const res = await fetch(
-        `https://nintendo-backend-u0dz.onrender.com/api/products/${selectedProduct}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+      const res = await fetch(`${API_URL}/api/products/${selectedProduct}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (!res.ok) throw new Error("Error deleting product.");
 

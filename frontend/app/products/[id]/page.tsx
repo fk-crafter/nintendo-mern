@@ -26,9 +26,10 @@ export default function ProductPage() {
 
     const fetchProduct = async () => {
       try {
-        const res = await fetch(
-          `https://nintendo-backend-u0dz.onrender.com/api/products/${id}`
-        );
+        const API_URL =
+          process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+        const res = await fetch(`${API_URL}/api/products/${id}`);
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
         setProduct(data);

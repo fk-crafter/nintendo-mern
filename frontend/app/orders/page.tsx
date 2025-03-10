@@ -23,15 +23,15 @@ export default function OrdersPage() {
       if (!auth?.user) return;
 
       try {
-        const res = await fetch(
-          "https://nintendo-backend-u0dz.onrender.com/api/orders/my",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const API_URL =
+          process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+        const res = await fetch(`${API_URL}/api/orders/my`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
         if (!res.ok) throw new Error("Error during the orders recovery.");
         const data = await res.json();

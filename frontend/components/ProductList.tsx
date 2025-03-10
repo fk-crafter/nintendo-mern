@@ -28,9 +28,10 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(
-          "https://nintendo-backend-u0dz.onrender.com/api/products"
-        );
+        const API_URL =
+          process.env.REACT_APP_API_URL || "http://localhost:5001";
+
+        const res = await fetch(`${API_URL}/api/products`);
         if (!res.ok) throw new Error("Erreur lors du chargement des produits");
         const data = await res.json();
         setProducts(data);
