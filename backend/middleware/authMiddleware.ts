@@ -4,7 +4,7 @@ import User from "../models/User";
 
 export interface AuthRequest extends Request {
   headers: {
-    authorization?: string; // On précise que l'authorization peut être présente
+    authorization?: string;
   };
   user?: {
     _id: string;

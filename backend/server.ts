@@ -37,7 +37,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000", // 🔥 Pour le dev en local
+      "https://nintendo-frontend.onrender.com", // 🔥 Pour le frontend déployé
+    ],
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: "Content-Type,Authorization",
   })
