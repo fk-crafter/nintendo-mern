@@ -29,11 +29,14 @@ export default function UsersAdmin() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/users", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await fetch(
+        "https://nintendo-backend-u0dz.onrender.com/api/users",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (!res.ok) throw new Error("Error when loading users.");
       const data = await res.json();
@@ -51,7 +54,7 @@ export default function UsersAdmin() {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/users/${selectedUser}`,
+        `https://nintendo-backend-u0dz.onrender.com/api/users/${selectedUser}`,
         {
           method: "DELETE",
           headers: {
@@ -100,14 +103,17 @@ export default function UsersAdmin() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5001/api/users/${userId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(updatedUsers[userId]),
-      });
+      const res = await fetch(
+        `https://nintendo-backend-u0dz.onrender.com/api/users/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(updatedUsers[userId]),
+        }
+      );
 
       if (!res.ok) throw new Error("Error when updating.");
       fetchUsers();

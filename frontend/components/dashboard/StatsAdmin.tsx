@@ -36,11 +36,14 @@ export default function StatsAdmin() {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/stats", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await fetch(
+        "https://nintendo-backend-u0dz.onrender.com/api/stats",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (!res.ok) throw new Error("Error loading statistics.");
 

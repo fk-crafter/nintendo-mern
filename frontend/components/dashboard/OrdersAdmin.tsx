@@ -26,11 +26,14 @@ export default function OrdersAdmin() {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/orders", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await fetch(
+        "https://nintendo-backend-u0dz.onrender.com/api/orders",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (!res.ok) throw new Error("Error loading orders.");
 
       const data = await res.json();
@@ -48,7 +51,7 @@ export default function OrdersAdmin() {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/orders/${selectedOrder}`,
+        `https://nintendo-backend-u0dz.onrender.com/api/orders/${selectedOrder}`,
         {
           method: "DELETE",
           headers: {
