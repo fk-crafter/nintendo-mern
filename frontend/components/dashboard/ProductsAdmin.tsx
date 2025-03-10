@@ -38,7 +38,7 @@ export default function ProductsAdmin() {
 
   const fetchProducts = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       const res = await fetch(`${API_URL}/api/products`);
       if (!res.ok) throw new Error("Error loading products.");
@@ -55,7 +55,7 @@ export default function ProductsAdmin() {
     formData.append("image", file);
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
@@ -103,7 +103,7 @@ export default function ProductsAdmin() {
 
     try {
       const method = isEditing ? "PUT" : "POST";
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       const url = isEditing
         ? `${API_URL}/api/products/${selectedProduct}`
@@ -164,7 +164,7 @@ export default function ProductsAdmin() {
     if (!selectedProduct) return;
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       const res = await fetch(`${API_URL}/api/products/${selectedProduct}`, {
         method: "DELETE",

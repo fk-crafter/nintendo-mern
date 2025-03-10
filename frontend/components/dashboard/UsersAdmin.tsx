@@ -29,7 +29,7 @@ export default function UsersAdmin() {
 
   const fetchUsers = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       const res = await fetch(`${API_URL}/api/users`, {
         headers: {
@@ -52,7 +52,7 @@ export default function UsersAdmin() {
     if (!selectedUser) return;
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       const res = await fetch(`${API_URL}/api/users/${selectedUser}`, {
         method: "DELETE",
@@ -101,7 +101,7 @@ export default function UsersAdmin() {
     }
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       const res = await fetch(`${API_URL}/api/users/${userId}`, {
         method: "PUT",

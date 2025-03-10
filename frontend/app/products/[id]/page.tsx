@@ -26,8 +26,7 @@ export default function ProductPage() {
 
     const fetchProduct = async () => {
       try {
-        const API_URL =
-          process.env.REACT_APP_API_URL || "http://localhost:5001";
+        const API_URL = process.env.REACT_APP_API_URL;
 
         const res = await fetch(`${API_URL}/api/products/${id}`);
         if (!res.ok) throw new Error("Product not found");

@@ -26,7 +26,7 @@ export default function OrdersAdmin() {
 
   const fetchOrders = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       const res = await fetch(`${API_URL}/api/orders`, {
         headers: {
@@ -49,7 +49,7 @@ export default function OrdersAdmin() {
     if (!selectedOrder) return;
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+      const API_URL = process.env.REACT_APP_API_URL;
 
       const res = await fetch(`${API_URL}/api/orders/${selectedOrder}`, {
         method: "DELETE",
