@@ -6,8 +6,12 @@ import admin from "../middleware/adminMiddleware";
 
 const router = express.Router();
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   user?: { _id: ObjectId };
+  body: {
+    products?: { product: ObjectId; quantity: number }[];
+    totalPrice?: number;
+  };
 }
 
 interface IOrder extends Document {

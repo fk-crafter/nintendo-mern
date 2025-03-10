@@ -2,7 +2,10 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import User from "../models/User";
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
+  headers: {
+    authorization?: string; // On précise que l'authorization peut être présente
+  };
   user?: {
     _id: string;
     name: string;
