@@ -8,7 +8,6 @@ const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const router = (0, express_1.Router)();
-// Assure-toi que le dossier "uploads" existe
 const uploadDir = path_1.default.join(__dirname, "../uploads");
 if (!fs_1.default.existsSync(uploadDir)) {
     fs_1.default.mkdirSync(uploadDir, { recursive: true });
@@ -29,7 +28,7 @@ router.post("/", upload.single("image"), (req, res, next) => {
         res.status(400).json({ message: "Aucun fichier n'a été téléchargé." });
         return;
     }
-    const imageUrl = `${process.env.BACKEND_URL}/uploads/${req.file.filename}`;
+    const imageUrl = `http://localhost:5001/uploads/${req.file.filename}`;
     res.status(201).json({ imageUrl });
 });
 exports.default = router;
