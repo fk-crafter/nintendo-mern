@@ -36,9 +36,7 @@ export default function StatsAdmin() {
 
   const fetchStats = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL;
-
-      const res = await fetch(`${API_URL}/api/stats`, {
+      const res = await fetch("http://localhost:5001/api/stats", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

@@ -58,9 +58,7 @@ export default function CheckoutPage() {
         cardDetails: { cardNumber, cardName, cardExpiry, cardCVC },
       };
 
-      const API_URL = process.env.REACT_APP_API_URL;
-
-      const res = await fetch(`${API_URL}/api/orders`, {
+      const res = await fetch("http://localhost:5001/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

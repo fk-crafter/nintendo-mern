@@ -26,9 +26,7 @@ export default function ProductPage() {
 
     const fetchProduct = async () => {
       try {
-        const API_URL = process.env.REACT_APP_API_URL;
-
-        const res = await fetch(`${API_URL}/api/products/${id}`);
+        const res = await fetch(`http://localhost:5001/api/products/${id}`);
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
         setProduct(data);

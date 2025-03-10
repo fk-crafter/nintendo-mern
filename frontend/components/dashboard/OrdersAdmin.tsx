@@ -26,9 +26,7 @@ export default function OrdersAdmin() {
 
   const fetchOrders = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL;
-
-      const res = await fetch(`${API_URL}/api/orders`, {
+      const res = await fetch("http://localhost:5001/api/orders", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -49,14 +47,15 @@ export default function OrdersAdmin() {
     if (!selectedOrder) return;
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL;
-
-      const res = await fetch(`${API_URL}/api/orders/${selectedOrder}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await fetch(
+        `http://localhost:5001/api/orders/${selectedOrder}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (!res.ok) throw new Error("Error deleting order.");
 

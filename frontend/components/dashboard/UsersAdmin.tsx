@@ -29,9 +29,7 @@ export default function UsersAdmin() {
 
   const fetchUsers = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL;
-
-      const res = await fetch(`${API_URL}/api/users`, {
+      const res = await fetch("http://localhost:5001/api/users", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -52,14 +50,15 @@ export default function UsersAdmin() {
     if (!selectedUser) return;
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL;
-
-      const res = await fetch(`${API_URL}/api/users/${selectedUser}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await fetch(
+        `http://localhost:5001/api/users/${selectedUser}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (!res.ok) throw new Error("Error when deleting.");
       setUsers(users.filter((user) => user._id !== selectedUser));
@@ -101,9 +100,7 @@ export default function UsersAdmin() {
     }
 
     try {
-      const API_URL = process.env.REACT_APP_API_URL;
-
-      const res = await fetch(`${API_URL}/api/users/${userId}`, {
+      const res = await fetch(`http://localhost:5001/api/users/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

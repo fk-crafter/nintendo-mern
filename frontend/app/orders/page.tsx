@@ -23,9 +23,7 @@ export default function OrdersPage() {
       if (!auth?.user) return;
 
       try {
-        const API_URL = process.env.REACT_APP_API_URL;
-
-        const res = await fetch(`${API_URL}/api/orders/my`, {
+        const res = await fetch("http://localhost:5001/api/orders/my", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
