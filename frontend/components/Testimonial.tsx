@@ -86,8 +86,8 @@ const ReviewCard = ({
 
 export function Testimonial() {
   return (
-    <div className="relative w-full overflow-hidden text-center">
-      <div className="mb-8">
+    <div className="relative w-full overflow-hidden text-center pb-16">
+      <div className="mb-8 ">
         <h2 className="text-3xl font-bold dark:text-white">
           What Our Customers Say
         </h2>
@@ -97,12 +97,12 @@ export function Testimonial() {
       </div>
 
       <div className="hidden md:flex flex-col items-center justify-center">
-        <Marquee pauseOnHover className="[--duration:20s]">
+        <Marquee pauseOnHover className="[--duration:25s]">
           {firstRow.map((review) => (
             <ReviewCard key={review.username} {...review} />
           ))}
         </Marquee>
-        <Marquee reverse pauseOnHover className="[--duration:20s]">
+        <Marquee reverse pauseOnHover className="[--duration:25s]">
           {secondRow.map((review) => (
             <ReviewCard key={review.username} {...review} />
           ))}
@@ -144,6 +144,7 @@ export function Testimonial() {
         <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background"></div>
         <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background"></div>
       </div>
+      <div className="border-t border-gray-300 dark:border-gray-700 mt-8"></div>
     </div>
   );
 }

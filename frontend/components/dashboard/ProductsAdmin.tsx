@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from "react";
 import ConfirmModal from "@/components/ConfirmModal";
-import { Pencil, Trash2, Gamepad2, PlusCircle, Edit3 } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  Gamepad2,
+  PlusCircle,
+  Edit3,
+  List,
+} from "lucide-react";
 import { useRef } from "react";
 import Image from "next/image";
 
@@ -30,6 +37,8 @@ export default function ProductsAdmin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -48,6 +57,10 @@ export default function ProductsAdmin() {
     }
   };
 
+  const toggleView = () => {
+    setIsFormVisible(!isFormVisible);
+  };
+
   const handleImageUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
@@ -58,13 +71,13 @@ export default function ProductsAdmin() {
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Erreur lors de l'upload de l'image");
+      if (!res.ok) throw new Error("Error while uploading image");
 
       const data = await res.json();
       setImage(data.imageUrl);
     } catch (err) {
       console.error(err);
-      alert("Échec de l'upload de l'image !");
+      alert("Failed to upload image !");
     }
   };
 
@@ -133,6 +146,7 @@ export default function ProductsAdmin() {
       setIsEditing(false);
       setSelectedProduct(null);
       fetchProducts();
+      setIsFormVisible(false);
     } catch (err) {
       setError(
         isEditing ? "Unable to update product." : "Unable to add product."
@@ -181,237 +195,256 @@ export default function ProductsAdmin() {
   };
 
   return (
-    <div className="min-h-screen  flex flex-col items-center p-6">
+    <div className="min-h-screen flex flex-col items-center p-6">
       <div className="w-full max-w-lg md:max-w-4xl bg-white rounded-lg shadow-xl p-6 border border-red-800">
         <h2 className="text-4xl font-extrabold text-red-800 mb-6 text-center drop-shadow-lg flex items-center justify-center gap-2">
           <Gamepad2 size={32} /> Product Management
         </h2>
 
-        {error && <p className="text-red-700 text-center">{error}</p>}
-
-        <form
-          onSubmit={handleAddOrUpdateProduct}
-          className="bg-gray-50 p-6 shadow-md rounded-lg mb-6 border border-gray-300"
+        <button
+          onClick={toggleView}
+          className="mb-4 bg-red-700 text-white py-2 px-4 rounded-md hover:bg-red-800 flex items-center gap-2"
         >
-          <h3 className="text-xl font-semibold mb-4 text-red-800 flex items-center gap-2">
-            {isEditing ? <Edit3 size={20} /> : <PlusCircle size={20} />}
-            {isEditing ? "Edit Product" : "Add New Product"}
-          </h3>
+          {isFormVisible ? <List size={20} /> : <PlusCircle size={20} />}{" "}
+          {isFormVisible ? "View Products" : "Add Product"}
+        </button>
 
-          <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border border-gray-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-500"
-              required
-            />
+        {error && <p className="text-red-700 text-center">{error}</p>}
+        {isFormVisible ? (
+          <form
+            onSubmit={handleAddOrUpdateProduct}
+            className="bg-gray-50 p-6 shadow-md rounded-lg mb-6 border border-gray-300"
+          >
+            <h3 className="text-xl font-semibold mb-4 text-red-800 flex items-center gap-2">
+              {isEditing ? <Edit3 size={20} /> : <PlusCircle size={20} />}
+              {isEditing ? "Edit Product" : "Add New Product"}
+            </h3>
 
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700  "
-              required
-            >
-              <option value="" disabled hidden>
-                Category
-              </option>
-              <option value="zelda">Zelda</option>
-              <option value="mario">Mario</option>
-              <option value="pokemon">Pokémon</option>
-            </select>
-          </div>
-
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="border  p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 mt-4 resize-none"
-            required
-          />
-
-          <div className="flex flex-col gap-4 mt-4 md:grid md:grid-cols-3">
-            <input
-              type="number"
-              placeholder="Price (€)"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className="border mt-5 border-gray-300 p-6 h-11 rounded-md w-full outline-none focus:ring-2 focus:ring-red-500"
-              required
-            />
-            <input
-              type="number"
-              placeholder="Stock"
-              value={stock}
-              onChange={(e) => setStock(e.target.value)}
-              className="border mt-5 border-gray-300 p-6 h-11 rounded-md w-full outline-none focus:ring-2 focus:ring-red-500"
-              required
-            />
-
-            <div
-              onClick={handleClick}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={handleDrop}
-              className="border border-dashed border-red-300 p-6 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 bg-white text-red-800 text-center cursor-pointer"
-            >
-              <p>Drag and drop an image here or click to select a file</p>
+            <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
               <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleFileSelect}
-                className="hidden"
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="border border-gray-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-500"
+                required
               />
+
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700  "
+                required
+              >
+                <option value="" disabled hidden>
+                  Category
+                </option>
+                <option value="zelda">Zelda</option>
+                <option value="mario">Mario</option>
+                <option value="pokemon">Pokémon</option>
+              </select>
             </div>
 
-            {image && (
-              <div className="mt-4">
-                <Image
-                  src={image}
-                  alt="Uploaded"
-                  className="w-full max-h-48 object-cover rounded-md shadow-md"
+            <textarea
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="border  p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 mt-4 resize-none"
+              required
+            />
+
+            <div className="flex flex-col gap-4 mt-4 md:grid md:grid-cols-3">
+              <input
+                type="number"
+                placeholder="Price (€)"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="border mt-5 border-gray-300 p-6 h-11 rounded-md w-full outline-none focus:ring-2 focus:ring-red-500"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Stock"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
+                className="border mt-5 border-gray-300 p-6 h-11 rounded-md w-full outline-none focus:ring-2 focus:ring-red-500"
+                required
+              />
+
+              <div
+                onClick={handleClick}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleDrop}
+                className="border border-dashed border-red-300 p-6 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 bg-white text-red-800 text-center cursor-pointer"
+              >
+                <p>Drag and drop an image here or click to select a file</p>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="hidden"
                 />
               </div>
+
+              {image && (
+                <div className="mt-4">
+                  <Image
+                    width={1000}
+                    height={1000}
+                    src={image}
+                    alt="Uploaded"
+                    className="w-full max-h-48 object-cover rounded-md shadow-md"
+                  />
+                </div>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-red-700 text-white py-3 mt-4 rounded-lg shadow-md hover:bg-red-800 transition-all duration-200 font-bold w-full md:w-auto px-6 flex items-center gap-2 justify-center"
+            >
+              {loading ? (
+                "Processing..."
+              ) : isEditing ? (
+                <>
+                  <Edit3 size={20} /> Update Product
+                </>
+              ) : (
+                <>
+                  <PlusCircle size={20} /> Add Product
+                </>
+              )}
+            </button>
+          </form>
+        ) : (
+          <div className="bg-white p-6 shadow-md rounded-lg border border-gray-300">
+            <h3 className="text-2xl font-bold text-red-800 mb-4">
+              Product List
+            </h3>
+
+            {products.some((product) => product.category === "zelda") && (
+              <div className="mb-6">
+                <h4 className="text-xl font-bold text-red-800 mb-2">Zelda</h4>
+                <div className="space-y-4">
+                  {products
+                    .filter((product) => product.category === "zelda")
+                    .map((product) => (
+                      <div
+                        key={product._id}
+                        className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
+                      >
+                        <div>
+                          <p className="font-bold text-red-800">
+                            {product.name}
+                          </p>
+                          <p className="text-red-600">{product.price}€</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditProduct(product)}
+                            className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
+                          >
+                            <Pencil size={16} /> Edit
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedProduct(product._id);
+                              setShowModal(true);
+                            }}
+                            className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
+                          >
+                            <Trash2 size={16} /> Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {products.some((product) => product.category === "mario") && (
+              <div className="mb-6">
+                <h4 className="text-xl font-bold text-red-800 mb-2">Mario</h4>
+                <div className="space-y-4">
+                  {products
+                    .filter((product) => product.category === "mario")
+                    .map((product) => (
+                      <div
+                        key={product._id}
+                        className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
+                      >
+                        <div>
+                          <p className="font-bold text-red-800">
+                            {product.name}
+                          </p>
+                          <p className="text-red-600">{product.price}€</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditProduct(product)}
+                            className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
+                          >
+                            <Pencil size={16} /> Edit
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedProduct(product._id);
+                              setShowModal(true);
+                            }}
+                            className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
+                          >
+                            <Trash2 size={16} /> Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {products.some((product) => product.category === "pokemon") && (
+              <div className="mb-6">
+                <h4 className="text-xl font-bold text-red-800 mb-2">Pokémon</h4>
+                <div className="space-y-4">
+                  {products
+                    .filter((product) => product.category === "pokemon")
+                    .map((product) => (
+                      <div
+                        key={product._id}
+                        className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
+                      >
+                        <div>
+                          <p className="font-bold text-red-800">
+                            {product.name}
+                          </p>
+                          <p className="text-red-600">{product.price}€</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditProduct(product)}
+                            className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
+                          >
+                            <Pencil size={16} /> Edit
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedProduct(product._id);
+                              setShowModal(true);
+                            }}
+                            className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
+                          >
+                            <Trash2 size={16} /> Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
             )}
           </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-red-700 text-white py-3 mt-4 rounded-lg shadow-md hover:bg-red-800 transition-all duration-200 font-bold w-full md:w-auto px-6 flex items-center gap-2 justify-center"
-          >
-            {loading ? (
-              "Processing..."
-            ) : isEditing ? (
-              <>
-                <Edit3 size={20} /> Update Product
-              </>
-            ) : (
-              <>
-                <PlusCircle size={20} /> Add Product
-              </>
-            )}
-          </button>
-        </form>
-
-        <div className="bg-white p-6 shadow-md rounded-lg border border-gray-300">
-          <h3 className="text-2xl font-bold text-red-800 mb-4">Product List</h3>
-
-          {products.some((product) => product.category === "zelda") && (
-            <div className="mb-6">
-              <h4 className="text-xl font-bold text-red-800 mb-2">Zelda</h4>
-              <div className="space-y-4">
-                {products
-                  .filter((product) => product.category === "zelda")
-                  .map((product) => (
-                    <div
-                      key={product._id}
-                      className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
-                    >
-                      <div>
-                        <p className="font-bold text-red-800">{product.name}</p>
-                        <p className="text-red-600">{product.price}€</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleEditProduct(product)}
-                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
-                        >
-                          <Pencil size={16} /> Edit
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedProduct(product._id);
-                            setShowModal(true);
-                          }}
-                          className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
-                        >
-                          <Trash2 size={16} /> Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
-
-          {products.some((product) => product.category === "mario") && (
-            <div className="mb-6">
-              <h4 className="text-xl font-bold text-red-800 mb-2">Mario</h4>
-              <div className="space-y-4">
-                {products
-                  .filter((product) => product.category === "mario")
-                  .map((product) => (
-                    <div
-                      key={product._id}
-                      className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
-                    >
-                      <div>
-                        <p className="font-bold text-red-800">{product.name}</p>
-                        <p className="text-red-600">{product.price}€</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleEditProduct(product)}
-                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
-                        >
-                          <Pencil size={16} /> Edit
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedProduct(product._id);
-                            setShowModal(true);
-                          }}
-                          className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
-                        >
-                          <Trash2 size={16} /> Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
-
-          {products.some((product) => product.category === "pokemon") && (
-            <div className="mb-6">
-              <h4 className="text-xl font-bold text-red-800 mb-2">Pokémon</h4>
-              <div className="space-y-4">
-                {products
-                  .filter((product) => product.category === "pokemon")
-                  .map((product) => (
-                    <div
-                      key={product._id}
-                      className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
-                    >
-                      <div>
-                        <p className="font-bold text-red-800">{product.name}</p>
-                        <p className="text-red-600">{product.price}€</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleEditProduct(product)}
-                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
-                        >
-                          <Pencil size={16} /> Edit
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedProduct(product._id);
-                            setShowModal(true);
-                          }}
-                          className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
-                        >
-                          <Trash2 size={16} /> Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       <ConfirmModal
