@@ -4,7 +4,14 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FeatureSteps } from "@/components/blocks/feature-section";
 
-const features = [
+interface Feature {
+  step: string;
+  title: string;
+  content: string;
+  image: string;
+}
+
+const features: Feature[] = [
   {
     step: "Step 1",
     title: "Order Placed 🎉",
@@ -35,6 +42,7 @@ export default function OrderConfirmation() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      localStorage.setItem("orderPassed", "true");
       router.push("/");
     }, 12000);
 

@@ -74,7 +74,7 @@ export default function CheckoutPage() {
 
       clearCart();
       toast.success("🎉 Order placed successfully!", { duration: 3000 });
-      setTimeout(() => router.push("/confirmation"), 2000);
+      setTimeout(() => router.push("/confirmation"), 1500);
     } catch (err) {
       console.error("❌ Error during the order :", err);
       setError("Error during the order processing.");

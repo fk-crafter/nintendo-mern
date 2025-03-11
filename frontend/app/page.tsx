@@ -9,11 +9,14 @@ import Footer from "@/components/Footer";
 import Guarantees from "@/components/Guarantee";
 import { Testimonial } from "@/components/Testimonial";
 import FloatingCart from "@/components/FloatingCart";
+import OrderBadge from "@/components/OrderBadge";
+
 export default function Home() {
   return (
     <div>
       <Navbar />
       <WelcomeNotification />
+      <OrderBadge />
       <HeroSection />
       <Guarantees />
       <ImageCollection />
