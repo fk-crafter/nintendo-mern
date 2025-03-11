@@ -1,42 +1,61 @@
 import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/magicui/marquee";
 import Image from "next/image";
+
 const reviews = [
   {
-    name: "Lucas",
-    username: "@lucas",
+    name: "James",
+    username: "@james",
     body: "Nintendo products are simply the best! The quality and design are top-notch!",
-    img: "https://avatar.vercel.sh/lucas",
+    img: "/img/avatar1.svg",
   },
   {
-    name: "Emma",
-    username: "@emma",
+    name: "Olivia",
+    username: "@olivia",
     body: "I love every product I buy from Nintendo. Always innovative and reliable!",
-    img: "https://avatar.vercel.sh/emma",
+    img: "/img/avatar2.svg",
   },
   {
-    name: "Alex",
-    username: "@alex",
+    name: "Ethan",
+    username: "@ethan",
     body: "The attention to detail in Nintendo products is unmatched. Absolutely worth it!",
-    img: "https://avatar.vercel.sh/alex",
+    img: "/img/avatar3.svg",
   },
   {
-    name: "Sophie",
-    username: "@sophie",
+    name: "Sophia",
+    username: "@sophia",
     body: "Nintendo never disappoints. The quality and durability of their products are amazing!",
-    img: "https://avatar.vercel.sh/sophie",
+    img: "/img/avatar4.svg",
   },
   {
-    name: "Nathan",
-    username: "@nathan",
+    name: "Daniel",
+    username: "@daniel",
     body: "Every purchase from Nintendo feels like a premium experience. I highly recommend them!",
-    img: "https://avatar.vercel.sh/nathan",
+    img: "/img/avatar5.svg",
   },
   {
-    name: "Clara",
-    username: "@clara",
+    name: "Emily",
+    username: "@emily",
     body: "From accessories to consoles, Nintendo products are always a great investment!",
-    img: "https://avatar.vercel.sh/clara",
+    img: "/img/avatar6.svg",
+  },
+  {
+    name: "William",
+    username: "@william",
+    body: "Nintendo keeps raising the bar in gaming. Their consoles and games are legendary!",
+    img: "/img/avatar7.svg",
+  },
+  {
+    name: "Charlotte",
+    username: "@charlotte",
+    body: "The joy Nintendo brings is priceless. Their products are fun, durable, and family-friendly!",
+    img: "/img/avatar8.svg",
+  },
+  {
+    name: "Benjamin",
+    username: "@benjamin",
+    body: "I've been a Nintendo fan for years, and they never fail to impress with innovation and quality!",
+    img: "/img/avatar9.svg",
   },
 ];
 
@@ -66,11 +85,11 @@ const ReviewCard = ({
     >
       <div className="flex flex-row items-center gap-2">
         <Image
-          className="rounded-full"
-          width="32"
-          height="32"
-          alt=""
+          className="rounded-full w-8 h-8"
           src={img}
+          alt={name}
+          width={32}
+          height={32}
         />
         <div className="flex flex-col">
           <figcaption className="text-sm font-medium dark:text-white">

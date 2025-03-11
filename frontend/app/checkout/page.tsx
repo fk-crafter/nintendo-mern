@@ -85,17 +85,17 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center  p-6">
-      <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6 border-4 border-gray-900 relative">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 md:flex-row md:p-6">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-4 border-4 border-gray-900 relative md:max-w-2xl lg:max-w-3xl">
         <button
           onClick={() => router.back()}
-          className="absolute top-4 left-4 flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-110 active:scale-90 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
+          className="absolute top-2 left-2 flex items-center justify-center gap-1 px-2 py-1 rounded-full text-xs bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-105 active:scale-90 border-2 border-gray-900 hover:bg-red-700 hover:border-black md:top-4 md:left-4 md:px-4 md:py-2 md:text-lg md:border-4 md:hover:scale-110"
         >
-          <ArrowLeft className="w-6 h-6" />
-          <span className="text-lg tracking-wider">Back</span>
+          <ArrowLeft className="w-4 h-4 md:w-6 md:h-6" />
+          <span className="text-sm tracking-wide md:text-lg">Back</span>
         </button>
 
-        <h1 className="text-3xl font-extrabold text-red-600 mb-6 text-center font-mono tracking-wider">
+        <h1 className="text-2xl font-extrabold text-red-600 mb-4 text-center font-mono tracking-wider md:text-3xl md:mb-6">
           Checkout
         </h1>
 
@@ -135,7 +135,7 @@ export default function CheckoutPage() {
 
             <form
               onSubmit={handleSubmit}
-              className="space-y-4 bg-white p-6 rounded-lg shadow-md border-4 border-gray-900"
+              className="space-y-4 bg-white p-4 rounded-lg shadow-md border-4 border-gray-900 md:p-6"
             >
               {error && (
                 <p className="text-red-600 text-center font-bold">{error}</p>
@@ -150,8 +150,9 @@ export default function CheckoutPage() {
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="border-4 border-gray-900 p-3 w-full rounded-md focus:outline-none focus:border-red-700"
+                  className="border-4 border-gray-900 p-2 w-full rounded-md text-sm focus:outline-none focus:border-red-700 md:p-3 md:text-base"
                 />
+
                 <input
                   type="text"
                   placeholder="Delivery Address"
@@ -172,6 +173,7 @@ export default function CheckoutPage() {
                 <h2 className="text-xl font-bold text-red-600 mb-3 font-mono tracking-wider">
                   Payment Information
                 </h2>
+
                 <Cards
                   number={cardNumber}
                   name={cardName}
@@ -216,7 +218,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-red-600 text-white py-3 rounded-full font-bold shadow-md transition-all transform active:scale-90 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
+                className="w-full bg-red-600 text-white py-2 rounded-full font-bold shadow-md transition-all transform active:scale-90 border-4 border-gray-900 hover:bg-red-700 hover:border-black md:py-3"
               >
                 {loading ? "Processing Order..." : "Confirm Order 🛒"}
               </button>
