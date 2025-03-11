@@ -88,11 +88,11 @@ const Navbar = () => {
           {showMenu ? <X size={28} /> : <Menu size={28} />}
         </button>
 
-        {/* Menu Mobile */}
+        {/* menu mobile */}
         {showMenu && (
           <div className="absolute top-16 left-0 w-full bg-white text-black flex flex-col items-center shadow-md z-50 py-4">
             <Link
-              href="/products"
+              href="#products"
               className="py-2 text-lg hover:text-gray-500"
               onClick={() => setShowMenu(false)}
             >
@@ -156,7 +156,7 @@ const Navbar = () => {
         )}
 
         <div className="hidden md:flex gap-8 items-center">
-          <Link href="/products" className="hover:text-gray-200 text-lg">
+          <Link href="#products" className="hover:text-gray-200 text-lg">
             Products
           </Link>
 
