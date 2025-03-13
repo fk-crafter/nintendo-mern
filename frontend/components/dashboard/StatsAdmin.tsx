@@ -69,50 +69,54 @@ export default function StatsAdmin() {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-4 max-w-5xl mx-auto">
       <section className="mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Summary</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+          Summary
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
           {[
             {
-              icon: <Package size={40} />,
+              icon: <Package size={30} />,
               value: stats.totalProducts,
               label: "Total Products",
             },
             {
-              icon: <ShoppingCart size={40} />,
+              icon: <ShoppingCart size={30} />,
               value: stats.totalOrders,
               label: "Total Orders",
             },
             {
-              icon: <Users size={40} />,
+              icon: <Users size={30} />,
               value: stats.totalUsers,
               label: "Total Users",
             },
             {
-              icon: <DollarSign size={40} />,
+              icon: <DollarSign size={30} />,
               value: `${stats.totalRevenue}€`,
               label: "Total Revenue",
             },
           ].map((item, index) => (
             <div
               key={index}
-              className="p-6 rounded-lg shadow-lg text-white bg-red-600 flex flex-col items-center border-4 border-white"
+              className="p-4 md:p-6 rounded-lg shadow-lg text-white bg-red-600 flex flex-col items-center border-4 border-white"
             >
               {item.icon}
-              <p className="text-4xl font-bold mt-2">{item.value}</p>
-              <p className="text-lg">{item.label}</p>
+              <p className="text-2xl md:text-4xl font-bold mt-2">
+                {item.value}
+              </p>
+              <p className="text-base md:text-lg">{item.label}</p>
             </div>
           ))}
         </div>
       </section>
 
       <section>
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
           Statistics Overview
         </h2>
-        <div className="bg-white p-6 shadow-lg rounded-lg border">
-          <h3 className="text-xl font-semibold text-gray-800 text-center mb-4">
+        <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border">
+          <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-4">
             📊 Overview of Stats
           </h3>
           <Bar data={barChartData} />
