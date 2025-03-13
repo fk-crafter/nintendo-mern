@@ -17,7 +17,7 @@ export default function Footer() {
           />
           <p className="text-sm mt-2 max-w-xs">
             Nintendo, a pioneer in video gaming for decades. Discover our
-            consoles, games, and innovations !
+            consoles, games, and innovations!
           </p>
         </div>
 
@@ -54,34 +54,55 @@ export default function Footer() {
           <p>Phone: +123 456 789</p>
         </div>
 
-        <div className="flex justify-center md:justify-start space-x-4 mt-6 md:mt-0">
-          <Link
-            href="https://facebook.com"
-            target="_blank"
-            aria-label="Facebook"
-          >
-            <Facebook className="w-6 h-6 hover:opacity-75 transition" />
-          </Link>
-          <Link href="https://x.com" target="_blank" aria-label="X (Twitter)">
-            <FaXTwitter className="w-6 h-6 hover:opacity-75 transition" />
-          </Link>
-          <Link
-            href="https://instagram.com"
-            target="_blank"
-            aria-label="Instagram"
-          >
-            <Instagram className="w-6 h-6 hover:opacity-75 transition" />
-          </Link>
-          <Link
-            href="https://linkedin.com"
-            target="_blank"
-            aria-label="LinkedIn"
-          >
-            <Linkedin className="w-6 h-6 hover:opacity-75 transition" />
-          </Link>
-          <Link href="https://youtube.com" target="_blank" aria-label="YouTube">
-            <FaYoutube className="w-6 h-6 hover:opacity-75 transition" />
-          </Link>
+        <div className="text-center md:text-left">
+          <h3 className="font-semibold mb-2">Follow Us</h3>
+          <div className="flex justify-center md:justify-start space-x-4">
+            <Link
+              href="https://facebook.com"
+              target="_blank"
+              aria-label="Facebook"
+            >
+              <Facebook className="w-6 h-6 hover:opacity-75 transition" />
+            </Link>
+            <Link href="https://x.com" target="_blank" aria-label="X (Twitter)">
+              <FaXTwitter className="w-6 h-6 hover:opacity-75 transition" />
+            </Link>
+            <Link
+              href="https://instagram.com"
+              target="_blank"
+              aria-label="Instagram"
+            >
+              <Instagram className="w-6 h-6 hover:opacity-75 transition" />
+            </Link>
+            <Link
+              href="https://linkedin.com"
+              target="_blank"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="w-6 h-6 hover:opacity-75 transition" />
+            </Link>
+            <Link
+              href="https://youtube.com"
+              target="_blank"
+              aria-label="YouTube"
+            >
+              <FaYoutube className="w-6 h-6 hover:opacity-75 transition" />
+            </Link>
+          </div>
+
+          <div className="mt-4">
+            <h3 className="font-semibold mb-2">Subscribe to our Newsletter</h3>
+            <div className="flex items-center justify-center md:justify-start">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="px-4 py-2 rounded-l-md text-black"
+              />
+              <button className="bg-black px-4 py-2 rounded-r-md hover:bg-gray-800">
+                Subscribe
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
