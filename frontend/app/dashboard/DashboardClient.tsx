@@ -122,13 +122,13 @@ export default function DashboardPage() {
       )}
 
       <main
-        className={`flex-1 p-6 transition-all duration-300 ${
+        className={`relative flex-1 p-6 transition-all duration-300 ${
           isSidebarOpen ? "ml-64" : "ml-0"
         }`}
       >
         <Link
           href="/"
-          className="fixed top-4 right-4 flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-105 active:scale-95 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
+          className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-105 active:scale-95 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
         >
           <ArrowLeft className="w-5 h-5" />
           <span className="text-sm md:text-lg tracking-wider">Back</span>

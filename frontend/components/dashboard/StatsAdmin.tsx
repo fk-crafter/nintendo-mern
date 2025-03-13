@@ -7,14 +7,24 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { Package, ShoppingCart, Users, DollarSign } from "lucide-react";
+import { Bar, Doughnut } from "react-chartjs-2";
+import {
+  Package,
+  ShoppingCart,
+  Users,
+  DollarSign,
+  BarChart,
+  PieChart,
+  LineChart,
+} from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend
@@ -68,6 +78,23 @@ export default function StatsAdmin() {
     ],
   };
 
+  const doughnutChartData = {
+    labels: ["Products", "Orders", "Users", "Revenue"],
+    datasets: [
+      {
+        label: "Distribution",
+        data: [
+          stats.totalProducts,
+          stats.totalOrders,
+          stats.totalUsers,
+          stats.totalRevenue / 20,
+        ],
+        backgroundColor: ["#FFC107", "#FF5722", "#03A9F4", "#4CAF50"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
     <div className="p-4 max-w-5xl mx-auto">
       <section className="mb-8">
@@ -115,11 +142,27 @@ export default function StatsAdmin() {
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
           Statistics Overview
         </h2>
-        <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border">
-          <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-4">
-            📊 Overview of Stats
+        <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border mb-8">
+          <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-4 flex items-center justify-center gap-2">
+            <BarChart size={24} /> Overview of Stats
           </h3>
           <Bar data={barChartData} />
+        </div>
+
+        <div className="flex items-start gap-6">
+          <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border w-1/3">
+            <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-4 flex items-center justify-center gap-2">
+              <PieChart size={24} /> Stats Distribution
+            </h3>
+            <Doughnut data={doughnutChartData} />
+          </div>
+
+          <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border flex-1">
+            <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-4 flex items-center justify-center gap-2">
+              <LineChart size={24} /> Orders Over Time
+            </h3>
+            <p className="text-gray-600 text-center">graphics in progress...</p>
+          </div>
         </div>
       </section>
     </div>

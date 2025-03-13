@@ -142,85 +142,167 @@ export default function CheckoutPage() {
               )}
 
               <div className="mb-6">
-                <h2 className="text-xl font-bold text-red-600 mb-3 font-mono tracking-wider">
+                <h2 className="text-lg font-semibold text-gray-900 mb-3 md:text-xl">
                   Shipping Information
                 </h2>
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="border-4 border-gray-900 p-2 w-full rounded-md text-sm focus:outline-none focus:border-red-700 md:p-3 md:text-base"
-                />
 
-                <input
-                  type="text"
-                  placeholder="Delivery Address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  className="border-4 border-gray-900 p-3 w-full rounded-md mt-4 focus:outline-none focus:border-red-700"
-                />
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="border-4 border-gray-900 p-3 w-full rounded-md mt-4 focus:outline-none focus:border-red-700"
-                />
+                <fieldset className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="name"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      Full Name
+                    </label>
+                    <input
+                      id="name"
+                      type="text"
+                      placeholder="John Doe"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      aria-invalid={error && !name ? "true" : "false"}
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="email"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      Email Address
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="email@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      aria-invalid={error && !email ? "true" : "false"}
+                    />
+                  </div>
+
+                  <div className="flex flex-col col-span-2">
+                    <label
+                      htmlFor="address"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      Delivery Address
+                    </label>
+                    <input
+                      id="address"
+                      type="text"
+                      placeholder="123 Main Street, NY"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      aria-invalid={error && !address ? "true" : "false"}
+                    />
+                  </div>
+                </fieldset>
               </div>
 
               <div className="mb-6">
-                <h2 className="text-xl font-bold text-red-600 mb-3 font-mono tracking-wider">
+                <h2 className="text-lg font-semibold text-gray-900 mb-3 md:text-xl">
                   Payment Information
                 </h2>
 
-                <Cards
-                  number={cardNumber}
-                  name={cardName}
-                  expiry={cardExpiry}
-                  cvc={cardCVC}
-                  focused={focus}
-                />
-                <input
-                  type="text"
-                  placeholder="Cardholder Name"
-                  value={cardName}
-                  onChange={(e) => setCardName(e.target.value)}
-                  onFocus={() => setFocus("name")}
-                  className="border-4 border-gray-900 p-3 mt-6 w-full rounded-md focus:outline-none focus:border-red-700"
-                />
-                <input
-                  type="text"
-                  placeholder="Card Number"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
-                  onFocus={() => setFocus("number")}
-                  className="border-4 border-gray-900 p-3 w-full rounded-md mt-4 focus:outline-none focus:border-red-700"
-                />
-                <input
-                  type="text"
-                  placeholder="Expiry Date (MM/YY)"
-                  value={cardExpiry}
-                  onChange={(e) => setCardExpiry(e.target.value)}
-                  onFocus={() => setFocus("expiry")}
-                  className="border-4 border-gray-900 p-3 w-full rounded-md mt-4 focus:outline-none focus:border-red-700"
-                />
-                <input
-                  type="text"
-                  placeholder="CVC"
-                  value={cardCVC}
-                  onChange={(e) => setCardCVC(e.target.value)}
-                  onFocus={() => setFocus("cvc")}
-                  className="border-4 border-gray-900 p-3 w-full rounded-md mt-4 focus:outline-none focus:border-red-700"
-                />
+                <fieldset className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div className="col-span-2 flex justify-center">
+                    <Cards
+                      number={cardNumber}
+                      name={cardName}
+                      expiry={cardExpiry}
+                      cvc={cardCVC}
+                      focused={focus}
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="cardName"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      Cardholder Name
+                    </label>
+                    <input
+                      id="cardName"
+                      type="text"
+                      placeholder="John Doe"
+                      value={cardName}
+                      onChange={(e) => setCardName(e.target.value)}
+                      onFocus={() => setFocus("name")}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      aria-invalid={error && !cardName ? "true" : "false"}
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="cardNumber"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      Card Number
+                    </label>
+                    <input
+                      id="cardNumber"
+                      type="text"
+                      placeholder="1234 5678 9012 3456"
+                      value={cardNumber}
+                      onChange={(e) => setCardNumber(e.target.value)}
+                      onFocus={() => setFocus("number")}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      aria-invalid={error && !cardNumber ? "true" : "false"}
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="cardExpiry"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      Expiration Date
+                    </label>
+                    <input
+                      id="cardExpiry"
+                      type="text"
+                      placeholder="MM/YY"
+                      value={cardExpiry}
+                      onChange={(e) => setCardExpiry(e.target.value)}
+                      onFocus={() => setFocus("expiry")}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      aria-invalid={error && !cardExpiry ? "true" : "false"}
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="cardCVC"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      CVC
+                    </label>
+                    <input
+                      id="cardCVC"
+                      type="text"
+                      placeholder="123"
+                      value={cardCVC}
+                      onChange={(e) => setCardCVC(e.target.value)}
+                      onFocus={() => setFocus("cvc")}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      aria-invalid={error && !cardCVC ? "true" : "false"}
+                    />
+                  </div>
+                </fieldset>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-red-600 text-white py-2 rounded-full font-bold shadow-md transition-all transform active:scale-90 border-4 border-gray-900 hover:bg-red-700 hover:border-black md:py-3"
+                className="w-full bg-red-600 text-white py-3 rounded-md font-semibold shadow-md transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
               >
-                {loading ? "Processing Order..." : "Confirm Order 🛒"}
+                {loading ? "Processing Order..." : "Confirm Order"}
               </button>
             </form>
           </>
