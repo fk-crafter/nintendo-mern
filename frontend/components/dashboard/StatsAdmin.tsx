@@ -8,6 +8,8 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  LineElement,
+  PointElement,
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
 import {
@@ -17,7 +19,7 @@ import {
   DollarSign,
   BarChart,
   PieChart,
-  LineChart,
+  TrendingUp,
 } from "lucide-react";
 
 ChartJS.register(
@@ -25,6 +27,8 @@ ChartJS.register(
   LinearScale,
   BarElement,
   ArcElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend
@@ -37,6 +41,7 @@ export default function StatsAdmin() {
     totalUsers: 0,
     totalRevenue: 0,
     ordersOverTime: [],
+    revenueOverTime: [],
   });
 
   useEffect(() => {
@@ -149,17 +154,17 @@ export default function StatsAdmin() {
           <Bar data={barChartData} />
         </div>
 
-        <div className="flex items-start gap-6">
-          <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border w-1/3">
+        <div className="grid grid-cols-2 gap-6">
+          <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border">
             <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-4 flex items-center justify-center gap-2">
               <PieChart size={24} /> Stats Distribution
             </h3>
             <Doughnut data={doughnutChartData} />
           </div>
 
-          <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border flex-1">
+          <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border">
             <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-4 flex items-center justify-center gap-2">
-              <LineChart size={24} /> Orders Over Time
+              <TrendingUp size={24} /> Orders Over Time
             </h3>
             <p className="text-gray-600 text-center">graphics in progress...</p>
           </div>

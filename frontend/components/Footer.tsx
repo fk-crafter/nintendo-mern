@@ -54,7 +54,7 @@ export default function Footer() {
           <p>Phone: +123 456 789</p>
         </div>
 
-        <div className="text-center md:text-left">
+        <div className="text-center mt-5 lg:mt-0 md:text-left">
           <h3 className="font-semibold mb-2">Follow Us</h3>
           <div className="flex justify-center md:justify-start space-x-4">
             <Link

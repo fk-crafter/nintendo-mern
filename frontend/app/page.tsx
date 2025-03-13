@@ -10,6 +10,7 @@ import Guarantees from "@/components/Guarantee";
 import { Testimonial } from "@/components/Testimonial";
 import FloatingCart from "@/components/FloatingCart";
 import OrderBadge from "@/components/OrderBadge";
+import FAQ from "@/components/FAQ";
 
 export default function Home() {
   return (
@@ -24,7 +25,7 @@ export default function Home() {
         <ProductList />
       </main>
       <Testimonial />
-
+      <FAQ />
       <Footer />
       <FloatingCart />
     </div>
