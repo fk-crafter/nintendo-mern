@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
@@ -11,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { Package, ShoppingCart, Users, DollarSign } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -74,30 +73,37 @@ export default function StatsAdmin() {
       <section className="mb-8">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">Summary</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div className="bg-white p-6 rounded-lg shadow border">
-            <p className="text-4xl font-bold text-gray-900">
-              {stats.totalProducts}
-            </p>
-            <p className="text-lg text-gray-600">Total Products</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow border">
-            <p className="text-4xl font-bold text-gray-900">
-              {stats.totalOrders}
-            </p>
-            <p className="text-lg text-gray-600">Total Orders</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow border">
-            <p className="text-4xl font-bold text-gray-900">
-              {stats.totalUsers}
-            </p>
-            <p className="text-lg text-gray-600">Total Users</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow border">
-            <p className="text-4xl font-bold text-gray-900">
-              {stats.totalRevenue}€
-            </p>
-            <p className="text-lg text-gray-600">Total Revenue</p>
-          </div>
+          {[
+            {
+              icon: <Package size={40} />,
+              value: stats.totalProducts,
+              label: "Total Products",
+            },
+            {
+              icon: <ShoppingCart size={40} />,
+              value: stats.totalOrders,
+              label: "Total Orders",
+            },
+            {
+              icon: <Users size={40} />,
+              value: stats.totalUsers,
+              label: "Total Users",
+            },
+            {
+              icon: <DollarSign size={40} />,
+              value: `${stats.totalRevenue}€`,
+              label: "Total Revenue",
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="p-6 rounded-lg shadow-lg text-white bg-red-600 flex flex-col items-center border-4 border-white"
+            >
+              {item.icon}
+              <p className="text-4xl font-bold mt-2">{item.value}</p>
+              <p className="text-lg">{item.label}</p>
+            </div>
+          ))}
         </div>
       </section>
 
