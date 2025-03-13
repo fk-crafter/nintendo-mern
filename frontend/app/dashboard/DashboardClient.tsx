@@ -52,8 +52,15 @@ export default function DashboardPage() {
 
   if (auth?.loading) return <p className="text-center">Checking...</p>;
 
+  const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isSidebarOpen && !(e.target as HTMLElement).closest("aside")) {
+      setIsSidebarOpen(false);
+    }
+  };
+
   return (
-    <div className="flex h-screen relative">
+    <div className="flex h-screen relative" onClick={handleOutsideClick}>
+      {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 bg-gray-900 text-white transition-transform duration-300 ${
           isSidebarOpen ? "w-64" : "w-0 overflow-hidden"
@@ -103,20 +110,26 @@ export default function DashboardPage() {
         </div>
       </aside>
 
+      {/* Mobile Sidebar Open Button */}
       {!isSidebarOpen && (
         <button
           className="fixed top-4 left-4 bg-gray-900 text-white p-2 rounded-md z-50"
-          onClick={() => setIsSidebarOpen(true)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsSidebarOpen(true);
+          }}
         >
           <Menu className="w-6 h-6" />
         </button>
       )}
 
+      {/* Main Content */}
       <main
         className={`flex-1 p-6 transition-all duration-300 ${
           isSidebarOpen ? "ml-64" : "ml-0"
         }`}
       >
+        {/* Fixed Back Button */}
         <Link
           href="/"
           className="fixed top-4 right-4 flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-105 active:scale-95 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
