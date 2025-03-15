@@ -29,7 +29,7 @@ export default function CheckoutPage() {
   const [state, setState] = useState("Connecticut");
   const [zip, setZip] = useState("");
   const [phone, setPhone] = useState("");
-  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [shippingCost, setShippingCost] = useState(0);
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -39,6 +39,15 @@ export default function CheckoutPage() {
   const [cardName, setCardName] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCVC, setCardCVC] = useState("");
+
+  interface AddressSuggestion {
+    display_name: string;
+    address: {
+      city?: string;
+      state?: string;
+      postcode?: string;
+    };
+  }
 
   const [focus, setFocus] = useState<
     "name" | "number" | "expiry" | "cvc" | undefined
@@ -84,7 +93,7 @@ export default function CheckoutPage() {
       const bigCities = ["Lyon", "Marseille", "Bordeaux", "Lille"];
       if (selectedPlace.address.city === "Paris") {
         setShippingCost(15);
-      } else if (bigCities.includes(selectedPlace.address.city)) {
+      } else if (bigCities.includes(selectedPlace.address.city || "")) {
         setShippingCost(10);
       } else {
         setShippingCost(7);
