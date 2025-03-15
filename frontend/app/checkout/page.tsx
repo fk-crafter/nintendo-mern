@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 
 import {
@@ -32,6 +32,8 @@ export default function CheckoutPage() {
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [shippingCost, setShippingCost] = useState(0);
   const [promoCode, setPromoCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [promoError, setPromoError] = useState("");
 
   const [cardNumber, setCardNumber] = useState("");
   const [cardName, setCardName] = useState("");
@@ -150,6 +152,30 @@ export default function CheckoutPage() {
     }
   };
 
+  const applyPromoCode = () => {
+    const minOrderAmount = 30;
+    const discountPercentage = 15;
+    const validPromoCode = "DISCOUNT15";
+
+    const orderTotal =
+      cart.reduce((acc, item) => acc + item.price * item.quantity, 0) +
+      shippingCost;
+
+    if (promoCode !== validPromoCode) {
+      setPromoError("Invalid promo code");
+      return;
+    }
+
+    if (orderTotal < minOrderAmount) {
+      setPromoError(`Minimum order amount of ${minOrderAmount}€ required`);
+      return;
+    }
+
+    const discountAmount = (orderTotal * discountPercentage) / 100;
+    setDiscount(discountAmount);
+    setPromoError("");
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 md:flex-row md:p-6">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-4 border-4 border-gray-900 relative md:max-w-2xl lg:max-w-3xl">
@@ -172,8 +198,9 @@ export default function CheckoutPage() {
         ) : (
           <>
             <div className="border-4 border-gray-900 rounded-lg bg-white p-4 mb-6">
-              <h2 className="text-xl font-bold text-red-600 mb-3 font-mono tracking-wider">
-                Order Summary 🛍️
+              <h2 className="text-xl font-bold text-red-600 mb-3 font-mono tracking-wider flex items-center gap-2">
+                <ShoppingBag className="w-6 h-6" />
+                Order Summary
               </h2>
               <ul className="divide-y divide-gray-900">
                 {cart.map((item) => (
@@ -191,13 +218,22 @@ export default function CheckoutPage() {
                 Shipping Cost:{" "}
                 <span className="text-red-600">{shippingCost}€</span>
               </p>
+              {discount > 0 && (
+                <p className="text-green-600">
+                  Discount Applied: -{discount.toFixed(2)}€
+                </p>
+              )}
               <p className="mt-4 text-2xl font-bold text-gray-900 text-right font-mono">
                 Total:{" "}
                 <span className="text-red-600">
-                  {cart.reduce(
-                    (acc, item) => acc + item.price * item.quantity,
-                    0
-                  ) + shippingCost}
+                  {(
+                    cart.reduce(
+                      (acc, item) => acc + item.price * item.quantity,
+                      0
+                    ) +
+                    shippingCost -
+                    discount
+                  ).toFixed(2)}
                   €
                 </span>
               </p>
@@ -216,12 +252,20 @@ export default function CheckoutPage() {
                     placeholder="Enter code"
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
-                    className="w-32 border border-gray-300 px-2 py-1 rounded-md focus:outline-none focus:border-blue-500"
+                    className="w-32 border border-gray-300 px-2 py-1 rounded-md focus:outline-none focus:border-red-500"
                   />
-                  <button className="bg-red-600 text-white px-3 py-1 rounded-md font-semibold hover:bg-red-700 transition">
+
+                  <button
+                    type="button"
+                    onClick={applyPromoCode}
+                    className="bg-red-600 text-white px-3 py-1 rounded-md font-semibold hover:bg-red-700 transition"
+                  >
                     Apply
                   </button>
                 </div>
+                {promoError && (
+                  <p className="text-red-600 text-sm mt-1">{promoError}</p>
+                )}
               </div>
             </div>
 
@@ -286,7 +330,7 @@ export default function CheckoutPage() {
                       placeholder="John Doe"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                     />
                   </div>
 
@@ -303,7 +347,7 @@ export default function CheckoutPage() {
                       placeholder="email@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                     />
                   </div>
 
@@ -320,7 +364,7 @@ export default function CheckoutPage() {
                       placeholder="Company Name"
                       value={company}
                       onChange={(e) => setCompany(e.target.value)}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                     />
                   </div>
 
@@ -340,7 +384,7 @@ export default function CheckoutPage() {
                           fetchSuggestions(e.target.value);
                         }}
                         placeholder="Start typing address..."
-                        className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                        className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                       />
                       <ComboboxPopover>
                         <ComboboxList>
@@ -367,7 +411,7 @@ export default function CheckoutPage() {
                       type="text"
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                     />
                   </div>
 
@@ -384,7 +428,7 @@ export default function CheckoutPage() {
                       placeholder="Apt 2B"
                       value={apartment}
                       onChange={(e) => setApartment(e.target.value)}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                     />
                   </div>
 
@@ -400,7 +444,7 @@ export default function CheckoutPage() {
                       type="text"
                       value={state}
                       onChange={(e) => setState(e.target.value)}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                     />
                   </div>
 
@@ -416,7 +460,7 @@ export default function CheckoutPage() {
                       type="text"
                       value={zip}
                       onChange={(e) => setZip(e.target.value)}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                     />
                   </div>
                 </fieldset>
@@ -452,7 +496,7 @@ export default function CheckoutPage() {
                       value={cardName}
                       onChange={(e) => setCardName(e.target.value)}
                       onFocus={() => setFocus("name")}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                       aria-invalid={error && !cardName ? "true" : "false"}
                     />
                   </div>
@@ -471,7 +515,7 @@ export default function CheckoutPage() {
                       value={cardNumber}
                       onChange={(e) => setCardNumber(e.target.value)}
                       onFocus={() => setFocus("number")}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                       aria-invalid={error && !cardNumber ? "true" : "false"}
                     />
                   </div>
@@ -490,7 +534,7 @@ export default function CheckoutPage() {
                       value={cardExpiry}
                       onChange={(e) => setCardExpiry(e.target.value)}
                       onFocus={() => setFocus("expiry")}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                       aria-invalid={error && !cardExpiry ? "true" : "false"}
                     />
                   </div>
@@ -509,7 +553,7 @@ export default function CheckoutPage() {
                       value={cardCVC}
                       onChange={(e) => setCardCVC(e.target.value)}
                       onFocus={() => setFocus("cvc")}
-                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                       aria-invalid={error && !cardCVC ? "true" : "false"}
                     />
                   </div>
@@ -519,7 +563,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-red-600 text-white py-3 rounded-md font-semibold shadow-md transition-all transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+                className="w-full bg-red-600 text-white py-3 rounded-md font-semibold shadow-md hover:bg-red-700 transition active:scale-95 focus:outline-none focus:ring-2"
               >
                 {loading ? "Processing Order..." : "Confirm Order"}
               </button>
