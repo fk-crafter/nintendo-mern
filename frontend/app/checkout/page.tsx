@@ -119,10 +119,13 @@ export default function CheckoutPage() {
           product: item._id,
           quantity: item.quantity,
         })),
-        totalPrice: cart.reduce(
-          (acc, item) => acc + item.price * item.quantity,
-          0
-        ),
+        totalPrice: (
+          cart.reduce((acc, item) => acc + item.price * item.quantity, 0) +
+          shippingCost -
+          discount
+        ).toFixed(2), // On soustrait la réduction
+
+        promoApplied: discount > 0, // Stocke si le code promo a été appliqué
         cardDetails: { cardNumber, cardName, cardExpiry, cardCVC },
       };
 
