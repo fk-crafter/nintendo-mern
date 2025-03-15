@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Hand } from "lucide-react";
 
 export default function WelcomeNotification() {
   const [showWelcome, setShowWelcome] = useState(false);
@@ -32,9 +33,9 @@ export default function WelcomeNotification() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-2 left-[45%] transform -translate-x-[45%] bg-green-500 text-white px-6 py-2 rounded-md shadow-lg text-lg font-semibold z-50"
+            className="absolute top-2 left-[45%] transform -translate-x-[45%] bg-green-500 text-white px-6 py-2 rounded-md shadow-lg text-lg font-semibold z-50 flex items-center gap-2"
           >
-            Welcome 👋
+            <Hand size={24} /> Welcome
           </motion.div>
         )}
       </AnimatePresence>

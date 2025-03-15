@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { toast } from "react-hot-toast";
-
+import { ShoppingCart } from "lucide-react";
 interface Product {
   _id: string;
   name: string;
@@ -94,10 +94,10 @@ export default function ProductPage() {
             </p>
 
             <button
-              className="mt-6 w-full bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition font-bold text-lg shadow-md"
+              className="mt-6 w-full bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition font-bold text-lg shadow-md flex items-center justify-center gap-2"
               onClick={handleAddToCart}
             >
-              🛒 Add to Cart
+              <ShoppingCart size={24} /> Add to Cart
             </button>
           </div>
         </div>

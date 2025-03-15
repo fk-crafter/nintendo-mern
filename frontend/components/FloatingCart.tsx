@@ -74,7 +74,9 @@ const FloatingCart = () => {
             >
               ✖
             </button>
-            <h2 className="text-xl font-bold mb-4">🛒 My Cart</h2>
+            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+              <ShoppingCart size={24} /> My Cart
+            </h2>
             {cart.length === 0 ? (
               <p className="text-gray-500">Your cart is empty.</p>
             ) : (

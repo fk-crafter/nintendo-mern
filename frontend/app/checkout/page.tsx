@@ -466,6 +466,22 @@ export default function CheckoutPage() {
                       className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
                     />
                   </div>
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="phone"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      Phone Number
+                    </label>
+                    <input
+                      id="phone"
+                      type="tel"
+                      placeholder="123-456-7890"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-red-500 text-sm"
+                    />
+                  </div>
                 </fieldset>
               </div>
 

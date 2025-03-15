@@ -59,7 +59,6 @@ export default function ImageCollection() {
 
   return (
     <div ref={containerRef} className="relative w-full h-[120vh]">
-      {/* Fond dynamique */}
       <div
         className={`absolute top-0 left-0 w-full h-full transition-colors duration-500 ${
           activeText === "Choose your own world"
@@ -70,7 +69,6 @@ export default function ImageCollection() {
         }`}
       />
 
-      {/* Texte au-dessus */}
       <div className="absolute top-56 lg:top-32 left-1/2 -translate-x-1/2 z-10 transition-all duration-300">
         <div
           key={activeText}
