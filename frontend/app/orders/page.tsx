@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { Calendar, Package, ShoppingCart, Wallet } from "lucide-react";
 
 interface Order {
   _id: string;
@@ -62,13 +63,13 @@ export default function OrdersPage() {
           <span className="text-lg tracking-wider">Back to Home</span>
         </Link>
 
-        <h1 className="text-3xl font-extrabold text-red-600 mb-6 text-center">
-          Your Orders 📦
+        <h1 className="text-3xl font-extrabold text-red-600 mb-6 text-center flex items-center justify-center gap-2">
+          Your Orders <Package size={28} />
         </h1>
 
         {orders.length === 0 ? (
-          <p className="text-gray-500 text-center text-lg">
-            No orders placed yet. 🛒
+          <p className="text-gray-500 text-center text-lg flex items-center justify-center gap-2">
+            No orders placed yet. <ShoppingCart size={20} />
           </p>
         ) : (
           <div className="space-y-6">
@@ -92,8 +93,8 @@ export default function OrdersPage() {
                   key={order._id}
                   className="border-4 border-black p-6 rounded-lg shadow-md bg-gray-50"
                 >
-                  <p className="text-gray-700 font-semibold text-lg">
-                    📅 Ordered on{" "}
+                  <p className="text-gray-700 font-semibold text-lg flex items-center gap-2">
+                    <Calendar size={20} /> Ordered on{" "}
                     <span className="text-red-600 font-bold">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </span>
@@ -114,15 +115,13 @@ export default function OrdersPage() {
                       </li>
                     ))}
                   </ul>
-
                   {order.promoApplied && (
                     <p className="text-green-600 text-md text-right">
                       -{(order.totalPrice * 0.15).toFixed(2)}€ discount applied
                     </p>
                   )}
-
-                  <p className="mt-4 text-xl font-bold text-blue-600 text-right">
-                    💰 Total: {finalTotal.toFixed(2)}€
+                  <p className="mt-4 text-xl font-bold text-red-600 text-right flex items-center justify-end gap-2">
+                    <Wallet size={24} /> Total: {finalTotal.toFixed(2)}€
                   </p>
                 </div>
               );
