@@ -30,6 +30,8 @@ export default function CheckoutPage() {
   const [zip, setZip] = useState("");
   const [phone, setPhone] = useState("");
   const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [shippingCost, setShippingCost] = useState(0);
+  const [promoCode, setPromoCode] = useState("");
 
   const [cardNumber, setCardNumber] = useState("");
   const [cardName, setCardName] = useState("");
@@ -76,6 +78,15 @@ export default function CheckoutPage() {
       setCity(selectedPlace.address.city || "");
       setState(selectedPlace.address.state || "");
       setZip(selectedPlace.address.postcode || "");
+
+      const bigCities = ["Lyon", "Marseille", "Bordeaux", "Lille"];
+      if (selectedPlace.address.city === "Paris") {
+        setShippingCost(15);
+      } else if (bigCities.includes(selectedPlace.address.city)) {
+        setShippingCost(10);
+      } else {
+        setShippingCost(7);
+      }
     }
     setSuggestions([]);
   };
@@ -176,16 +187,42 @@ export default function CheckoutPage() {
                   </li>
                 ))}
               </ul>
+              <p>
+                Shipping Cost:{" "}
+                <span className="text-red-600">{shippingCost}€</span>
+              </p>
               <p className="mt-4 text-2xl font-bold text-gray-900 text-right font-mono">
                 Total:{" "}
                 <span className="text-red-600">
                   {cart.reduce(
                     (acc, item) => acc + item.price * item.quantity,
                     0
-                  )}
+                  ) + shippingCost}
                   €
                 </span>
               </p>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="promoCode"
+                  className="block text-gray-700 font-semibold mb-1"
+                >
+                  Do you have a promo code?
+                </label>
+                <div className="flex items-center space-x-2">
+                  <input
+                    id="promoCode"
+                    type="text"
+                    placeholder="Enter code"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                    className="w-32 border border-gray-300 px-2 py-1 rounded-md focus:outline-none focus:border-blue-500"
+                  />
+                  <button className="bg-red-600 text-white px-3 py-1 rounded-md font-semibold hover:bg-red-700 transition">
+                    Apply
+                  </button>
+                </div>
+              </div>
             </div>
 
             <form
