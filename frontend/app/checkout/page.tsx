@@ -9,11 +9,28 @@ import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox";
+import "@reach/combobox/styles.css";
+import axios from "axios";
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [apartment, setApartment] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("Connecticut");
+  const [zip, setZip] = useState("");
+  const [phone, setPhone] = useState("");
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+
   const [cardNumber, setCardNumber] = useState("");
   const [cardName, setCardName] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
@@ -25,6 +42,43 @@ export default function CheckoutPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const fetchSuggestions = async (query: string) => {
+    if (!query) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search`,
+        {
+          params: {
+            q: query,
+            format: "json",
+            addressdetails: 1,
+            limit: 5,
+          },
+        }
+      );
+      setSuggestions(response.data);
+    } catch (error) {
+      console.error("Error fetching address suggestions: ", error);
+    }
+  };
+
+  const handleSelect = (val: string) => {
+    const selectedPlace = suggestions.find(
+      (place) => place.display_name === val
+    );
+    if (selectedPlace) {
+      setAddress(selectedPlace.display_name);
+      setCity(selectedPlace.address.city || "");
+      setState(selectedPlace.address.state || "");
+      setZip(selectedPlace.address.postcode || "");
+    }
+    setSuggestions([]);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,7 +201,7 @@ export default function CheckoutPage() {
                   Express Checkout
                 </h3>
 
-                <div className="flex justify-center flex-wrap space-x-3 mb-4">
+                <div className="flex cursor-pointer justify-center flex-wrap space-x-3 mb-4">
                   <Image
                     src="/img/shop-pay.png"
                     alt="Shop Pay"
@@ -181,7 +235,6 @@ export default function CheckoutPage() {
                 <h2 className="text-lg font-semibold text-gray-900 mb-3 md:text-xl">
                   Shipping Information
                 </h2>
-
                 <fieldset className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="flex flex-col">
                     <label
@@ -197,7 +250,6 @@ export default function CheckoutPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
-                      aria-invalid={error && !name ? "true" : "false"}
                     />
                   </div>
 
@@ -215,25 +267,119 @@ export default function CheckoutPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
-                      aria-invalid={error && !email ? "true" : "false"}
                     />
                   </div>
 
-                  <div className="flex flex-col col-span-2">
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="company"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      Company (for business addresses)
+                    </label>
+                    <input
+                      id="company"
+                      type="text"
+                      placeholder="Company Name"
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
                     <label
                       htmlFor="address"
                       className="text-gray-700 text-sm font-medium"
                     >
                       Delivery Address
                     </label>
+                    <Combobox onSelect={handleSelect}>
+                      <ComboboxInput
+                        id="address"
+                        value={address}
+                        onChange={(e) => {
+                          setAddress(e.target.value);
+                          fetchSuggestions(e.target.value);
+                        }}
+                        placeholder="Start typing address..."
+                        className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                      />
+                      <ComboboxPopover>
+                        <ComboboxList>
+                          {suggestions.map((place, index) => (
+                            <ComboboxOption
+                              key={index}
+                              value={place.display_name}
+                            />
+                          ))}
+                        </ComboboxList>
+                      </ComboboxPopover>
+                    </Combobox>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="city"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      City
+                    </label>
                     <input
-                      id="address"
+                      id="city"
                       type="text"
-                      placeholder="123 Main Street, NY"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
                       className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
-                      aria-invalid={error && !address ? "true" : "false"}
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="apartment"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      Apartment, suite, etc. (optional)
+                    </label>
+                    <input
+                      id="apartment"
+                      type="text"
+                      placeholder="Apt 2B"
+                      value={apartment}
+                      onChange={(e) => setApartment(e.target.value)}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="state"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      State
+                    </label>
+                    <input
+                      id="state"
+                      type="text"
+                      value={state}
+                      onChange={(e) => setState(e.target.value)}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="zip"
+                      className="text-gray-700 text-sm font-medium"
+                    >
+                      ZIP Code
+                    </label>
+                    <input
+                      id="zip"
+                      type="text"
+                      value={zip}
+                      onChange={(e) => setZip(e.target.value)}
+                      className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:border-blue-500 text-sm"
                     />
                   </div>
                 </fieldset>
