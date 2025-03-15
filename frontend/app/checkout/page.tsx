@@ -190,7 +190,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 md:flex-row md:p-6">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-4 border-4 border-gray-900 relative md:max-w-2xl lg:max-w-3xl">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-4 border-1 border-gray-900 relative md:max-w-2xl lg:max-w-3xl">
         <button
           onClick={() => router.back()}
           className="absolute top-2 left-2 flex items-center justify-center gap-1 px-2 py-1 rounded-full text-xs bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-105 active:scale-90 border-2 border-gray-900 hover:bg-red-700 hover:border-black md:top-4 md:left-4 md:px-4 md:py-2 md:text-lg md:border-4 md:hover:scale-110"
@@ -209,23 +209,36 @@ export default function CheckoutPage() {
           </p>
         ) : (
           <>
-            <div className="border-4 border-gray-900 rounded-lg bg-white p-4 mb-6">
+            <div className="border-1 border-gray-900 rounded-lg bg-white p-4 mb-6">
               <h2 className="text-xl font-bold text-red-600 mb-3 font-mono tracking-wider flex items-center gap-2">
                 <ShoppingBag className="w-6 h-6" />
                 Order Summary
               </h2>
               <ul className="divide-y divide-gray-900">
                 {cart.map((item) => (
-                  <li key={item._id} className="flex justify-between py-3">
-                    <span className="text-gray-800 font-mono">
-                      {item.name} x {item.quantity}
-                    </span>
-                    <span className="font-bold text-red-600 font-mono">
-                      {item.price * item.quantity}€
-                    </span>
+                  <li
+                    key={item._id}
+                    className="flex items-center py-3 space-x-4"
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={50}
+                      height={50}
+                      className="rounded-md border-2 border-black"
+                    />
+                    <div className="flex-1">
+                      <span className="text-gray-800 font-mono block">
+                        {item.name} x {item.quantity}
+                      </span>
+                      <span className="font-bold text-red-600 font-mono">
+                        {item.price * item.quantity}€
+                      </span>
+                    </div>
                   </li>
                 ))}
               </ul>
+
               <p>
                 Shipping Cost:{" "}
                 <span className="text-red-600">{shippingCost}€</span>
@@ -283,7 +296,7 @@ export default function CheckoutPage() {
 
             <form
               onSubmit={handleSubmit}
-              className="space-y-4 bg-white p-4 rounded-lg shadow-md border-4 border-gray-900 md:p-6"
+              className="space-y-4 bg-white p-4 rounded-lg shadow-md border-1 border-gray-900 md:p-6"
             >
               {error && (
                 <p className="text-red-600 text-center font-bold">{error}</p>

@@ -91,7 +91,7 @@ export default function OrdersPage() {
               return (
                 <div
                   key={order._id}
-                  className="border-4 border-black p-6 rounded-lg shadow-md bg-gray-50"
+                  className="border-1 border-black p-6 rounded-lg shadow-md bg-gray-50"
                 >
                   <p className="text-gray-700 font-semibold text-lg flex items-center gap-2">
                     <Calendar size={20} /> Ordered on{" "}
