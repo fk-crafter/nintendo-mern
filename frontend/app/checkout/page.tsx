@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
@@ -142,6 +143,41 @@ export default function CheckoutPage() {
               )}
 
               <div className="mb-6">
+                <h3 className="text-center text-gray-700 font-semibold mb-2 text-md md:text-lg">
+                  Express Checkout
+                </h3>
+
+                <div className="flex justify-center flex-wrap space-x-3 mb-4">
+                  <Image
+                    src="/img/shop-pay.png"
+                    alt="Shop Pay"
+                    className="max-w-[200px] object-contain"
+                    width={200}
+                    height={50}
+                  />
+                  <Image
+                    src="/img/google.png"
+                    alt="Google Pay"
+                    className="max-w-[200px] object-contain"
+                    width={200}
+                    height={50}
+                  />
+                  <Image
+                    src="/img/apple.png"
+                    alt="Apple Pay"
+                    className="max-w-[200px] object-contain"
+                    width={200}
+                    height={50}
+                  />
+                  <Image
+                    src="/img/paypal.png"
+                    alt="PayPal"
+                    className="max-w-[200px] mt-2 object-contain"
+                    width={200}
+                    height={50}
+                  />
+                </div>
+
                 <h2 className="text-lg font-semibold text-gray-900 mb-3 md:text-xl">
                   Shipping Information
                 </h2>

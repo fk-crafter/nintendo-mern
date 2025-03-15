@@ -93,7 +93,12 @@ export default function HeroSection() {
         </div>
       </motion.div>
 
-      <div className="mt-4 md:mt-6 flex flex-col items-center">
+      <motion.div
+        className="mt-4 md:mt-6 flex flex-col items-center"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <div className="text-lg md:text-xl font-semibold text-gray-900">
           4.8/5
         </div>
@@ -103,7 +108,7 @@ export default function HeroSection() {
             Trusted by 99+ users
           </span>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
