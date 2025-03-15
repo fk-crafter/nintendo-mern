@@ -347,124 +347,66 @@ export default function ProductsAdmin() {
               <h3 className="text-2xl font-bold text-red-800 mb-4">
                 Product List
               </h3>
-              {products.some((product) => product.category === "zelda") && (
-                <div className="mb-6">
-                  <h4 className="text-xl font-bold text-red-800 mb-2">Zelda</h4>
-                  <div className="space-y-4">
-                    {products
-                      .filter((product) => product.category === "zelda")
-                      .map((product) => (
-                        <div
-                          key={product._id}
-                          className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
-                        >
-                          <div>
-                            <p className="font-bold text-red-800">
-                              {product.name}
-                            </p>
-                            <p className="text-red-600">{product.price}€</p>
-                          </div>
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleEditProduct(product)}
-                              className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
+              {["zelda", "mario", "pokemon"].map(
+                (category) =>
+                  products.some((product) => product.category === category) && (
+                    <div key={category} className="mb-6">
+                      <h4 className="text-2xl font-bold text-gray-800 mb-4 capitalize">
+                        {category}
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {products
+                          .filter((product) => product.category === category)
+                          .map((product) => (
+                            <div
+                              key={product._id}
+                              className="bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-200 relative"
                             >
-                              <Pencil size={16} /> Edit
-                            </button>
-                            <button
-                              onClick={() => {
-                                setSelectedProduct(product._id);
-                                setShowModal(true);
-                              }}
-                              className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
-                            >
-                              <Trash2 size={16} /> Delete
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              )}
-              {products.some((product) => product.category === "mario") && (
-                <div className="mb-6">
-                  <h4 className="text-xl font-bold text-red-800 mb-2">Mario</h4>
-                  <div className="space-y-4">
-                    {products
-                      .filter((product) => product.category === "mario")
-                      .map((product) => (
-                        <div
-                          key={product._id}
-                          className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
-                        >
-                          <div>
-                            <p className="font-bold text-red-800">
-                              {product.name}
-                            </p>
-                            <p className="text-red-600">{product.price}€</p>
-                          </div>
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleEditProduct(product)}
-                              className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
-                            >
-                              <Pencil size={16} /> Edit
-                            </button>
-                            <button
-                              onClick={() => {
-                                setSelectedProduct(product._id);
-                                setShowModal(true);
-                              }}
-                              className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
-                            >
-                              <Trash2 size={16} /> Delete
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              )}
-              {products.some((product) => product.category === "pokemon") && (
-                <div className="mb-6">
-                  <h4 className="text-xl font-bold text-red-800 mb-2">
-                    Pokémon
-                  </h4>
-                  <div className="space-y-4">
-                    {products
-                      .filter((product) => product.category === "pokemon")
-                      .map((product) => (
-                        <div
-                          key={product._id}
-                          className="flex flex-col md:flex-row items-center justify-between border border-gray-300 p-4 rounded-lg bg-white shadow-md gap-3"
-                        >
-                          <div>
-                            <p className="font-bold text-red-800">
-                              {product.name}
-                            </p>
-                            <p className="text-red-600">{product.price}€</p>
-                          </div>
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleEditProduct(product)}
-                              className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 flex items-center gap-1"
-                            >
-                              <Pencil size={16} /> Edit
-                            </button>
-                            <button
-                              onClick={() => {
-                                setSelectedProduct(product._id);
-                                setShowModal(true);
-                              }}
-                              className="bg-red-700 text-white px-3 py-1 rounded-md hover:bg-red-800 flex items-center gap-1"
-                            >
-                              <Trash2 size={16} /> Delete
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
+                              {/* Image */}
+                              <div className="relative">
+                                <Image
+                                  src={product.image}
+                                  alt={product.name}
+                                  width={500}
+                                  height={300}
+                                  className="w-full h-40 object-cover"
+                                />
+                                <button
+                                  className="absolute top-2 right-2 bg-white p-2 rounded-full shadow hover:bg-gray-100"
+                                  onClick={() => {
+                                    setSelectedProduct(product._id);
+                                    setShowModal(true);
+                                  }}
+                                >
+                                  <Trash2 className="text-red-500" size={18} />
+                                </button>
+                              </div>
+
+                              {/* Infos Produit */}
+                              <div className="p-4">
+                                <h3 className="text-lg font-bold text-gray-800">
+                                  {product.name}
+                                </h3>
+                                <p className="text-sm text-gray-500 mb-3">
+                                  {product.description}
+                                </p>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-lg font-semibold text-red-600">
+                                    {product.price}€
+                                  </span>
+                                  <button
+                                    onClick={() => handleEditProduct(product)}
+                                    className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 flex items-center gap-1"
+                                  >
+                                    <Pencil size={16} /> Edit
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )
               )}
             </motion.div>
           )}
