@@ -76,9 +76,7 @@ export default function OrdersAdmin() {
 
       {error && <p className="text-red-600 text-center font-bold">{error}</p>}
       {loading ? (
-        <p className="text-yellow-500 text-center text-lg font-bold">
-          Loading...
-        </p>
+        <p className="text-red-500 text-center text-lg font-bold">Loading...</p>
       ) : orders.length === 0 ? (
         <p className="text-gray-700 text-center font-bold text-lg">
           No orders available. 😢

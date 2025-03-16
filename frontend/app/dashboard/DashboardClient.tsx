@@ -70,12 +70,21 @@ export default function DashboardPage() {
             isSidebarOpen ? "w-64" : "w-0 opacity-0"
           }`}
         >
-          <button
-            className="absolute top-4 right-4 text-gray-300 hover:text-white"
-            onClick={() => setIsSidebarOpen(false)}
-          >
-            <X className="w-6 h-6" />
-          </button>
+          <div className="absolute top-4 left-4 flex items-center w-full px-4">
+            <button
+              className="text-gray-300 -ml-3 hover:text-white"
+              onClick={() => router.push("/")}
+            >
+              <ArrowLeft className="w-6 h-6" />
+            </button>
+            <button
+              className="ml-auto mr-5 text-gray-300 hover:text-white"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
           <Image
             src="/img/nintendologo.png"
             alt="Nintendo Logo"
@@ -126,14 +135,6 @@ export default function DashboardPage() {
           isSidebarOpen ? "ml-64" : "ml-0"
         }`}
       >
-        <Link
-          href="/"
-          className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white font-bold shadow-md transition-all transform hover:scale-105 active:scale-95 border-4 border-gray-900 hover:bg-red-700 hover:border-black"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span className="text-sm md:text-lg tracking-wider">Back</span>
-        </Link>
-
         <h1 className="text-2xl text-center md:text-3xl font-bold my-6 text-gray-800">
           Admin Dashboard
         </h1>
