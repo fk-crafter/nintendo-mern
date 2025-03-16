@@ -36,6 +36,7 @@ export default function ProductsAdmin() {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const [isFormVisible, setIsFormVisible] = useState(false);
 
@@ -166,6 +167,11 @@ export default function ProductsAdmin() {
     setImage(product.image);
     setSelectedProduct(product._id);
     setIsEditing(true);
+    setToastMessage("Product ready for editing");
+
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3000);
   };
 
   const handleDeleteProduct = async () => {
@@ -196,7 +202,12 @@ export default function ProductsAdmin() {
 
   return (
     <div className="min-h-screen flex flex-col items-center p-6">
-      <div className="w-full max-w-lg md:max-w-4xl bg-white rounded-lg shadow-xl p-6 border border-red-800">
+      <div className="w-full max-w-5xl md:max-w-6xl bg-white rounded-lg shadow-xl p-8 border border-red-800">
+        {toastMessage && (
+          <div className="fixed bottom-6 z-50 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-3 px-6 rounded-md shadow-md">
+            <p>{toastMessage}</p>
+          </div>
+        )}
         <h2 className="text-4xl font-extrabold text-red-800 mb-6 text-center drop-shadow-lg flex items-center justify-center gap-2">
           <Gamepad2 size={32} /> Product Management
         </h2>
@@ -251,7 +262,7 @@ export default function ProductsAdmin() {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700  "
+                  className="border border-red-300 p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700"
                   required
                 >
                   <option value="" disabled hidden>
@@ -267,7 +278,7 @@ export default function ProductsAdmin() {
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="border  p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 mt-4 resize-none"
+                className="border p-3 rounded-md w-full outline-none focus:ring-2 focus:ring-red-700 mt-4 resize-none"
                 required
               />
 
@@ -318,23 +329,40 @@ export default function ProductsAdmin() {
                 )}
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-red-700 text-white py-3 mt-4 rounded-lg shadow-md hover:bg-red-800 transition-all duration-200 font-bold w-full md:w-auto px-6 flex items-center gap-2 justify-center"
-              >
-                {loading ? (
-                  "Processing..."
-                ) : isEditing ? (
-                  <>
-                    <Edit3 size={20} /> Update Product
-                  </>
-                ) : (
-                  <>
-                    <PlusCircle size={20} /> Add Product
-                  </>
-                )}
-              </button>
+              <div className="flex justify-between pt-5">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-red-700 text-white py-3 mt-4 rounded-lg shadow-md hover:bg-red-800 transition-all duration-200 font-bold w-full md:w-auto px-6 flex items-center gap-2 justify-center"
+                >
+                  {loading ? (
+                    "Processing..."
+                  ) : isEditing ? (
+                    <>
+                      <Edit3 size={20} /> Update Product
+                    </>
+                  ) : (
+                    <>
+                      <PlusCircle size={20} /> Add Product
+                    </>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setName("");
+                    setDescription("");
+                    setPrice("");
+                    setStock("");
+                    setCategory("");
+                    setImage("");
+                  }}
+                  className="bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
             </motion.form>
           ) : (
             <motion.div
@@ -362,14 +390,13 @@ export default function ProductsAdmin() {
                               key={product._id}
                               className="bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-200 relative"
                             >
-                              {/* Image */}
                               <div className="relative">
                                 <Image
                                   src={product.image}
                                   alt={product.name}
                                   width={500}
                                   height={300}
-                                  className="w-full h-40 object-cover"
+                                  className="w-full h-60 object-cover"
                                 />
                                 <button
                                   className="absolute top-2 right-2 bg-white p-2 rounded-full shadow hover:bg-gray-100"
@@ -382,7 +409,6 @@ export default function ProductsAdmin() {
                                 </button>
                               </div>
 
-                              {/* Infos Produit */}
                               <div className="p-4">
                                 <h3 className="text-lg font-bold text-gray-800">
                                   {product.name}
