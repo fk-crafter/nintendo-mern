@@ -27,7 +27,7 @@ router.get(
       const users: IUser[] = await User.find({});
       res.json(users);
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );
@@ -41,7 +41,7 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      res.status(400).json({ message: "Cet utilisateur existe déjà" });
+      res.status(400).json({ message: "this user already exists" });
       return;
     }
 
@@ -50,7 +50,7 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).json({ message: "Utilisateur créé avec succès" });
   } catch (error) {
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ message: "server error" });
   }
 });
 
@@ -63,13 +63,13 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
 
     const user: IUser | null = await User.findOne({ email });
     if (!user) {
-      res.status(401).json({ message: "Email ou mot de passe incorrect" });
+      res.status(401).json({ message: "email or password incorrect" });
       return;
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      res.status(401).json({ message: "Email ou mot de passe incorrect" });
+      res.status(401).json({ message: "email or password incorrect" });
       return;
     }
 
@@ -80,7 +80,7 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
     );
 
     res.json({
-      message: "Connexion réussie",
+      message: "connection successful",
       token,
       user: {
         id: user._id,
@@ -90,7 +90,7 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ message: "server error" });
   }
 });
 
@@ -106,14 +106,14 @@ router.delete(
       const user = await User.findById(req.params.id);
 
       if (!user) {
-        res.status(404).json({ message: "Utilisateur non trouvé" });
+        res.status(404).json({ message: "user not found" });
         return;
       }
 
       await User.deleteOne({ _id: user._id });
-      res.json({ message: "Utilisateur supprimé avec succès" });
+      res.json({ message: "user deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );
@@ -131,7 +131,7 @@ router.put(
       const user = await User.findById(req.params.id);
 
       if (!user) {
-        res.status(404).json({ message: "Utilisateur non trouvé" });
+        res.status(404).json({ message: "user not found" });
         return;
       }
 
@@ -142,8 +142,8 @@ router.put(
       const updatedUser = await user.save({ validateBeforeSave: false });
       res.json(updatedUser);
     } catch (error) {
-      console.error("Erreur de mise à jour :", error);
-      res.status(500).json({ message: "Erreur serveur" });
+      console.error("update error:", error);
+      res.status(500).json({ message: "server error" });
     }
   }
 );
@@ -160,7 +160,7 @@ router.put(
       const user = await User.findById(req.params.id);
 
       if (!user) {
-        res.status(404).json({ message: "Utilisateur non trouvé" });
+        res.status(404).json({ message: "user not found" });
         return;
       }
 
@@ -169,7 +169,7 @@ router.put(
       const updatedUser = await user.save({ validateBeforeSave: false });
       res.json(updatedUser);
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );

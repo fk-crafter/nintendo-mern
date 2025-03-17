@@ -28,7 +28,7 @@ router.post(
   upload.single("image"),
   (req: Request, res: Response, next: NextFunction): void => {
     if (!req.file) {
-      res.status(400).json({ message: "Aucun fichier n'a été téléchargé." });
+      res.status(400).json({ message: "no file uploaded." });
       return;
     }
 

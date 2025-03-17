@@ -40,7 +40,7 @@ const Guarantees = () => {
 
   return (
     <section className="py-12 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto text-center">
+      <div className="max-w-6xl mx-auto -mt-32 text-center">
         <motion.h2
           className="text-3xl font-bold text-gray-800"
           initial={{ opacity: 0 }}

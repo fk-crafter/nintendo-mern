@@ -24,7 +24,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
     const products: IProduct[] = await Product.find({});
     res.json(products);
   } catch (error) {
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ message: "server error" });
   }
 });
 
@@ -36,13 +36,13 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
     const product: IProduct | null = await Product.findById(req.params.id);
 
     if (!product) {
-      res.status(404).json({ message: "Produit non trouvé" });
+      res.status(404).json({ message: "product not found" });
       return;
     }
 
     res.json(product);
   } catch (error) {
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ message: "server error" });
   }
 });
 
@@ -65,14 +65,12 @@ router.post(
         !category ||
         !image
       ) {
-        res.status(400).json({ message: "Tous les champs sont requis." });
+        res.status(400).json({ message: "all fields are required." });
         return;
       }
 
       if (isNaN(price) || isNaN(stock)) {
-        res
-          .status(400)
-          .json({ message: "Le prix et le stock doivent être des nombres." });
+        res.status(400).json({ message: "price and stock must be numbers." });
         return;
       }
 
@@ -88,7 +86,7 @@ router.post(
       const savedProduct = await newProduct.save();
       res.status(201).json(savedProduct);
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );
@@ -108,7 +106,7 @@ router.put(
       );
 
       if (!product) {
-        res.status(404).json({ message: "Produit non trouvé" });
+        res.status(404).json({ message: "product not found" });
         return;
       }
 
@@ -122,7 +120,7 @@ router.put(
       const updatedProduct = await product.save({ validateBeforeSave: false });
       res.json(updatedProduct);
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );
@@ -141,15 +139,15 @@ router.delete(
       );
 
       if (!product) {
-        res.status(404).json({ message: "Produit non trouvé" });
+        res.status(404).json({ message: "product not found" });
         return;
       }
 
       await Product.deleteOne({ _id: product._id });
 
-      res.json({ message: "Produit supprimé avec succès" });
+      res.json({ message: "product deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );

@@ -18,22 +18,22 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      res.status(400).json({ message: "Tous les champs sont requis" });
+      res.status(400).json({ message: "all fields are required" });
       return;
     }
 
     const existingUser: IUser | null = await User.findOne({ email });
     if (existingUser) {
-      res.status(400).json({ message: "Cet email est déjà utilisé" });
+      res.status(400).json({ message: "this email is already used" });
       return;
     }
 
     const newUser = new User({ name, email, password });
     await newUser.save();
 
-    res.status(201).json({ message: "Utilisateur créé avec succès" });
+    res.status(201).json({ message: "user created successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ message: "server error" });
   }
 });
 

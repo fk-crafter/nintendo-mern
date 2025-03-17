@@ -32,7 +32,7 @@ router.post(
       const { products, totalPrice } = req.body;
 
       if (!products || products.length === 0) {
-        res.status(400).json({ message: "La commande ne peut pas être vide" });
+        res.status(400).json({ message: "the order cannot be empty" });
         return;
       }
 
@@ -45,7 +45,7 @@ router.post(
       const savedOrder = await newOrder.save();
       res.status(201).json(savedOrder);
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );
@@ -64,7 +64,7 @@ router.get(
 
       res.json(orders);
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );
@@ -85,7 +85,7 @@ router.get(
 
       res.json(orders);
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );
@@ -102,15 +102,15 @@ router.delete(
       const order: IOrder | null = await Order.findById(req.params.id);
 
       if (!order) {
-        res.status(404).json({ message: "Commande non trouvée" });
+        res.status(404).json({ message: "order not found" });
         return;
       }
 
       await Order.deleteOne({ _id: order._id });
 
-      res.json({ message: "Commande supprimée avec succès" });
+      res.json({ message: "order deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );

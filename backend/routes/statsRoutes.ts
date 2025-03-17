@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
 import Product from "../models/Product";
 import Order from "../models/Order";
 import User from "../models/User";
@@ -31,7 +31,7 @@ router.get(
         totalRevenue: totalRevenue[0]?.total || 0,
       });
     } catch (error) {
-      res.status(500).json({ message: "Erreur serveur" });
+      res.status(500).json({ message: "server error" });
     }
   }
 );
