@@ -6,19 +6,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.StatsModule = void 0;
 const common_1 = require("@nestjs/common");
-const auth_module_1 = require("./auth/auth.module");
-const prisma_module_1 = require("./prisma/prisma.module");
-const product_module_1 = require("./product/product.module");
-const order_module_1 = require("./order/order.module");
-const stats_module_1 = require("./stats/stats.module");
-let AppModule = class AppModule {
+const stats_service_1 = require("./stats.service");
+const stats_controller_1 = require("./stats.controller");
+const prisma_module_1 = require("../prisma/prisma.module");
+let StatsModule = class StatsModule {
 };
-exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate([
+exports.StatsModule = StatsModule;
+exports.StatsModule = StatsModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule, prisma_module_1.PrismaModule, product_module_1.ProductModule, order_module_1.OrderModule, stats_module_1.StatsModule],
+        imports: [prisma_module_1.PrismaModule],
+        controllers: [stats_controller_1.StatsController],
+        providers: [stats_service_1.StatsService],
     })
-], AppModule);
-//# sourceMappingURL=app.module.js.map
+], StatsModule);
+//# sourceMappingURL=stats.module.js.map
