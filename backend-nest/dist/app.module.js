@@ -13,12 +13,20 @@ const prisma_module_1 = require("./prisma/prisma.module");
 const product_module_1 = require("./product/product.module");
 const order_module_1 = require("./order/order.module");
 const stats_module_1 = require("./stats/stats.module");
+const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule, prisma_module_1.PrismaModule, product_module_1.ProductModule, order_module_1.OrderModule, stats_module_1.StatsModule],
+        imports: [
+            auth_module_1.AuthModule,
+            prisma_module_1.PrismaModule,
+            product_module_1.ProductModule,
+            order_module_1.OrderModule,
+            stats_module_1.StatsModule,
+            user_module_1.UserModule,
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
