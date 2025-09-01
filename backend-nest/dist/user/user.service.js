@@ -28,6 +28,31 @@ let UserService = class UserService {
             },
         });
     }
+    async updateUser(id, dto) {
+        const user = await this.prisma.user.findUnique({ where: { id } });
+        if (!user) {
+            throw new common_1.NotFoundException("User not found");
+        }
+        if (dto.email && dto.email !== user.email) {
+            const existingEmail = await this.prisma.user.findUnique({
+                where: { email: dto.email },
+            });
+            if (existingEmail) {
+                throw new common_1.BadRequestException("Email already in use");
+            }
+        }
+        return this.prisma.user.update({
+            where: { id },
+            data: dto,
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                updatedAt: true,
+            },
+        });
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([
