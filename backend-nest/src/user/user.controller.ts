@@ -21,4 +21,10 @@ export class UserController {
   updateUser(@Param("id") id: string, @Body() dto: UpdateUserDto) {
     return this.userService.updateUser(id, dto);
   }
+
+  @Put(":id/role")
+  @Roles("ADMIN")
+  toggleUserRole(@Param("id") id: string) {
+    return this.userService.toggleUserRole(id);
+  }
 }

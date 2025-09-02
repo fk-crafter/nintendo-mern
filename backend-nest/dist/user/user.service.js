@@ -53,6 +53,24 @@ let UserService = class UserService {
             },
         });
     }
+    async toggleUserRole(id) {
+        const user = await this.prisma.user.findUnique({ where: { id } });
+        if (!user) {
+            throw new common_1.NotFoundException("User not found");
+        }
+        const newRole = user.role === "ADMIN" ? "USER" : "ADMIN";
+        return this.prisma.user.update({
+            where: { id },
+            data: { role: newRole },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                updatedAt: true,
+            },
+        });
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([

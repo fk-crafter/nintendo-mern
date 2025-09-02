@@ -30,6 +30,9 @@ let UserController = class UserController {
     updateUser(id, dto) {
         return this.userService.updateUser(id, dto);
     }
+    toggleUserRole(id) {
+        return this.userService.toggleUserRole(id);
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -48,6 +51,14 @@ __decorate([
     __metadata("design:paramtypes", [String, update_user_dto_1.UpdateUserDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateUser", null);
+__decorate([
+    (0, common_1.Put)(":id/role"),
+    (0, roles_decorator_1.Roles)("ADMIN"),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "toggleUserRole", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)("users"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
