@@ -27,7 +27,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5001/api/users/login", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +36,7 @@ const LoginPage = () => {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+      if (!res.ok) throw new Error(data.message || "Login failed");
 
       if (login) {
         login(data.token);
@@ -54,7 +54,6 @@ const LoginPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen relative px-4">
       <div className="absolute top-0 left-0 w-full h-1/2 bg-red-600"></div>
-
       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-white"></div>
 
       <Image

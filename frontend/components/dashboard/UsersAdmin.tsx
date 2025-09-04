@@ -5,10 +5,10 @@ import ConfirmModal from "@/components/ConfirmModal";
 import { Pencil, Trash2, Check, RefreshCcw, Users } from "lucide-react";
 
 interface User {
-  _id: string;
+  id: string; // Prisma uses "id"
   name: string;
   email: string;
-  role: string;
+  role: "ADMIN" | "USER";
   updatedAt: string;
 }
 
@@ -29,14 +29,12 @@ export default function UsersAdmin() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/users", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
       if (!res.ok) throw new Error("Error when loading users.");
-      const data = await res.json();
+      const data: User[] = await res.json();
       setUsers(data);
     } catch (err) {
       setError("Impossible to load users.");
@@ -51,17 +49,15 @@ export default function UsersAdmin() {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/users/${selectedUser}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${selectedUser}`,
         {
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
 
       if (!res.ok) throw new Error("Error when deleting.");
-      setUsers(users.filter((user) => user._id !== selectedUser));
+      setUsers((prev) => prev.filter((user) => user.id !== selectedUser));
       setShowModal(false);
     } catch (err) {
       setError("Impossible to delete the user.");
@@ -71,28 +67,27 @@ export default function UsersAdmin() {
 
   const handleEditUser = (userId: string) => {
     setEditingUser(userId);
-    setUpdatedUsers((prev) => ({
-      ...prev,
-      [userId]: users.find((user) => user._id === userId) || {},
-    }));
+    const original = users.find((u) => u.id === userId);
+    setUpdatedUsers((prev) => ({ ...prev, [userId]: original || {} }));
   };
 
   const handleChange = (userId: string, field: keyof User, value: string) => {
     setUpdatedUsers((prev) => ({
       ...prev,
-      [userId]: { ...prev[userId], [field]: value },
+      [userId]: { ...prev[userId], [field]: value as any },
     }));
   };
 
   const handleUpdateUser = async (userId: string) => {
-    if (!updatedUsers[userId]) return;
+    const patch = updatedUsers[userId];
+    if (!patch) return;
 
-    const originalUser = users.find((user) => user._id === userId);
+    const original = users.find((u) => u.id === userId);
     if (
-      originalUser &&
-      updatedUsers[userId]?.name === originalUser.name &&
-      updatedUsers[userId]?.email === originalUser.email &&
-      updatedUsers[userId]?.role === originalUser.role
+      original &&
+      (patch.name ?? original.name) === original.name &&
+      (patch.email ?? original.email) === original.email &&
+      (patch.role ?? original.role) === original.role
     ) {
       alert("No changes detected !");
       setEditingUser(null);
@@ -100,21 +95,24 @@ export default function UsersAdmin() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5001/api/users/${userId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(updatedUsers[userId]),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(patch),
+        }
+      );
 
       if (!res.ok) throw new Error("Error when updating.");
-      fetchUsers();
+      await fetchUsers();
       setEditingUser(null);
     } catch (err) {
       console.error(err);
-      alert("update failed !");
+      alert("Update failed !");
     }
   };
 
@@ -139,7 +137,6 @@ export default function UsersAdmin() {
                 <th className="border p-3">Name</th>
                 <th className="border p-3">Email</th>
                 <th className="border p-3 hidden lg:table-cell">Updated At</th>
-
                 <th className="border p-3">Role</th>
                 <th className="border p-2 lg:p-3 text-center w-[80px]">
                   Actions
@@ -148,14 +145,14 @@ export default function UsersAdmin() {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user._id} className="border">
+                <tr key={user.id} className="border">
                   <td className="p-3 border">
-                    {editingUser === user._id ? (
+                    {editingUser === user.id ? (
                       <input
                         type="text"
-                        value={updatedUsers[user._id]?.name || ""}
+                        value={updatedUsers[user.id]?.name ?? user.name}
                         onChange={(e) =>
-                          handleChange(user._id, "name", e.target.value)
+                          handleChange(user.id, "name", e.target.value)
                         }
                         className="border p-2 rounded w-full"
                       />
@@ -165,12 +162,12 @@ export default function UsersAdmin() {
                   </td>
 
                   <td className="p-3 border">
-                    {editingUser === user._id ? (
+                    {editingUser === user.id ? (
                       <input
                         type="text"
-                        value={updatedUsers[user._id]?.email || ""}
+                        value={updatedUsers[user.id]?.email ?? user.email}
                         onChange={(e) =>
-                          handleChange(user._id, "email", e.target.value)
+                          handleChange(user.id, "email", e.target.value)
                         }
                         className="border p-2 rounded w-full"
                       />
@@ -180,39 +177,41 @@ export default function UsersAdmin() {
                   </td>
 
                   <td className="p-3 border text-gray-500 text-sm hidden lg:table-cell">
-                    {user.updatedAt}
+                    {new Date(user.updatedAt).toLocaleString()}
                   </td>
 
                   <td className="p-3 border">
-                    {editingUser === user._id ? (
+                    {editingUser === user.id ? (
                       <select
-                        value={updatedUsers[user._id]?.role || ""}
+                        value={
+                          (updatedUsers[user.id]?.role ?? user.role) || "USER"
+                        }
                         onChange={(e) =>
-                          handleChange(user._id, "role", e.target.value)
+                          handleChange(user.id, "role", e.target.value)
                         }
                         className="border p-2 rounded w-full"
                       >
-                        <option value="admin">Admin</option>
-                        <option value="User">User</option>
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="USER">USER</option>
                       </select>
                     ) : (
                       <span
                         className={`px-3 py-1 rounded-full text-white ${
-                          user.role === "admin"
+                          user.role === "ADMIN"
                             ? "bg-blue-500"
                             : "bg-yellow-500"
                         }`}
                       >
-                        {user.role.toUpperCase()}
+                        {user.role}
                       </span>
                     )}
                   </td>
 
                   <td className="p-2 lg:p-3 border flex justify-center gap-2 lg:gap-3">
-                    {editingUser === user._id ? (
+                    {editingUser === user.id ? (
                       <>
                         <button
-                          onClick={() => handleUpdateUser(user._id)}
+                          onClick={() => handleUpdateUser(user.id)}
                           className="text-green-600 hover:text-green-800"
                         >
                           <Check className="w-5 h-5 lg:w-6 lg:h-6" />
@@ -227,7 +226,7 @@ export default function UsersAdmin() {
                       </>
                     ) : (
                       <button
-                        onClick={() => handleEditUser(user._id)}
+                        onClick={() => handleEditUser(user.id)}
                         className="text-blue-600 hover:text-blue-800"
                       >
                         <Pencil className="w-5 h-5 lg:w-6 lg:h-6" />
@@ -240,7 +239,7 @@ export default function UsersAdmin() {
 
                     <button
                       onClick={() => {
-                        setSelectedUser(user._id);
+                        setSelectedUser(user.id);
                         setShowModal(true);
                       }}
                       className="text-red-600 hover:text-red-800"
@@ -254,44 +253,45 @@ export default function UsersAdmin() {
           </table>
         </div>
       )}
-      {/* mobile */}
+
+      {/* Mobile */}
       <div className="lg:hidden flex flex-col gap-4">
         {users.map((user) => (
-          <div key={user._id} className="p-4 bg-gray-100 rounded-lg shadow-md">
-            {editingUser === user._id ? (
+          <div key={user.id} className="p-4 bg-gray-100 rounded-lg shadow-md">
+            {editingUser === user.id ? (
               <>
                 <input
                   type="text"
-                  value={updatedUsers[user._id]?.name || ""}
+                  value={updatedUsers[user.id]?.name ?? user.name}
                   onChange={(e) =>
-                    handleChange(user._id, "name", e.target.value)
+                    handleChange(user.id, "name", e.target.value)
                   }
                   className="border p-2 rounded w-full mb-2"
                   placeholder="Name"
                 />
                 <input
                   type="text"
-                  value={updatedUsers[user._id]?.email || ""}
+                  value={updatedUsers[user.id]?.email ?? user.email}
                   onChange={(e) =>
-                    handleChange(user._id, "email", e.target.value)
+                    handleChange(user.id, "email", e.target.value)
                   }
                   className="border p-2 rounded w-full mb-2"
                   placeholder="Email"
                 />
                 <select
-                  value={updatedUsers[user._id]?.role || ""}
+                  value={(updatedUsers[user.id]?.role ?? user.role) || "USER"}
                   onChange={(e) =>
-                    handleChange(user._id, "role", e.target.value)
+                    handleChange(user.id, "role", e.target.value)
                   }
                   className="border p-2 rounded w-full mb-2"
                 >
-                  <option value="admin">Admin</option>
-                  <option value="User">User</option>
+                  <option value="ADMIN">ADMIN</option>
+                  <option value="USER">USER</option>
                 </select>
 
                 <div className="mt-3 flex justify-between">
                   <button
-                    onClick={() => handleUpdateUser(user._id)}
+                    onClick={() => handleUpdateUser(user.id)}
                     className="text-green-600 hover:text-green-800"
                   >
                     <Check className="w-5 h-5" />
@@ -306,7 +306,6 @@ export default function UsersAdmin() {
               </>
             ) : (
               <>
-                {/* Mode lecture */}
                 <p>
                   <strong>Name:</strong> {user.name}
                 </p>
@@ -317,17 +316,16 @@ export default function UsersAdmin() {
                   <strong>Role:</strong>
                   <span
                     className={`px-3 py-1 rounded-full text-white ml-2 ${
-                      user.role === "admin" ? "bg-blue-500" : "bg-yellow-500"
+                      user.role === "ADMIN" ? "bg-blue-500" : "bg-yellow-500"
                     }`}
                   >
-                    {user.role.toUpperCase()}
+                    {user.role}
                   </span>
                 </p>
 
-                {/* Boutons d’action en bas */}
                 <div className="mt-3 flex justify-between">
                   <button
-                    onClick={() => handleEditUser(user._id)}
+                    onClick={() => handleEditUser(user.id)}
                     className="text-blue-600 hover:text-blue-800"
                   >
                     <Pencil className="w-5 h-5" />
@@ -337,7 +335,7 @@ export default function UsersAdmin() {
                   </button>
                   <button
                     onClick={() => {
-                      setSelectedUser(user._id);
+                      setSelectedUser(user.id);
                       setShowModal(true);
                     }}
                     className="text-red-600 hover:text-red-800"

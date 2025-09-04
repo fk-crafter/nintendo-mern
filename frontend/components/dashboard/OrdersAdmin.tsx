@@ -26,7 +26,7 @@ export default function OrdersAdmin() {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/orders", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -48,7 +48,7 @@ export default function OrdersAdmin() {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/orders/${selectedOrder}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/orders/${selectedOrder}`,
         {
           method: "DELETE",
           headers: {

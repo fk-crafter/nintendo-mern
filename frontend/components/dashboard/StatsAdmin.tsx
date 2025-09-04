@@ -34,34 +34,47 @@ ChartJS.register(
   Legend
 );
 
+type StatsResponse = {
+  totalProducts: number;
+  totalOrders: number;
+  totalUsers: number;
+  totalRevenue: number;
+  // ces deux champs ne sont pas renvoyés par ton backend pour l’instant,
+  // je les garde optionnels si tu les ajoutes plus tard :
+  ordersOverTime?: unknown[];
+  revenueOverTime?: unknown[];
+};
+
 export default function StatsAdmin() {
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<StatsResponse>({
     totalProducts: 0,
     totalOrders: 0,
     totalUsers: 0,
     totalRevenue: 0,
-    ordersOverTime: [],
-    revenueOverTime: [],
   });
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchStats = async () => {
+    setError("");
     try {
-      const res = await fetch("http://localhost:5001/api/stats", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stats`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
         },
       });
 
       if (!res.ok) throw new Error("Error loading statistics.");
 
-      const data = await res.json();
+      const data: StatsResponse = await res.json();
       setStats(data);
     } catch (err) {
       console.error("Error loading statistics:", err);
+      setError("Unable to load statistics.");
     }
   };
 
@@ -74,6 +87,7 @@ export default function StatsAdmin() {
           stats.totalProducts,
           stats.totalOrders,
           stats.totalUsers,
+          // petite division juste pour garder l’échelle lisible comme avant
           stats.totalRevenue / 10,
         ],
         backgroundColor: ["#FFC107", "#FF5722", "#03A9F4", "#4CAF50"],
@@ -106,6 +120,11 @@ export default function StatsAdmin() {
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
           Summary
         </h2>
+
+        {error && (
+          <p className="text-center text-red-600 font-semibold mb-4">{error}</p>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
           {[
             {
@@ -147,6 +166,7 @@ export default function StatsAdmin() {
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
           Statistics Overview
         </h2>
+
         <div className="bg-white p-4 md:p-6 shadow-lg rounded-lg border mb-8">
           <h3 className="text-lg md:text-xl font-semibold text-gray-800 text-center mb-4 flex items-center justify-center gap-2">
             <BarChart size={24} /> Overview of Stats

@@ -28,7 +28,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5001/api/products");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         if (!res.ok) throw new Error("Erreur lors du chargement des produits");
         const data = await res.json();
         setProducts(data);

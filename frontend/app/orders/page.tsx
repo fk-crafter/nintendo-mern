@@ -7,7 +7,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { Calendar, Package, ShoppingCart, Wallet } from "lucide-react";
 
 interface Order {
-  _id: string;
+  id: string; // ← côté Nest tu utilises `id` et pas `_id` si tu es en Prisma
   products: { product: { name: string; price: number }; quantity: number }[];
   totalPrice: number;
   createdAt: string;
@@ -25,12 +25,15 @@ export default function OrdersPage() {
       if (!auth?.user) return;
 
       try {
-        const res = await fetch("http://localhost:5001/api/orders/my", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/my`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
         if (!res.ok) throw new Error("Error during the orders recovery.");
         const data = await res.json();
@@ -90,7 +93,7 @@ export default function OrdersPage() {
 
               return (
                 <div
-                  key={order._id}
+                  key={order.id}
                   className="border-1 border-black p-6 rounded-lg shadow-md bg-gray-50"
                 >
                   <p className="text-gray-700 font-semibold text-lg flex items-center gap-2">

@@ -7,8 +7,9 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { toast } from "react-hot-toast";
 import { ShoppingCart } from "lucide-react";
+
 interface Product {
-  _id: string;
+  id: string; // ← si tu utilises Prisma, c’est `id` et pas `_id`
   name: string;
   description: string;
   price: number;
@@ -26,7 +27,9 @@ export default function ProductPage() {
 
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`http://localhost:5001/api/products/${id}`);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/products/${id}`
+        );
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
         setProduct(data);
@@ -43,8 +46,7 @@ export default function ProductPage() {
   const handleAddToCart = () => {
     if (!product) return;
     addToCart({ ...product, quantity: 1 });
-
-    toast.success(`🛒 Product added to cart!`);
+    toast.success("🛒 Product added to cart!");
   };
 
   if (loading)

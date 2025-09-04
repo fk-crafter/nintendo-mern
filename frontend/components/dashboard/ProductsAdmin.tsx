@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ConfirmModal from "@/components/ConfirmModal";
 import {
   Pencil,
@@ -10,11 +10,11 @@ import {
   Edit3,
   List,
 } from "lucide-react";
-import { useRef } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
+
 interface Product {
-  _id: string;
+  id: string; // Prisma => id
   name: string;
   description: string;
   stock: number;
@@ -37,7 +37,6 @@ export default function ProductsAdmin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-
   const [isFormVisible, setIsFormVisible] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -48,7 +47,7 @@ export default function ProductsAdmin() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/products");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
       if (!res.ok) throw new Error("Error loading products.");
       const data = await res.json();
       setProducts(data);
@@ -59,15 +58,47 @@ export default function ProductsAdmin() {
   };
 
   const toggleView = () => {
-    setIsFormVisible(!isFormVisible);
+    setIsFormVisible((prev) => !prev);
   };
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleImageUpload(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      handleImageUpload(e.target.files[0]);
+    }
+  };
+
+  const handleEditProduct = (product: Product) => {
+    setName(product.name);
+    setDescription(product.description);
+    setPrice(product.price.toString());
+    setStock(product.stock.toString());
+    setCategory(product.category);
+    setImage(product.image);
+    setSelectedProduct(product.id);
+    setIsEditing(true);
+    setIsFormVisible(true);
+    setToastMessage("Product ready for editing");
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+  // ------------------------------------
 
   const handleImageUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
 
     try {
-      const res = await fetch("http://localhost:5001/api/upload", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload`, {
         method: "POST",
         body: formData,
       });
@@ -79,25 +110,6 @@ export default function ProductsAdmin() {
     } catch (err) {
       console.error(err);
       alert("Failed to upload image !");
-    }
-  };
-
-  const handleClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (e.dataTransfer.files.length > 0) {
-      handleImageUpload(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      handleImageUpload(e.target.files[0]);
     }
   };
 
@@ -114,8 +126,8 @@ export default function ProductsAdmin() {
     try {
       const method = isEditing ? "PUT" : "POST";
       const url = isEditing
-        ? `http://localhost:5001/api/products/${selectedProduct}`
-        : "http://localhost:5001/api/products";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/products/${selectedProduct}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/products`;
 
       const res = await fetch(url, {
         method,
@@ -138,6 +150,7 @@ export default function ProductsAdmin() {
           isEditing ? "Error updating product." : "Error adding product."
         );
 
+      // reset form
       setName("");
       setDescription("");
       setPrice("");
@@ -146,7 +159,7 @@ export default function ProductsAdmin() {
       setImage("");
       setIsEditing(false);
       setSelectedProduct(null);
-      fetchProducts();
+      await fetchProducts();
       setIsFormVisible(false);
     } catch (err) {
       setError(
@@ -158,28 +171,12 @@ export default function ProductsAdmin() {
     }
   };
 
-  const handleEditProduct = (product: Product) => {
-    setName(product.name);
-    setDescription(product.description);
-    setPrice(product.price.toString());
-    setStock(product.stock.toString());
-    setCategory(product.category);
-    setImage(product.image);
-    setSelectedProduct(product._id);
-    setIsEditing(true);
-    setToastMessage("Product ready for editing");
-
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
-  };
-
   const handleDeleteProduct = async () => {
     if (!selectedProduct) return;
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/products/${selectedProduct}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/products/${selectedProduct}`,
         {
           method: "DELETE",
           headers: {
@@ -190,7 +187,7 @@ export default function ProductsAdmin() {
 
       if (!res.ok) throw new Error("Error deleting product.");
 
-      setProducts(products.filter((p) => p._id !== selectedProduct));
+      setProducts((prev) => prev.filter((p) => p.id !== selectedProduct));
     } catch (err) {
       setError("Failed to delete product.");
       console.error("Error deleting product:", err);
@@ -228,6 +225,7 @@ export default function ProductsAdmin() {
         </button>
 
         {error && <p className="text-red-700 text-center">{error}</p>}
+
         <motion.div
           key={isFormVisible ? "form-section" : "product-list"}
           initial={{ opacity: 0, y: -10 }}
@@ -235,7 +233,6 @@ export default function ProductsAdmin() {
           exit={{ opacity: 0, y: 10 }}
           transition={{ duration: 0.3 }}
         >
-          {" "}
           {isFormVisible ? (
             <motion.form
               onSubmit={handleAddOrUpdateProduct}
@@ -371,7 +368,6 @@ export default function ProductsAdmin() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
             >
-              {" "}
               <h3 className="text-2xl font-bold text-red-800 mb-4">
                 Product List
               </h3>
@@ -387,7 +383,7 @@ export default function ProductsAdmin() {
                           .filter((product) => product.category === category)
                           .map((product) => (
                             <div
-                              key={product._id}
+                              key={product.id}
                               className="bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-200 relative"
                             >
                               <div className="relative">
@@ -401,7 +397,7 @@ export default function ProductsAdmin() {
                                 <button
                                   className="absolute top-2 right-2 bg-white p-2 rounded-full shadow hover:bg-gray-100"
                                   onClick={() => {
-                                    setSelectedProduct(product._id);
+                                    setSelectedProduct(product.id);
                                     setShowModal(true);
                                   }}
                                 >

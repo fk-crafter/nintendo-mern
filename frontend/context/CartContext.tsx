@@ -9,7 +9,7 @@ import {
 } from "react";
 
 interface Product {
-  _id: string;
+  id: string;
   name: string;
   price: number;
   image: string;
@@ -41,10 +41,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
-      const existingProduct = prevCart.find((p) => p._id === product._id);
+      const existingProduct = prevCart.find((p) => p.id === product.id);
       if (existingProduct) {
         return prevCart.map((p) =>
-          p._id === product._id ? { ...p, quantity: p.quantity + 1 } : p
+          p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
         );
       }
       return [...prevCart, { ...product, quantity: 1 }];
@@ -52,7 +52,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeFromCart = (id: string) => {
-    setCart((prevCart) => prevCart.filter((product) => product._id !== id));
+    setCart((prevCart) => prevCart.filter((product) => product.id !== id));
   };
 
   const clearCart = () => {

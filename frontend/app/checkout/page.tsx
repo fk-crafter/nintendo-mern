@@ -125,7 +125,7 @@ export default function CheckoutPage() {
 
       const orderData = {
         products: cart.map((item) => ({
-          product: item._id,
+          product: item.id,
           quantity: item.quantity,
         })),
         totalPrice: (
@@ -138,7 +138,7 @@ export default function CheckoutPage() {
         cardDetails: { cardNumber, cardName, cardExpiry, cardCVC },
       };
 
-      const res = await fetch("http://localhost:5001/api/orders", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -217,7 +217,7 @@ export default function CheckoutPage() {
               <ul className="divide-y divide-gray-900">
                 {cart.map((item) => (
                   <li
-                    key={item._id}
+                    key={item.id}
                     className="flex items-center py-3 space-x-4"
                   >
                     <Image
