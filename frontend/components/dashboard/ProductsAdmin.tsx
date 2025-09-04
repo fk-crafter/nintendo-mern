@@ -14,7 +14,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 interface Product {
-  id: string; // Prisma => id
+  id: string;
   name: string;
   description: string;
   stock: number;
