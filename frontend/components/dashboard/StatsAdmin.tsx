@@ -56,7 +56,6 @@ export default function StatsAdmin() {
 
   useEffect(() => {
     fetchStats();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchStats = async () => {
@@ -87,7 +86,6 @@ export default function StatsAdmin() {
           stats.totalProducts,
           stats.totalOrders,
           stats.totalUsers,
-          // petite division juste pour garder l’échelle lisible comme avant
           stats.totalRevenue / 10,
         ],
         backgroundColor: ["#FFC107", "#FF5722", "#03A9F4", "#4CAF50"],

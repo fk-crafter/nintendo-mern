@@ -5,7 +5,7 @@ import ConfirmModal from "@/components/ConfirmModal";
 import { Pencil, Trash2, Check, RefreshCcw, Users } from "lucide-react";
 
 interface User {
-  id: string; // Prisma uses "id"
+  id: string;
   name: string;
   email: string;
   role: "ADMIN" | "USER";
@@ -71,10 +71,14 @@ export default function UsersAdmin() {
     setUpdatedUsers((prev) => ({ ...prev, [userId]: original || {} }));
   };
 
-  const handleChange = (userId: string, field: keyof User, value: string) => {
+  const handleChange = <K extends keyof User>(
+    userId: string,
+    field: K,
+    value: User[K]
+  ) => {
     setUpdatedUsers((prev) => ({
       ...prev,
-      [userId]: { ...prev[userId], [field]: value as any },
+      [userId]: { ...prev[userId], [field]: value },
     }));
   };
 
@@ -187,7 +191,11 @@ export default function UsersAdmin() {
                           (updatedUsers[user.id]?.role ?? user.role) || "USER"
                         }
                         onChange={(e) =>
-                          handleChange(user.id, "role", e.target.value)
+                          handleChange(
+                            user.id,
+                            "role",
+                            e.target.value as User["role"]
+                          )
                         }
                         className="border p-2 rounded w-full"
                       >
@@ -281,7 +289,11 @@ export default function UsersAdmin() {
                 <select
                   value={(updatedUsers[user.id]?.role ?? user.role) || "USER"}
                   onChange={(e) =>
-                    handleChange(user.id, "role", e.target.value)
+                    handleChange(
+                      user.id,
+                      "role",
+                      e.target.value as User["role"]
+                    )
                   }
                   className="border p-2 rounded w-full mb-2"
                 >
