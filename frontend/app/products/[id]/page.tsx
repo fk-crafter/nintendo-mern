@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { ShoppingCart } from "lucide-react";
 
 interface Product {
-  id: string; // ← si tu utilises Prisma, c’est `id` et pas `_id`
+  id: string; // ← si tu utilises Prisma, c’est `id` et pas `id`
   name: string;
   description: string;
   price: number;

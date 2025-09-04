@@ -9,7 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 interface Product {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   price: number;
@@ -132,7 +132,7 @@ const ProductList = () => {
                   className="relative !overflow-visible"
                 >
                   {items.map((product) => (
-                    <SwiperSlide key={product._id}>
+                    <SwiperSlide key={product.id}>
                       <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}

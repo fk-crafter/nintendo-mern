@@ -45,7 +45,7 @@ export default function CartPage() {
             <div className="space-y-4">
               {cart.map((product) => (
                 <div
-                  key={product._id}
+                  key={product.id}
                   className="flex flex-col sm:flex-row items-center border-1 border-black p-3 rounded-md bg-gray-50 shadow-md"
                 >
                   <Image
@@ -68,7 +68,7 @@ export default function CartPage() {
                   </div>
                   <button
                     className="mt-2 sm:mt-0 text-white px-2 py-1 rounded-full transition border-2 border-black flex items-center justify-center bg-red-600 hover:bg-red-700"
-                    onClick={() => removeFromCart(product._id)}
+                    onClick={() => removeFromCart(product.id)}
                   >
                     <X size={20} />
                   </button>

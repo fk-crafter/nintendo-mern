@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
 interface Product {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   price: number;
@@ -83,7 +83,7 @@ const ProductCard = ({ product }: { product: Product }) => {
               className="w-full border-gray-300 hover:bg-gray-100 transition"
             >
               <Link
-                href={`/products/${product._id}`}
+                href={`/products/${product.id}`}
                 className="text-gray-700 font-semibold"
               >
                 <FaEye className="mr-2" /> View

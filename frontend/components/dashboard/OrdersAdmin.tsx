@@ -5,7 +5,7 @@ import ConfirmModal from "@/components/ConfirmModal";
 import { ShoppingCart, Calendar, Package, Trash2 } from "lucide-react";
 
 interface Order {
-  _id: string;
+  id: string;
   user: { name?: string; email?: string } | null;
   products: { product: { name: string; price: number }; quantity: number }[];
   totalPrice: number;
@@ -59,7 +59,7 @@ export default function OrdersAdmin() {
 
       if (!res.ok) throw new Error("Error deleting order.");
 
-      setOrders(orders.filter((order) => order._id !== selectedOrder));
+      setOrders(orders.filter((order) => order.id !== selectedOrder));
       setShowModal(false);
     } catch (err) {
       setError("Unable to delete order.");
@@ -85,7 +85,7 @@ export default function OrdersAdmin() {
         <div className="flex flex-col gap-6">
           {orders.map((order) => (
             <div
-              key={order._id}
+              key={order.id}
               className="bg-white p-6 rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition-all flex flex-col md:flex-row items-center md:items-start gap-6 w-full"
             >
               <div className="flex flex-col w-full md:w-1/4">
@@ -140,7 +140,7 @@ export default function OrdersAdmin() {
 
                 <button
                   onClick={() => {
-                    setSelectedOrder(order._id);
+                    setSelectedOrder(order.id);
                     setShowModal(true);
                   }}
                   className="mt-4 bg-red-500 text-white text-lg px-4 py-2 rounded-md shadow-md hover:bg-red-600 transition-all flex items-center gap-2"

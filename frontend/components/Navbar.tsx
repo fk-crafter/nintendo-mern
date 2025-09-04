@@ -187,7 +187,7 @@ const Navbar = () => {
                     <>
                       {cart.map((product) => (
                         <div
-                          key={product._id}
+                          key={product.id}
                           className="flex items-center justify-between border-b py-2"
                         >
                           <div className="flex-1">
@@ -199,7 +199,7 @@ const Navbar = () => {
                             </p>
                           </div>
                           <button
-                            onClick={() => removeFromCart(product._id)}
+                            onClick={() => removeFromCart(product.id)}
                             className="text-red-500 hover:text-red-700"
                           >
                             <X size={18} />
