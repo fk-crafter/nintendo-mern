@@ -44,7 +44,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (auth?.loading) return;
-    if (!auth?.user || auth?.user.role !== "admin") {
+    if (!auth?.user || auth?.user.role !== "ADMIN") {
       router.push("/");
     }
   }, [auth?.user, auth?.loading, router]);

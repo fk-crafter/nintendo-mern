@@ -114,7 +114,7 @@ const Navbar = () => {
                 >
                   My Orders
                 </Link>
-                {auth?.user?.role === "admin" && (
+                {auth?.user?.role === "ADMIN" && (
                   <Link
                     href="/dashboard"
                     className="py-2 text-lg hover:text-gray-500"
@@ -245,7 +245,7 @@ const Navbar = () => {
                     >
                       <Package size={18} /> My Orders
                     </Link>
-                    {auth?.user?.role === "admin" && (
+                    {auth?.user?.role === "ADMIN" && (
                       <Link
                         href="/dashboard"
                         className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200"

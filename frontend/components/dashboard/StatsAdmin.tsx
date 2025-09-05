@@ -39,8 +39,6 @@ type StatsResponse = {
   totalOrders: number;
   totalUsers: number;
   totalRevenue: number;
-  // ces deux champs ne sont pas renvoyés par ton backend pour l’instant,
-  // je les garde optionnels si tu les ajoutes plus tard :
   ordersOverTime?: unknown[];
   revenueOverTime?: unknown[];
 };
