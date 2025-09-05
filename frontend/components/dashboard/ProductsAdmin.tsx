@@ -106,6 +106,9 @@ export default function ProductsAdmin() {
       if (!res.ok) throw new Error("Error while uploading image");
 
       const data = await res.json();
+
+      console.log("URL de l’image uploadée :", data.imageUrl);
+
       setImage(data.imageUrl);
     } catch (err) {
       console.error(err);
