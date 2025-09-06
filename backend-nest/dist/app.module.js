@@ -15,6 +15,7 @@ const order_module_1 = require("./order/order.module");
 const stats_module_1 = require("./stats/stats.module");
 const user_module_1 = require("./user/user.module");
 const upload_module_1 = require("./upload/upload.module");
+const geo_module_1 = require("./geo/geo.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,6 +29,7 @@ exports.AppModule = AppModule = __decorate([
             stats_module_1.StatsModule,
             user_module_1.UserModule,
             upload_module_1.UploadModule,
+            geo_module_1.GeoModule,
         ],
     })
 ], AppModule);
