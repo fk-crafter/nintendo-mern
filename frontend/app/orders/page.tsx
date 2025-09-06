@@ -7,7 +7,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { Calendar, Package, ShoppingCart, Wallet } from "lucide-react";
 
 interface Order {
-  id: string; // ← côté Nest tu utilises `id` et pas `id` si tu es en Prisma
+  id: string;
   products: { product: { name: string; price: number }; quantity: number }[];
   totalPrice: number;
   createdAt: string;

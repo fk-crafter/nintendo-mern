@@ -11,14 +11,13 @@ export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
   const router = useRouter();
 
-  // champs “visuels” (non envoyés au backend)
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [promoCode, setPromoCode] = useState("");
   const [promoError, setPromoError] = useState("");
   const [discount, setDiscount] = useState(0);
-  const [shippingCost, setShippingCost] = useState(5); // fixe simple
+  const [shippingCost, setShippingCost] = useState(5);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -36,7 +35,6 @@ export default function CheckoutPage() {
     setDiscount(0);
     if (!promoCode.trim()) return;
 
-    // mini logique locale
     if (promoCode.toUpperCase() === "DISCOUNT15") {
       if (subtotal < 30) {
         setPromoError("Minimum order amount of 30€ required.");
@@ -57,7 +55,6 @@ export default function CheckoutPage() {
       return;
     }
 
-    // quelques validations basiques côté UI (non obligatoires)
     if (!name.trim() || !email.trim() || !address.trim()) {
       setError("Please complete name, email and address.");
       return;
@@ -70,7 +67,6 @@ export default function CheckoutPage() {
       const token =
         typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-      // ✅ on n’envoie QUE ce que le backend accepte
       const payload = {
         products: cart.map((item) => ({
           productId: item.id,
@@ -124,7 +120,6 @@ export default function CheckoutPage() {
           <p className="text-center text-gray-600">Your cart is empty. 🛒</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Colonne gauche : formulaire “visuel” */}
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="bg-gray-50 p-4 rounded-lg border">
                 <h2 className="text-lg font-semibold flex items-center gap-2 mb-3">
@@ -229,7 +224,6 @@ export default function CheckoutPage() {
               </button>
             </form>
 
-            {/* Colonne droite : panier + totals */}
             <div className="space-y-4">
               <div className="bg-white border rounded-lg p-4">
                 <h3 className="text-lg font-semibold mb-3">Order summary</h3>
