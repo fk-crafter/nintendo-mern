@@ -8,7 +8,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import nintendoLogo from "@/public/img/nintendologo.png";
-import { Eye, EyeOff, X, Check, Info } from "lucide-react";
+import { Eye, EyeOff, X, Check, Info, Github } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 const registerSchema = z
   .object({
@@ -137,7 +138,34 @@ export default function RegisterPage() {
         </h1>
 
         {error && <p className="text-red-500 text-center mb-2">{error}</p>}
+        <div className="space-y-3 mb-6">
+          <button
+            onClick={() => signIn("google", { callbackUrl: "/" })}
+            type="button"
+            className="w-full bg-white border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-100 transition flex items-center justify-center gap-2 font-bold"
+          >
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/0/09/IOS_Google_icon.png"
+              alt="Google Logo"
+              width={20}
+              height={20}
+            />
+            Sign up with Google
+          </button>
 
+          <button
+            onClick={() => signIn("github", { callbackUrl: "/" })}
+            type="button"
+            className="w-full bg-gray-900 text-white py-2 rounded-md hover:bg-black transition flex items-center justify-center gap-2 font-bold"
+          >
+            <Github size={20} />
+            Sign up with GitHub
+          </button>
+        </div>
+
+        <div className="text-center text-sm text-gray-500 mb-4">
+          — or sign up with email —
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
           <div>
             <input
