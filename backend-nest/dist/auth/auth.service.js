@@ -85,8 +85,8 @@ let AuthService = class AuthService {
         const user = await this.prisma.user.findUnique({
             where: { email: dto.email },
         });
-        if (!user) {
-            throw new common_1.UnauthorizedException("Invalid credentials");
+        if (!user || !user.password || user.password === "social-login") {
+            throw new common_1.UnauthorizedException("Please login using Google or GitHub instead.");
         }
         const isMatch = await bcrypt.compare(dto.password, user.password);
         if (!isMatch) {
@@ -103,6 +103,36 @@ let AuthService = class AuthService {
                 email: user.email,
                 role: user.role,
             },
+        };
+    }
+    async registerSocial(data) {
+        const { email, name } = data;
+        if (!email) {
+            throw new common_1.BadRequestException("Email is required");
+        }
+        const existingUser = await this.prisma.user.findUnique({
+            where: { email },
+        });
+        if (existingUser) {
+            return { message: "User already exists" };
+        }
+        const user = await this.prisma.user.create({
+            data: {
+                email,
+                name: name ?? "Anonymous",
+                password: "social-login",
+                role: "USER",
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+            },
+        });
+        return {
+            message: "Social user created",
+            user,
         };
     }
 };

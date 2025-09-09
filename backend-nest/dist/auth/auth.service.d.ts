@@ -10,8 +10,8 @@ export declare class AuthService {
         message: string;
         user: {
             id: string;
+            name: string | null;
             email: string;
-            name: string;
             role: import("@prisma/client").$Enums.Role;
             createdAt: Date;
         };
@@ -21,7 +21,23 @@ export declare class AuthService {
         token: string;
         user: {
             id: string;
-            name: string;
+            name: string | null;
+            email: string;
+            role: import("@prisma/client").$Enums.Role;
+        };
+    }>;
+    registerSocial(data: {
+        email: string;
+        name?: string;
+        image?: string;
+    }): Promise<{
+        message: string;
+        user?: undefined;
+    } | {
+        message: string;
+        user: {
+            id: string;
+            name: string | null;
             email: string;
             role: import("@prisma/client").$Enums.Role;
         };
