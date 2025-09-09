@@ -53,11 +53,8 @@ export class AuthService {
       where: { email: dto.email },
     });
 
-    // Si l'utilisateur n'existe pas ou n'a pas de mot de passe (compte social)
-    if (!user || !user.password || user.password === "social-login") {
-      throw new UnauthorizedException(
-        "Please login using Google or GitHub instead.",
-      );
+    if (!user) {
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     const isMatch = await bcrypt.compare(dto.password, user.password);
@@ -77,42 +74,6 @@ export class AuthService {
         email: user.email,
         role: user.role,
       },
-    };
-  }
-
-  async registerSocial(data: { email: string; name?: string; image?: string }) {
-    const { email, name } = data;
-
-    if (!email) {
-      throw new BadRequestException("Email is required");
-    }
-
-    const existingUser = await this.prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (existingUser) {
-      return { message: "User already exists" };
-    }
-
-    const user = await this.prisma.user.create({
-      data: {
-        email,
-        name: name ?? "Anonymous",
-        password: "social-login",
-        role: "USER",
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-      },
-    });
-
-    return {
-      message: "Social user created",
-      user,
     };
   }
 }

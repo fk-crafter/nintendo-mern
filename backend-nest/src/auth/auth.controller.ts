@@ -44,11 +44,4 @@ export class AuthController {
       user: req.user,
     };
   }
-
-  @Post("register-social")
-  registerSocial(
-    @Body() body: { name?: string; email: string; image?: string },
-  ) {
-    return this.authService.registerSocial(body);
-  }
 }

@@ -29,11 +29,11 @@ enum OrderStatus {
 
 model User {
   id        String   @id @default(uuid())
-  name      String?  
+  name      String
   email     String   @unique
-  password  String? 
+  password  String
   role      Role     @default(USER)
-  orders    Order[] 
+  orders    Order[]  // relation
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

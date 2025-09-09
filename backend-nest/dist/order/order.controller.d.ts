@@ -7,8 +7,8 @@ export declare class OrderController {
     create(userId: string, dto: CreateOrderDto): Promise<{
         products: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 createdAt: Date;
                 updatedAt: Date;
                 description: string;
@@ -19,23 +19,23 @@ export declare class OrderController {
             };
         } & {
             id: string;
-            productId: string;
             quantity: number;
+            productId: string;
             orderId: string;
         })[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("@prisma/client").$Enums.OrderStatus;
         totalPrice: number;
+        status: import("@prisma/client").$Enums.OrderStatus;
         userId: string;
     }>;
     findUserOrders(userId: string): Promise<({
         products: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 createdAt: Date;
                 updatedAt: Date;
                 description: string;
@@ -46,32 +46,32 @@ export declare class OrderController {
             };
         } & {
             id: string;
-            productId: string;
             quantity: number;
+            productId: string;
             orderId: string;
         })[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("@prisma/client").$Enums.OrderStatus;
         totalPrice: number;
+        status: import("@prisma/client").$Enums.OrderStatus;
         userId: string;
     })[]>;
     update(orderId: string, userId: string, dto: UpdateOrderDto): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("@prisma/client").$Enums.OrderStatus;
         totalPrice: number;
+        status: import("@prisma/client").$Enums.OrderStatus;
         userId: string;
     }>;
     deleteOrder(userId: string, orderId: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        status: import("@prisma/client").$Enums.OrderStatus;
         totalPrice: number;
+        status: import("@prisma/client").$Enums.OrderStatus;
         userId: string;
     }>;
 }

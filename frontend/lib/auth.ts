@@ -31,26 +31,6 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-
-    async signIn({ user }) {
-      try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register-social`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: user.email,
-            name: user.name,
-            image: user.image,
-          }),
-        });
-      } catch (error) {
-        console.error("❌ Erreur lors de la synchro backend:", error);
-      }
-
-      return true;
-    },
   },
   pages: {
     signIn: "/login",

@@ -17,8 +17,8 @@ export declare class AuthController {
         message: string;
         user: {
             id: string;
-            name: string | null;
             email: string;
+            name: string;
             role: import("@prisma/client").$Enums.Role;
             createdAt: Date;
         };
@@ -28,7 +28,7 @@ export declare class AuthController {
         token: string;
         user: {
             id: string;
-            name: string | null;
+            name: string;
             email: string;
             role: import("@prisma/client").$Enums.Role;
         };
@@ -37,21 +37,5 @@ export declare class AuthController {
         message: string;
         user: JwtPayload;
     };
-    registerSocial(body: {
-        name?: string;
-        email: string;
-        image?: string;
-    }): Promise<{
-        message: string;
-        user?: undefined;
-    } | {
-        message: string;
-        user: {
-            id: string;
-            name: string | null;
-            email: string;
-            role: import("@prisma/client").$Enums.Role;
-        };
-    }>;
 }
 export {};
