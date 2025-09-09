@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signOut } from "next-auth/react";
 import { useContext, useState, useRef, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import {
@@ -20,7 +19,6 @@ import { useCart } from "@/context/CartContext";
 import { motion, AnimatePresence } from "motion/react";
 
 const Navbar = () => {
-  const { data: session } = useSession();
   const auth = useContext(AuthContext);
   const { cart, removeFromCart } = useCart();
   const [showCart, setShowCart] = useState(false);
@@ -105,7 +103,7 @@ const Navbar = () => {
             >
               Cart ({cart.length})
             </Link>
-            {session || auth?.user ? (
+            {auth?.user ? (
               <>
                 <Link
                   href="/orders"
@@ -126,7 +124,7 @@ const Navbar = () => {
                 <button
                   onClick={() => {
                     setShowMenu(false);
-                    if (session) signOut();
+                    if (auth?.logout) auth.logout();
                     else if (auth?.logout) auth.logout();
                   }}
                   className="py-2 text-lg hover:text-gray-500"
@@ -219,7 +217,7 @@ const Navbar = () => {
             </AnimatePresence>
           </div>
 
-          {session || auth?.user ? (
+          {auth?.user ? (
             <div className="relative z-50" ref={userMenuRef}>
               <button
                 onClick={() => {
@@ -255,7 +253,7 @@ const Navbar = () => {
                     )}
                     <button
                       onClick={() => {
-                        if (session) signOut();
+                        if (auth?.logout) auth.logout();
                         else if (auth?.logout) auth.logout();
                       }}
                       className="flex w-full text-left px-4 py-2 hover:bg-gray-200 items-center gap-2"
