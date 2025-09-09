@@ -3,25 +3,17 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { Github, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
 import nintendoLogo from "@/public/img/nintendologo.png";
 
 const LoginPage = () => {
-  const { data: session } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useContext(AuthContext) || {};
   const router = useRouter();
-
-  useEffect(() => {
-    if (session) {
-      router.push("/");
-    }
-  }, [session, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +58,7 @@ const LoginPage = () => {
 
       <button
         onClick={() => router.push("/")}
-        className="absolute top-4 left-4 flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition font-bold  z-10"
+        className="absolute top-4 left-4 flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition font-bold z-10"
       >
         ← Back to Home
       </button>
@@ -80,28 +72,6 @@ const LoginPage = () => {
         <h1 className="text-3xl font-extrabold text-center mb-4 text-red-600">
           Welcome Back
         </h1>
-
-        <div className="space-y-3 mb-6">
-          <button
-            onClick={() => signIn("google", { callbackUrl: "/" })}
-            className="w-full bg-white border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-100 transition flex items-center justify-center gap-2 font-bold"
-          >
-            <Image
-              src="https://upload.wikimedia.org/wikipedia/commons/0/09/IOS_Google_icon.png"
-              alt="Google Logo"
-              width={20}
-              height={20}
-            />
-            Login with Google
-          </button>
-          <button
-            onClick={() => signIn("github", { callbackUrl: "/" })}
-            className="w-full bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 transition flex items-center justify-center gap-2 font-bold"
-          >
-            <Github size={20} />
-            Login with GitHub
-          </button>
-        </div>
 
         {error && <p className="text-red-500 text-center mb-2">{error}</p>}
 
