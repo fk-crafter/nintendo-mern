@@ -9,6 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import nintendoLogo from "@/public/img/nintendologo.png";
 import { Eye, EyeOff, X, Check, Info } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 const registerSchema = z
   .object({
@@ -319,6 +321,31 @@ export default function RegisterPage() {
             {loading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
+
+        <div className="mt-6">
+          <p className="text-center text-gray-600 mb-3">Or sign up with</p>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() =>
+                (window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`)
+              }
+              className="bg-white border border-gray-300 px-4 py-2 rounded hover:bg-gray-100 transition flex items-center gap-2"
+            >
+              <FcGoogle size={20} />
+              Google
+            </button>
+
+            <button
+              onClick={() =>
+                (window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/github`)
+              }
+              className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition flex items-center gap-2"
+            >
+              <FaGithub size={20} />
+              GitHub
+            </button>
+          </div>
+        </div>
       </motion.div>
 
       <AnimatePresence>
