@@ -9,9 +9,9 @@ export declare class AuthService {
     register(dto: RegisterDto): Promise<{
         message: string;
         user: {
-            id: string;
-            email: string;
             name: string;
+            email: string;
+            id: string;
             role: import("@prisma/client").$Enums.Role;
             createdAt: Date;
         };
@@ -25,5 +25,12 @@ export declare class AuthService {
             email: string;
             role: import("@prisma/client").$Enums.Role;
         };
+    }>;
+    validateOAuthLogin(email: string, name: string, provider: string): Promise<{
+        id: string;
+        email: string;
+        name: string;
+        role: import("@prisma/client").$Enums.Role;
+        token: string;
     }>;
 }

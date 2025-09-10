@@ -106,6 +106,28 @@ const LoginPage = () => {
             Login
           </button>
         </form>
+        <div className="mt-6">
+          <p className="text-center text-gray-600 mb-3">Or sign in with</p>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() =>
+                (window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`)
+              }
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
+              Google
+            </button>
+
+            <button
+              onClick={() =>
+                (window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/github`)
+              }
+              className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition"
+            >
+              GitHub
+            </button>
+          </div>
+        </div>
       </motion.div>
     </div>
   );

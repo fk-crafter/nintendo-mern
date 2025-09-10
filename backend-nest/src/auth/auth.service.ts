@@ -53,7 +53,7 @@ export class AuthService {
       where: { email: dto.email },
     });
 
-    if (!user) {
+    if (!user || !user.password) {
       throw new UnauthorizedException("Invalid credentials");
     }
 
@@ -74,6 +74,32 @@ export class AuthService {
         email: user.email,
         role: user.role,
       },
+    };
+  }
+
+  async validateOAuthLogin(email: string, name: string, provider: string) {
+    let user = await this.prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      user = await this.prisma.user.create({
+        data: {
+          email,
+          name,
+          provider,
+          role: "USER",
+        },
+      });
+    }
+
+    const payload = { sub: user.id, role: user.role };
+    const token = await this.jwtService.signAsync(payload);
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      token,
     };
   }
 }

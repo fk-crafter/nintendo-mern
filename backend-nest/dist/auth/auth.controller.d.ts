@@ -1,6 +1,7 @@
 import { AuthService } from "./auth.service";
 import { RegisterDto } from "./dto/register.dto";
 import { LoginDto } from "./dto/login.dto";
+import type { Response, Request as ExpressRequest } from "express";
 interface JwtPayload {
     sub: string;
     role: string;
@@ -16,9 +17,9 @@ export declare class AuthController {
     register(dto: RegisterDto): Promise<{
         message: string;
         user: {
-            id: string;
-            email: string;
             name: string;
+            email: string;
+            id: string;
             role: import("@prisma/client").$Enums.Role;
             createdAt: Date;
         };
@@ -37,5 +38,9 @@ export declare class AuthController {
         message: string;
         user: JwtPayload;
     };
+    googleAuth(): Promise<void>;
+    googleCallback(req: ExpressRequest, res: Response): void;
+    githubAuth(): Promise<void>;
+    githubCallback(req: ExpressRequest, res: Response): void;
 }
 export {};

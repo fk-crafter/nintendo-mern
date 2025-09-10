@@ -85,7 +85,7 @@ let AuthService = class AuthService {
         const user = await this.prisma.user.findUnique({
             where: { email: dto.email },
         });
-        if (!user) {
+        if (!user || !user.password) {
             throw new common_1.UnauthorizedException("Invalid credentials");
         }
         const isMatch = await bcrypt.compare(dto.password, user.password);
@@ -103,6 +103,28 @@ let AuthService = class AuthService {
                 email: user.email,
                 role: user.role,
             },
+        };
+    }
+    async validateOAuthLogin(email, name, provider) {
+        let user = await this.prisma.user.findUnique({ where: { email } });
+        if (!user) {
+            user = await this.prisma.user.create({
+                data: {
+                    email,
+                    name,
+                    provider,
+                    role: "USER",
+                },
+            });
+        }
+        const payload = { sub: user.id, role: user.role };
+        const token = await this.jwtService.signAsync(payload);
+        return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            token,
         };
     }
 };
