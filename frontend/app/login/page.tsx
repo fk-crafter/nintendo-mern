@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { LogIn } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import nintendoLogo from "@/public/img/nintendologo.png";
 
 const LoginPage = () => {
@@ -106,6 +108,8 @@ const LoginPage = () => {
             Login
           </button>
         </form>
+
+        {/* ✅ OAuth section */}
         <div className="mt-6">
           <p className="text-center text-gray-600 mb-3">Or sign in with</p>
           <div className="flex justify-center gap-4">
@@ -113,8 +117,9 @@ const LoginPage = () => {
               onClick={() =>
                 (window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`)
               }
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              className="flex items-center gap-2 bg-white border border-gray-300 px-4 py-2 rounded hover:bg-gray-100 transition text-black"
             >
+              <FcGoogle size={20} />
               Google
             </button>
 
@@ -122,8 +127,9 @@ const LoginPage = () => {
               onClick={() =>
                 (window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/github`)
               }
-              className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition"
+              className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:bg-gray-900 transition"
             >
+              <FaGithub size={20} />
               GitHub
             </button>
           </div>
