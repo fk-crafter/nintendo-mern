@@ -63,7 +63,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           <CardTitle className="text-xl font-semibold text-gray-900">
             {product.name}
           </CardTitle>
-          <p className="text-gray-600 text-sm mt-2 mb-4">
+          <p className="text-gray-600 text-sm mt-2 mb-4 line-clamp-3 min-h-[3.5rem]">
             {product.description}
           </p>
 
