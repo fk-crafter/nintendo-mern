@@ -5,7 +5,13 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
-import { ArrowLeft, ShoppingBag, Percent, Truck } from "lucide-react";
+import {
+  ArrowLeft,
+  ShoppingBag,
+  Percent,
+  Truck,
+  CreditCard,
+} from "lucide-react";
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
@@ -20,6 +26,12 @@ export default function CheckoutPage() {
   const [shippingCost, setShippingCost] = useState(5);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [step, setStep] = useState(1);
+
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCVC, setCardCVC] = useState("");
 
   const subtotal = useMemo(
     () => cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
@@ -57,6 +69,16 @@ export default function CheckoutPage() {
 
     if (!name.trim() || !email.trim() || !address.trim()) {
       setError("Please complete name, email and address.");
+      return;
+    }
+
+    if (step === 1) {
+      setStep(2);
+      return;
+    }
+
+    if (!cardNumber || !cardName || !cardExpiry || !cardCVC) {
+      setError("Please complete card information.");
       return;
     }
 
@@ -121,95 +143,132 @@ export default function CheckoutPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="bg-gray-50 p-4 rounded-lg border">
-                <h2 className="text-lg font-semibold flex items-center gap-2 mb-3">
-                  <ShoppingBag className="w-5 h-5 text-red-600" />
-                  Contact & Shipping
-                </h2>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-sm text-gray-700 mb-1">
-                      Full name
-                    </label>
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full border rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-red-500"
-                      placeholder="John Doe"
-                    />
+              {step === 1 && (
+                <>
+                  <div className="bg-gray-50 p-4 rounded-lg border">
+                    <h2 className="text-lg font-semibold flex items-center gap-2 mb-3">
+                      <ShoppingBag className="w-5 h-5 text-red-600" />
+                      Contact & Shipping
+                    </h2>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Full Name"
+                        className="w-full border rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-red-500"
+                      />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                        className="w-full border rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-red-500"
+                      />
+                      <input
+                        type="text"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="Address"
+                        className="w-full border rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-red-500"
+                      />
+                      <div className="flex items-center gap-2">
+                        <Truck className="w-4 h-4 text-gray-500" />
+                        <select
+                          className="border rounded-md px-3 py-2"
+                          value={shippingCost}
+                          onChange={(e) =>
+                            setShippingCost(Number(e.target.value))
+                          }
+                        >
+                          <option value={5}>Standard (3–5j) – 5€</option>
+                          <option value={10}>Express (1–2j) – 10€</option>
+                          <option value={0}>Pickup – 0€</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm text-gray-700 mb-1">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full border rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-red-500"
-                      placeholder="email@example.com"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-700 mb-1">
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      className="w-full border rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-red-500"
-                      placeholder="Street, City, ZIP"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-700 mb-1">
-                      Shipping
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <Truck className="w-4 h-4 text-gray-500" />
-                      <select
-                        className="border rounded-md px-3 py-2"
-                        value={shippingCost}
-                        onChange={(e) =>
-                          setShippingCost(Number(e.target.value))
-                        }
+
+                  <div className="bg-gray-50 p-4 rounded-lg border">
+                    <h2 className="text-lg font-semibold flex items-center gap-2 mb-3">
+                      <Percent className="w-5 h-5 text-red-600" />
+                      Promo code
+                    </h2>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value)}
+                        className="flex-1 border rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-red-500"
+                        placeholder="DISCOUNT15"
+                      />
+                      <button
+                        type="button"
+                        onClick={applyPromoCode}
+                        className="px-4 py-2 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700"
                       >
-                        <option value={5}>Standard (3–5j) – 5€</option>
-                        <option value={10}>Express (1–2j) – 10€</option>
-                        <option value={0}>Pickup – 0€</option>
-                      </select>
+                        Apply
+                      </button>
+                    </div>
+                    {promoError && (
+                      <p className="mt-2 text-sm text-red-600">{promoError}</p>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {step === 2 && (
+                <div className="bg-gray-50 p-4 rounded-lg border">
+                  <h2 className="text-lg font-semibold flex items-center gap-2 mb-3">
+                    <CreditCard className="w-5 h-5 text-red-600" />
+                    Payment Information
+                  </h2>
+                  <div className="space-y-3">
+                    <input
+                      type="text"
+                      placeholder="Card Number"
+                      value={cardNumber}
+                      onChange={(e) => {
+                        let val = e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 16);
+                        val = val.replace(/(.{4})/g, "$1 ").trim();
+                        setCardNumber(val);
+                      }}
+                      className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Name on Card"
+                      value={cardName}
+                      onChange={(e) => setCardName(e.target.value)}
+                      className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500"
+                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="MM/YY"
+                        value={cardExpiry}
+                        onChange={(e) => {
+                          let val = e.target.value.replace(/\D/g, "");
+                          if (val.length > 4) val = val.slice(0, 4);
+                          if (val.length > 2)
+                            val = `${val.slice(0, 2)}/${val.slice(2)}`;
+                          setCardExpiry(val);
+                        }}
+                        className="w-1/2 border rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500"
+                      />
+                      <input
+                        type="text"
+                        placeholder="CVC"
+                        value={cardCVC}
+                        onChange={(e) => setCardCVC(e.target.value)}
+                        className="w-1/2 border rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500"
+                      />
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="bg-gray-50 p-4 rounded-lg border">
-                <h2 className="text-lg font-semibold flex items-center gap-2 mb-3">
-                  <Percent className="w-5 h-5 text-red-600" />
-                  Promo code
-                </h2>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value)}
-                    className="flex-1 border rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-red-500"
-                    placeholder="DISCOUNT15"
-                  />
-                  <button
-                    type="button"
-                    onClick={applyPromoCode}
-                    className="px-4 py-2 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700"
-                  >
-                    Apply
-                  </button>
-                </div>
-                {promoError && (
-                  <p className="mt-2 text-sm text-red-600">{promoError}</p>
-                )}
-              </div>
+              )}
 
               {error && (
                 <p className="text-center text-red-600 font-medium">{error}</p>
@@ -220,7 +279,11 @@ export default function CheckoutPage() {
                 disabled={loading}
                 className="w-full py-3 rounded-md bg-red-600 text-white font-semibold shadow hover:bg-red-700 active:scale-[0.98] transition"
               >
-                {loading ? "Processing..." : "Confirm Order"}
+                {loading
+                  ? "Processing..."
+                  : step === 1
+                  ? "Next Step"
+                  : "Confirm Order"}
               </button>
             </form>
 
