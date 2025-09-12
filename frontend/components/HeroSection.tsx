@@ -5,6 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Tooltip from "@mui/material/Tooltip";
 import Rating from "@mui/material/Rating";
+import { WavyBackground } from "./ui/wavy-background";
 
 const reviews = [
   {
@@ -31,7 +32,11 @@ const reviews = [
 
 export default function HeroSection() {
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-6 pt-20 md:pt-40">
+    <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-6 pt-20 md:pt-40 overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <WavyBackground />
+      </div>
+
       <motion.div
         className="relative z-10 max-w-xl md:max-w-3xl px-4 md:px-6 flex flex-col items-center justify-center"
         initial={{ opacity: 0, y: 50 }}
