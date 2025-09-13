@@ -154,7 +154,10 @@ const Navbar = () => {
         )}
 
         <div className="hidden md:flex gap-8 items-center">
-          <Link href="#products" className="hover:text-gray-200 text-lg">
+          <Link
+            href="#products-section"
+            className="hover:text-gray-200 text-lg"
+          >
             Products
           </Link>
 

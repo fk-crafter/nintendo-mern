@@ -74,7 +74,6 @@ const ProductList = () => {
 
   return (
     <div id="products-section" className="p-8 max-w-7xl mx-auto">
-      {/* Boutons catégories */}
       <div className="flex justify-center flex-wrap gap-3 mb-8">
         {categories.map((category) => (
           <motion.button
@@ -94,7 +93,6 @@ const ProductList = () => {
         ))}
       </div>
 
-      {/* Produits */}
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedCategory}
